@@ -17,8 +17,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/index")
-public class IndexServlet extends HttpServlet {
+@WebServlet("/datos-producto")
+public class DatosProductoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private static final UsuarioNegocio un = new UsuarioNegocioImpl(); 
@@ -31,7 +31,12 @@ public class IndexServlet extends HttpServlet {
 		dao.insertar(new Producto("Otro producto", new BigDecimal("1234.56")));
 		dao.insertar(new Producto("Un producto más", new BigDecimal("1234.56"), LocalDate.of(2025, 1, 1)));
 	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String sId = request.getParameter("id");
+		
+		Long id = Long.parseLong(sId);
+		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		
@@ -42,30 +47,20 @@ public class IndexServlet extends HttpServlet {
 				<!DOCTYPE html>
 				<html>
 				<head>
-					<title>Productos</title>
+					<title>Datos de producto</title>
 				</head>
 				<body>
-					<table>
-						<thead>
-							<tr>
-								<th>Id</th>
-								<th>Nombre</th>
-								<th>Precio</th>
-								<th>Fecha de caducidad</th>
-							</tr>
-						</thead>
-						<tbody>
+				<dl>
 				""");
 		
-		for(Producto p: un.listadoProductos()) {
-			out.printf("<tr><th><a href='datos-producto?id=%1$s'>%s</a></th><td>%s</td><td>%s</td><td>%s</td></tr>", 
+		Producto p = un.datosProducto(id);
+		
+		out.printf("<dt>Id</dt><dd>%s</dd><dt>Nombre</dt><dd>%s</dd><dt>Precio</dt><dd>%s</dd><dt>Fecha de caducidad</dt><dd>%s</dd>", 
 					p.getId(), p.getNombre(), p.getPrecio(), p.getFechaCaducidad());
-		}
 		
 		out.println(
 				"""
-				</tbody>
-				</table>
+				</dl>
 				</body>
 				</html>
 				""");
