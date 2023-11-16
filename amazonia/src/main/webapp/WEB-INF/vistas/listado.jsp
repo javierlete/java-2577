@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="com.amazonia.entidades.Producto"%>
-
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,18 +19,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%
-			for (Producto p : (Iterable<Producto>) request.getAttribute("productos")) {
-			%>
-			<tr>
-				<th><a href="detalle?id=<%=p.getId()%>"><%=p.getId()%></a></th>
-				<td><%=p.getNombre()%></td>
-				<td><%=p.getPrecio()%></td>
-				<td><%=p.getFechaCaducidad()%></td>
-			</tr>
-			<%
-			}
-			%>
+			<c:forEach items="${productos}" var="p">
+				<tr>
+					<th><a href="detalle?id=${p.id}">${p.id}</a></th>
+					<td>${p.nombre}</td>
+					<td>${p.precio}</td>
+					<td>${p.fechaCaducidad}</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 
