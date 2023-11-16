@@ -64,6 +64,11 @@ public class Producto {
 		return nombre;
 	}
 
+	/**
+	 * Establece el valor del nombre del producto
+	 * @param nombre debe estar rellenado
+	 * @throws RuntimeException en el caso de que no esté rellenado
+	 */
 	public void setNombre(String nombre) {
 		if (nombre == null || nombre.trim().length() == 0) {
 			throw new RuntimeException("No se admiten nombres vacíos o nulos");
@@ -76,6 +81,11 @@ public class Producto {
 		return precio;
 	}
 
+	/**
+	 * Establece el precio del producto
+	 * @param precio debe ser rellenado y mayor o igual que 0
+	 * @throws RuntimeException en el caso de que el precio no cumpla las condiciones requeridas
+	 */
 	public void setPrecio(BigDecimal precio) {
 		if (precio == null || precio.compareTo(BigDecimal.ZERO) < 0) {
 			throw new RuntimeException("El precio es obligatorio y no puede ser menor que 0");
