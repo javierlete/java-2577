@@ -3,11 +3,11 @@ package com.amazonia.logicanegocio;
 import java.util.logging.Logger;
 
 import com.amazonia.accesodatos.DaoProducto;
-import com.amazonia.accesodatos.DaoProductoMemoria;
+import com.amazonia.accesodatos.DaoProductoSqlite;
 import com.amazonia.entidades.Producto;
 
 public class UsuarioNegocioImpl implements UsuarioNegocio {
-	private static final DaoProducto dao = new DaoProductoMemoria();
+	private static final DaoProducto dao = new DaoProductoSqlite();
 	
 	private static final Logger log = Logger.getLogger(UsuarioNegocioImpl.class.getName());
 	
