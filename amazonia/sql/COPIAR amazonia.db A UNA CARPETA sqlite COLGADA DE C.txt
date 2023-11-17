@@ -1,0 +1,5 @@
+Recordad que sólo funciona la aplicación si ubicáis la base de datos en la siguiente ruta:
+
+C:\sqlite\amazonia.db
+
+Si no, podéis cambiar la URL en el DaoProductoSqlite para que apunte a donde tengáis la base de datos.
