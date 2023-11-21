@@ -36,7 +36,7 @@ class DaoProductoSqlite implements DaoProducto {
 		}
 	}
 
-	public DaoProductoSqlite(String url) {
+	public DaoProductoSqlite(String url, String user, String pass) {
 		this.url = url;
 	}
 

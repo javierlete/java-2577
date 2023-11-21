@@ -2,6 +2,7 @@ package com.amazonia2.accesodatos;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 public class FabricaDaoImpl implements FabricaDao {
@@ -15,20 +16,11 @@ public class FabricaDaoImpl implements FabricaDao {
 			String tipo = props.getProperty("accesodatos.tipo");
 			String url = props.getProperty("accesodatos.url");
 			
-			switch(tipo) {
-			case "sqlite":
-				daoProducto = new DaoProductoSqlite(url);
-				break;
-//		case "mysql":
-//			String user = props.getProperty("accesodatos.user");
-//			String pass = props.getProperty("accesodatos.pass");
-//			
-//			daoProducto = new DaoProductoMySql(url, user, pass);
-//			break;
-			default:
-				throw new AccesoDatosException("No se reconoce el tipo proporcionado: " + tipo);
-			}
-		} catch (IOException e) {
+			String user = props.getProperty("accesodatos.user");
+			String pass = props.getProperty("accesodatos.pass");
+			
+			daoProducto = (DaoProducto)Class.forName(tipo).getDeclaredConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
+		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new AccesoDatosException("No se ha podido leer el fichero de configuración: " + rutaFicheroProperties, e);
 		}
 	}
