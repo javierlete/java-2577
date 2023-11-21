@@ -222,9 +222,10 @@ class DaoProductoSqlite implements DaoProducto {
 		String codigoBarras = rs.getString("codigo_barras");
 		String nombre = rs.getString("nombre");
 		BigDecimal precio = rs.getBigDecimal("precio");
-		java.sql.Date fecha = rs.getDate("fecha_caducidad");
-		LocalDate fechaCaducidad = fecha != null ? fecha.toLocalDate() : null;
-		Integer unidades = (Integer) rs.getObject("unidades");
+		String sFecha = rs.getString("fecha_caducidad");
+		LocalDate fechaCaducidad = sFecha == null || sFecha.trim().length() == 0 ? null : LocalDate.parse(sFecha);
+		String sUnidades = rs.getString("unidades");
+		Integer unidades = sUnidades == null || sUnidades.trim().length() == 0 ? null: Integer.valueOf(sUnidades);
 
 		return new Producto(id, codigoBarras, nombre, precio, fechaCaducidad, unidades);
 	}
