@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import com.amazonia2.entidades.Producto;
 
-public class DaoProductoSqlite implements DaoProducto {
+class DaoProductoSqlite implements DaoProducto {
 //	private DaoProductoSqlite() {}
 //	private static final DaoProductoSqlite INSTANCIA = new DaoProductoSqlite();
 //	public static DaoProductoSqlite obtenerInstancia() {
