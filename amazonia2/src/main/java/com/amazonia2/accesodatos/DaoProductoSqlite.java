@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import com.amazonia2.entidades.Producto;
 
 public class DaoProductoSqlite implements DaoProducto {
+//	private DaoProductoSqlite() {}
+//	private static final DaoProductoSqlite INSTANCIA = new DaoProductoSqlite();
+//	public static DaoProductoSqlite obtenerInstancia() {
+//		return INSTANCIA;
+//	}
+	
 	private static final String SQL_SELECT = "SELECT id, codigo_barras, nombre, precio, fecha_caducidad, unidades FROM productos";
 	private static final String SQL_SELECT_ID = SQL_SELECT + " WHERE id=?";
 	private static final String SQL_SELECT_CADUCADOS = SQL_SELECT + " WHERE fecha_caducidad < ?";
