@@ -28,7 +28,7 @@
 					<td>${p.unidades}</td>
 					<td>
 						<a class="btn btn-sm btn-primary" href="admin/detalle?id=${p.id}">Editar</a>
-						<a class="btn btn-sm btn-danger" href="admin/borrar?id=${p.id}">Borrar</a>
+						<a onclick="return confirm('¿Estás seguro de borrar el producto ${p.nombre}?')" class="btn btn-sm btn-danger" href="admin/borrar?id=${p.id}">Borrar</a>
 					</td>
 				</tr>
 			</c:forEach>
