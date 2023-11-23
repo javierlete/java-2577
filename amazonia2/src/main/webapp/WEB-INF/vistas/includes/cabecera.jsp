@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Listado de productos</title>
+
+<base href="${pageContext.request.contextPath}/">
+
 <link rel="stylesheet" href="css/bootstrap-icons.min.css">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <script src="js/bootstrap.bundle.min.js"></script>
@@ -25,8 +28,15 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-sm-0">
-					<li class="nav-item"><a class="nav-link" href="#">Principal</a></li>
+					<li class="nav-item"><a class="nav-link" href="listado">Principal</a></li>
 				</ul>
+				<ul class="navbar-nav mb-2 mb-sm-0">
+					<li class="nav-item"><a class="nav-link" href="admin/listado">Administración</a></li>
+					<li class="navbar-text">Javier</li>
+					<li class="nav-item"><a class="nav-link" href="logout">Cerrar sesión</a></li>
+				</ul>
+
 			</div>
 		</div>
 	</nav>
+	
