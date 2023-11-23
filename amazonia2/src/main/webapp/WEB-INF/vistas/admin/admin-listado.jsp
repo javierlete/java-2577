@@ -13,6 +13,7 @@
 				<th>Precio</th>
 				<th>Fecha de caducidad</th>
 				<th>Unidades</th>
+				<th>OPCIONES</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,9 +26,26 @@
 					<td>${p.precio}</td>
 					<td>${p.fechaCaducidad}</td>
 					<td>${p.unidades}</td>
+					<td>
+						<a class="btn btn-sm btn-primary" href="admin/detalle?id=${p.id}">Editar</a>
+						<a class="btn btn-sm btn-danger" href="admin/borrar?id=${p.id}">Borrar</a>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>
+		<tfoot class="table-dark">
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<a class="btn btn-sm btn-primary" href="admin/detalle">Añadir</a>
+				</td>
+			</tr>
+		</tfoot>
 	</table>
 
 </main>

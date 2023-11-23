@@ -2,6 +2,8 @@ package com.amazonia2.presentacion.backend.controladores;
 
 import java.io.IOException;
 
+import com.amazonia2.globales.Global;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
