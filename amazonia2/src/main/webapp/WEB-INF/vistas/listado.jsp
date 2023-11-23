@@ -23,6 +23,7 @@
 							<li class="list-group-item">${p.precio}€</li>
 							<li class="list-group-item">${p.unidades == null ? 'No disponible' : p.unidades += ' unidades'}</li>
 						</ul>
+						<a class="btn btn-primary w-100 stretched-link" href="detalle?id=${p.id}">Ver detalle</a>
 					</div>
 					<div class="card-footer">
 						<small class="text-body-secondary">${p.fechaCaducidad}</small>

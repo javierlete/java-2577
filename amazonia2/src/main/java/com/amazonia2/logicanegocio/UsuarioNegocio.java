@@ -4,4 +4,6 @@ import com.amazonia2.entidades.Producto;
 
 public interface UsuarioNegocio {
 	Iterable<Producto> listadoProductos();
+
+	Producto detalle(Long id);
 }

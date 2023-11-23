@@ -4,7 +4,28 @@
 
 <main class="container">
 
-	<h1>Detalle de producto</h1>
+	<div class="card mb-3">
+		<div class="row g-0">
+			<div class="col-md-4">
+				<img src="https://picsum.photos/300/500"
+					class="img-fluid rounded-start" alt="...">
+			</div>
+			<div class="col-md-8">
+				<div class="card-body">
+					<h5 class="card-title">${producto.nombre}</h5>
+					<div class="card">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">${producto.precio} €</li>
+							<li class="list-group-item">${producto.unidades == null ? 'No disponible' : producto.unidades += ' unidades'}</li>
+						</ul>
+					</div>
+					<p class="card-text">
+						<small class="text-body-secondary">${producto.fechaCaducidad}</small>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </main>
 

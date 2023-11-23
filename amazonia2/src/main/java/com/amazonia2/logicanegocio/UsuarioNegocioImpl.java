@@ -10,4 +10,9 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 		return FABRICA.obtenerDaoProducto().obtenerTodos();
 	}
 
+	@Override
+	public Producto detalle(Long id) {
+		return FABRICA.obtenerDaoProducto().obtenerPorId(id);
+	}
+
 }
