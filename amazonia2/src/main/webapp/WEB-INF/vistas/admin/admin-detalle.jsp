@@ -61,13 +61,6 @@
 		</div>
 	</form>
 
-	<th>${p.id}</th>
-	<td>${p.codigoBarras}</td>
-	<td>${p.nombre}</td>
-	<td>${p.precio}</td>
-	<td>${p.fechaCaducidad}</td>
-	<td>${p.unidades}</td>
-
 </main>
 
 <%@ include file="/WEB-INF/vistas/includes/pie.jsp"%>
