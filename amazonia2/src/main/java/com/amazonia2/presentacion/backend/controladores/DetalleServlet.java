@@ -21,7 +21,7 @@ public class DetalleServlet extends HttpServlet {
 		
 		Long id = Long.parseLong(sId);
 		
-		request.setAttribute("producto", Global.UN.detalle(id));
+		request.setAttribute("producto", Global.UN.detalleProducto(id));
 		request.getRequestDispatcher("/WEB-INF/vistas/detalle.jsp").forward(request, response);
 	}
 

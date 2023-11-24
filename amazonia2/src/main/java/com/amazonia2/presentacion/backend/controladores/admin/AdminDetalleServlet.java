@@ -23,7 +23,7 @@ public class AdminDetalleServlet extends HttpServlet {
 
 		if (sId != null) {
 			Long id = Long.parseLong(sId);
-			Producto producto = Global.AN.detalle(id);
+			Producto producto = Global.AN.detalleProducto(id);
 			request.setAttribute("producto", producto);
 		}
 
