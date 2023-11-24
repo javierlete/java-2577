@@ -2,7 +2,6 @@ package com.amazonia2.accesodatos;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 
 import com.amazonia2.entidades.Producto;
 
-public class DaoProductoSqlite implements DaoProducto {
+public class DaoProductoSqlite extends DaoSqlite<Producto> implements DaoProducto {
 //	private DaoProductoSqlite() {}
 //	private static final DaoProductoSqlite INSTANCIA = new DaoProductoSqlite();
 //	public static DaoProductoSqlite obtenerInstancia() {
@@ -26,18 +25,8 @@ public class DaoProductoSqlite implements DaoProducto {
 	private static final String SQL_UPDATE = "UPDATE productos SET codigo_barras=?, nombre=?, precio=?, fecha_caducidad=?, unidades=? WHERE id=?";
 	private static final String SQL_DELETE = "DELETE FROM productos WHERE id=?";
 
-	private String url;
-
-	static {
-		try {
-			Class.forName("org.sqlite.JDBC");
-		} catch (ClassNotFoundException e) {
-			throw new AccesoDatosException("No se ha podido cargar el driver", e);
-		}
-	}
-
 	public DaoProductoSqlite(String url, String user, String pass) {
-		this.url = url;
+		super(url);
 	}
 
 	@Override
@@ -50,7 +39,7 @@ public class DaoProductoSqlite implements DaoProducto {
 			Producto producto;
 
 			while (rs.next()) {
-				producto = filaAProducto(rs);
+				producto = filaAObjeto(rs);
 
 				productos.add(producto);
 			}
@@ -71,7 +60,7 @@ public class DaoProductoSqlite implements DaoProducto {
 				producto = null;
 
 				if (rs.next()) {
-					producto = filaAProducto(rs);
+					producto = filaAObjeto(rs);
 				}
 
 				return producto;
@@ -85,7 +74,7 @@ public class DaoProductoSqlite implements DaoProducto {
 	public Producto insertar(Producto producto) {
 		try (Connection con = obtenerConexion(); PreparedStatement pst = con.prepareStatement(SQL_INSERT);) {
 			producto.setId(null);
-			productoAFila(producto, pst);
+			objetoAFila(producto, pst);
 
 			ejecutarCambio(pst);
 
@@ -99,7 +88,7 @@ public class DaoProductoSqlite implements DaoProducto {
 	@Override
 	public Producto modificar(Producto producto) {
 		try (Connection con = obtenerConexion(); PreparedStatement pst = con.prepareStatement(SQL_UPDATE);) {
-			productoAFila(producto, pst);
+			objetoAFila(producto, pst);
 
 			ejecutarCambio(pst);
 
@@ -140,7 +129,7 @@ public class DaoProductoSqlite implements DaoProducto {
 				Producto producto;
 
 				while (rs.next()) {
-					producto = filaAProducto(rs);
+					producto = filaAObjeto(rs);
 
 					productos.add(producto);
 				}
@@ -175,7 +164,7 @@ public class DaoProductoSqlite implements DaoProducto {
 				Producto producto;
 
 				while (rs.next()) {
-					producto = filaAProducto(rs);
+					producto = filaAObjeto(rs);
 
 					productos.add(producto);
 				}
@@ -187,7 +176,8 @@ public class DaoProductoSqlite implements DaoProducto {
 		}
 	}
 
-	private void productoAFila(Producto producto, PreparedStatement pst) throws SQLException {
+	@Override
+	protected void objetoAFila(Producto producto, PreparedStatement pst) throws SQLException {
 		pst.setString(1, producto.getCodigoBarras());
 		pst.setString(2, producto.getNombre());
 		pst.setBigDecimal(3, producto.getPrecio());
@@ -200,24 +190,8 @@ public class DaoProductoSqlite implements DaoProducto {
 		}
 	}
 
-	private void ejecutarCambio(PreparedStatement pst) throws SQLException {
-		int numeroRegistrosModificados = pst.executeUpdate();
-
-		if (numeroRegistrosModificados != 1) {
-			throw new AccesoDatosException(
-					"Número de registros modificados distinto de uno: " + numeroRegistrosModificados);
-		}
-	}
-
-	private Connection obtenerConexion() {
-		try {
-			return DriverManager.getConnection(url);
-		} catch (SQLException e) {
-			throw new AccesoDatosException("No se ha podido establecer la conexión a la base de datos", e);
-		}
-	}
-
-	private Producto filaAProducto(ResultSet rs) throws SQLException {
+	@Override
+	protected Producto filaAObjeto(ResultSet rs) throws SQLException {
 		Long id = rs.getLong("id");
 		String codigoBarras = rs.getString("codigo_barras");
 		String nombre = rs.getString("nombre");
