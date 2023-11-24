@@ -31,12 +31,23 @@
 					<li class="nav-item"><a class="nav-link" href="listado">Principal</a></li>
 				</ul>
 				<ul class="navbar-nav mb-2 mb-sm-0">
-					<li class="nav-item"><a class="nav-link" href="admin/listado">Administración</a></li>
-					<li class="navbar-text">Javier</li>
-					<li class="nav-item"><a class="nav-link" href="logout">Cerrar sesión</a></li>
+					<c:if test="${sessionScope.usuario.rol.id == 1}">
+						<li class="nav-item"><a class="nav-link" href="admin/listado">Administración</a></li>
+					</c:if>
+					<li class="navbar-text">${sessionScope.usuario.nombre}</li>
+
+					<c:choose>
+						<c:when test="${sessionScope.usuario == null}">
+							<li class="nav-item"><a class="nav-link" href="login">Iniciar
+									sesión</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="nav-item"><a class="nav-link" href="logout">Cerrar
+									sesión</a></li>
+						</c:otherwise>
+					</c:choose>
 				</ul>
 
 			</div>
 		</div>
 	</nav>
-	
