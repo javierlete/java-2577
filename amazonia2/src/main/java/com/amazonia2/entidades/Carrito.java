@@ -70,4 +70,8 @@ public class Carrito {
 	public Producto getProducto(Long id) {
 		return productos.get(id);
 	}
+	
+	public int getNumeroProductos() {
+		return productos.size();
+	}
 }
