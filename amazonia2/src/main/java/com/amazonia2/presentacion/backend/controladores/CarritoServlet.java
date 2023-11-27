@@ -47,7 +47,31 @@ public class CarritoServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		String[] ids = request.getParameterValues("id");
+		String[] unidades = request.getParameterValues("unidades");
+		
+		if(ids == null || unidades == null) {
+			response.sendRedirect(request.getContextPath() + "/listado");
+			return;
+		}
+		
+		Carrito carrito = (Carrito) request.getSession().getAttribute("carrito");
+		
+		Long id;
+		Integer u;
+		
+		for(int i = 0; i < ids.length; i++) {
+			id = Long.parseLong(ids[i]);
+			u = Integer.parseInt(unidades[i]);
+			
+			if(u > 0) {
+				carrito.getProducto(id).setUnidades(u);
+			} else {
+				carrito.removeProducto(id);
+			}
+		}
+		
+		response.sendRedirect(request.getContextPath() + "/listado");
 	}
 
 }

@@ -39,6 +39,8 @@
 					</c:if>
 					<li class="navbar-text">${sessionScope.usuario.nombre}</li>
 
+					<li class="nav-item"><a class="nav-link" href="carrito"><i
+							class="bi bi-cart4"></i>${carrito.numeroProductos > 0 ? '(' += carrito.numeroProductos += ')' : ''}</a></li>
 					<c:choose>
 						<c:when test="${sessionScope.usuario == null}">
 							<li class="nav-item"><a class="nav-link" href="login">Iniciar
