@@ -3,6 +3,7 @@ package com.amazonia2.presentacion.backend.controladores;
 import java.io.IOException;
 
 import com.amazonia2.entidades.Carrito;
+import com.amazonia2.entidades.Producto;
 import com.amazonia2.globales.Global;
 
 import jakarta.servlet.ServletException;
@@ -29,7 +30,15 @@ public class CarritoServlet extends HttpServlet {
 		Long id = Long.parseLong(sId);
 		
 		if(borrar == null) {
-			carrito.addProducto(Global.UN.detalleProducto(id));
+			Producto producto = Global.UN.detalleProducto(id);
+			Integer unidades = 1;
+			
+			if(carrito.getProducto(id) != null) {
+				unidades += carrito.getProducto(id).getUnidades();
+			}
+			
+			producto.setUnidades(unidades);
+			carrito.addProducto(producto);
 		} else {
 			carrito.removeProducto(id);
 		}
