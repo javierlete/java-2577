@@ -18,11 +18,13 @@
 							<li class="list-group-item">${producto.precio} €</li>
 							<li class="list-group-item">${producto.unidades == null ? 'No disponible' : producto.unidades += ' unidades'}</li>
 						</ul>
+						<a class="btn btn-primary" href="carrito?id=${producto.id}">Añadir al carrito</a>
 					</div>
 					<p class="card-text">
 						<small class="text-body-secondary">${producto.fechaCaducidad}</small>
 					</p>
 				</div>
+				<a class="btn btn-secondary" href="listado">Volver al listado</a>
 			</div>
 		</div>
 	</div>
