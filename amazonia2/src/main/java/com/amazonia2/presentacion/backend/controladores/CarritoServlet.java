@@ -19,6 +19,11 @@ public class CarritoServlet extends HttpServlet {
 		String borrar = request.getParameter("borrar");
 		String sId = request.getParameter("id");
 		
+		if(borrar == null && sId == null) {
+			request.getRequestDispatcher("/WEB-INF/vistas/carrito.jsp").forward(request, response);
+			return;
+		}
+		
 		Carrito carrito = (Carrito) request.getSession().getAttribute("carrito");
 		
 		Long id = Long.parseLong(sId);
@@ -28,8 +33,8 @@ public class CarritoServlet extends HttpServlet {
 		} else {
 			carrito.removeProducto(id);
 		}
-		
-		request.getRequestDispatcher("/WEB-INF/vistas/carrito.jsp").forward(request, response);
+
+		response.sendRedirect(request.getContextPath() + "/carrito");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
