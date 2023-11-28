@@ -1,10 +1,13 @@
 package com.amazonia2.logicanegocio;
 
+import static com.amazonia2.globales.Global.FABRICA;
+
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Usuario;
 
-import static com.amazonia2.globales.Global.FABRICA;
+import lombok.extern.java.Log;
 
+@Log
 public class UsuarioNegocioImpl implements UsuarioNegocio {
 	
 	@Override
@@ -22,8 +25,11 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 		Usuario usuario = FABRICA.obtenerDaoUsuario().obtenerPorEmail(email);
 		
 		if(usuario != null && usuario.getPassword().equals(password)) {
+			log.fine(String.format("El usuario %s se ha logueado", email));
 			return usuario;
 		}
+		
+		log.warning(String.format("El usuario %s con la contraseña %s no es válido", email, password));
 		
 		return null;
 	}

@@ -3,7 +3,12 @@ package com.amazonia2.logicanegocio;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.globales.Global;
 
+import lombok.extern.java.Log;
+
+@Log
 public class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
+	
+	// private static final Logger log = Logger.getLogger(AdminNegocioImpl.class.getName());
 	
 	@Override
 	public Producto insertarProducto(Producto producto) {
@@ -17,6 +22,7 @@ public class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio
 
 	@Override
 	public void borrarProducto(Long id) {
+		log.info("Se va a borrar el id " + id);
 		Global.FABRICA.obtenerDaoProducto().borrar(id);		
 	}
 	
