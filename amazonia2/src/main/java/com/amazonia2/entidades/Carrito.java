@@ -1,5 +1,6 @@
 package com.amazonia2.entidades;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -8,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Singular;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,8 +18,8 @@ public class Carrito {
 	private Long id;
 	private Usuario usuario;
 	
-	@Singular
-	private Map<Long, Producto> productos;
+	@Builder.Default
+	private Map<Long, Producto> productos = new HashMap<>();
 
 	public Set<Producto> getProductos() {
 		return new HashSet<Producto>(productos.values());

@@ -14,17 +14,21 @@ import jakarta.servlet.http.HttpSessionListener;
 public class SesionListener implements HttpSessionListener {
 
 	public void sessionCreated(HttpSessionEvent se) {
-		Producto p1 = Producto.builder().nombre("Producto1").precio(new BigDecimal("1234.12")).unidades(5).build();
+		Producto p1 = Producto.builder().id(1L).nombre("Producto1").precio(new BigDecimal("1234.12")).unidades(5).build();
 		
 		ProductoBuilder builder = Producto.builder();
 		
+		builder.id(2L);
 		builder.nombre("Producto2");
 		builder.precio(new BigDecimal("234.12"));
 		builder.unidades(7);
 		
 		Producto p2 = builder.build();
 
-		Carrito carrito = Carrito.builder().producto(1L, p1).producto(2L, p2).build();
+		Carrito carrito = Carrito.builder().id(1L).build();
+		
+		carrito.addProducto(p1);
+		carrito.addProducto(p2);
 
 		se.getSession().setAttribute("carrito", carrito);
 	}
