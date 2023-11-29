@@ -1,12 +1,10 @@
 package com.amazonia2.accesodatos;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import com.amazonia2.entidades.Producto;
 
@@ -31,84 +29,29 @@ public class DaoProductoSqlite extends DaoSqlite<Producto> implements DaoProduct
 
 	@Override
 	public Iterable<Producto> obtenerTodos() {
-		try (Connection con = obtenerConexion();
-				PreparedStatement pst = con.prepareStatement(SQL_SELECT);
-				ResultSet rs = pst.executeQuery()) {
-			var productos = new ArrayList<Producto>();
-
-			Producto producto;
-
-			while (rs.next()) {
-				producto = filaAObjeto(rs);
-
-				productos.add(producto);
-			}
-
-			return productos;
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Error en la consulta de todos los registros", e);
-		}
+		return consultaVarios(SQL_SELECT, null);
 	}
 
 	@Override
 	public Producto obtenerPorId(Long id) {
-		try (Connection con = obtenerConexion(); PreparedStatement pst = con.prepareStatement(SQL_SELECT_ID);) {
-			pst.setLong(1, id);
-
-			Producto producto;
-			try (ResultSet rs = pst.executeQuery()) {
-				producto = null;
-
-				if (rs.next()) {
-					producto = filaAObjeto(rs);
-				}
-
-				return producto;
-			}
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Error en la consulta del id " + id, e);
-		}
+		return consultaUno(SQL_SELECT_ID, id);
 	}
 
 	@Override
 	public Producto insertar(Producto producto) {
-		try (Connection con = obtenerConexion(); PreparedStatement pst = con.prepareStatement(SQL_INSERT);) {
-			producto.setId(null);
-			objetoAFila(producto, pst);
-
-			ejecutarCambio(pst);
-
-			return producto;
-
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Error en la inserción de " + producto, e);
-		}
+		producto.setId(null);
+		
+		return cambio(SQL_INSERT, producto);
 	}
 
 	@Override
 	public Producto modificar(Producto producto) {
-		try (Connection con = obtenerConexion(); PreparedStatement pst = con.prepareStatement(SQL_UPDATE);) {
-			objetoAFila(producto, pst);
-
-			ejecutarCambio(pst);
-
-			return producto;
-
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Error en la inserción de " + producto, e);
-		}
+		return cambio(SQL_UPDATE, producto);
 	}
 
 	@Override
 	public void borrar(Long id) {
-		try (Connection con = obtenerConexion(); PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
-			pst.setLong(1, id);
-
-			ejecutarCambio(pst);
-
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Error en la consulta del id " + id, e);
-		}
+		cambio(SQL_DELETE, id);
 	}
 
 	@Override
@@ -116,29 +59,8 @@ public class DaoProductoSqlite extends DaoSqlite<Producto> implements DaoProduct
 		if (nombre == null) {
 			throw new AccesoDatosException("No se ha proporcionado ningún nombre para la búsqueda");
 		}
-
-		try (Connection con = obtenerConexion(); PreparedStatement pst = con.prepareStatement(SQL_SELECT_NOMBRE);) {
-
-			pst.setString(1, "%" + nombre + "%");
-
-			ArrayList<Producto> productos;
-
-			try (ResultSet rs = pst.executeQuery()) {
-				productos = new ArrayList<Producto>();
-
-				Producto producto;
-
-				while (rs.next()) {
-					producto = filaAObjeto(rs);
-
-					productos.add(producto);
-				}
-
-				return productos;
-			}
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Error en la consulta del nombre " + nombre, e);
-		}
+		
+		return consultaVarios(SQL_SELECT_NOMBRE, "%" + nombre + "%");
 	}
 
 	@Override
@@ -152,28 +74,7 @@ public class DaoProductoSqlite extends DaoSqlite<Producto> implements DaoProduct
 			throw new AccesoDatosException("No se ha proporcionado ninguna fecha para la búsqueda");
 		}
 
-		try (Connection con = obtenerConexion(); PreparedStatement pst = con.prepareStatement(SQL_SELECT_CADUCADOS);) {
-
-			pst.setString(1, fecha.toString());
-
-			ArrayList<Producto> productos;
-
-			try (ResultSet rs = pst.executeQuery()) {
-				productos = new ArrayList<Producto>();
-
-				Producto producto;
-
-				while (rs.next()) {
-					producto = filaAObjeto(rs);
-
-					productos.add(producto);
-				}
-
-				return productos;
-			}
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Error en la consulta de todos los registros", e);
-		}
+		return consultaVarios(SQL_SELECT_CADUCADOS, fecha);
 	}
 
 	@Override
