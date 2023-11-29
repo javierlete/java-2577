@@ -29,7 +29,7 @@ public class DaoProductoSqlite extends DaoSqlite<Producto> implements DaoProduct
 
 	@Override
 	public Iterable<Producto> obtenerTodos() {
-		return consultaVarios(SQL_SELECT, null);
+		return consultaVarios(SQL_SELECT);
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class DaoUsuarioSqlite extends DaoSqlite<Usuario> implements DaoUsuario {
 
 	@Override
 	public Iterable<Usuario> obtenerTodos() {
-		return consultaVarios(SQL_SELECT, null);
+		return consultaVarios(SQL_SELECT);
 	}
 
 	@Override

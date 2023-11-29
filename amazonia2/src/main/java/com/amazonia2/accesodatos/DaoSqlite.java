@@ -40,6 +40,10 @@ public abstract class DaoSqlite<T> {
 		}
 	}
 
+	protected Iterable<T> consultaVarios(String sql) {
+		return consultaVarios(sql, null);
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected Iterable<T> consultaVarios(String sql, Object dato) {
 		return (Iterable<T>) consulta(sql, pst -> {
