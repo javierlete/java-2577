@@ -12,7 +12,7 @@ import java.util.function.Function;
  * Dao genérico con múltiples operaciones para simplificar el acceso a la base de datos SQLite
  * @param <T>
  */
-public abstract class DaoSqlite<T> {
+abstract class DaoSqlite<T> {
 	private String url;
 
 	static {
