@@ -7,6 +7,8 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>com.amazonia2.entidades.Producto</class>
+        <class>com.amazonia2.entidades.Usuario</class>
+        <class>com.amazonia2.entidades.Rol</class>
 
         <properties>
             <!-- Database connection settings -->
@@ -17,7 +19,7 @@
 
 
             <!-- Automatically export the schema -->
-<!--             <property name="jakarta.persistence.schema-generation.database.action" value="none" /> -->
+<!--             <property name="jakarta.persistence.schema-generation.database.action" value="create" /> -->
 
 			<!-- HIBERNATE -->
 			<property name="hibernate.hbm2ddl.auto" value="update" />
