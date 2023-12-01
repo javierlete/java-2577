@@ -1,6 +1,7 @@
 package com.amazonia2.logicanegocio;
 
 import com.amazonia2.entidades.Producto;
+import com.amazonia2.entidades.Rol;
 import com.amazonia2.globales.Global;
 
 import lombok.extern.java.Log;
@@ -24,6 +25,11 @@ public class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio
 	public void borrarProducto(Long id) {
 		log.info("Se va a borrar el id " + id);
 		Global.FABRICA.obtenerDaoProducto().borrar(id);		
+	}
+
+	@Override
+	public Iterable<Rol> obtenerTodosLosRoles() {
+		return Global.FABRICA.obtenerDaoRol().obtenerTodos();
 	}
 	
 }
