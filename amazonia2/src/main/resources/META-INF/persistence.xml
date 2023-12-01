@@ -17,9 +17,10 @@
 
 
             <!-- Automatically export the schema -->
-            <property name="jakarta.persistence.schema-generation.database.action" value="create" />
+<!--             <property name="jakarta.persistence.schema-generation.database.action" value="none" /> -->
 
 			<!-- HIBERNATE -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 <!-- 			<property name="hibernate.dialect" value="org.sqlite.hibernate.dialect.SQLiteDialect"/> -->
 			<property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect"/>
             <!-- Echo all executed SQL to console -->
