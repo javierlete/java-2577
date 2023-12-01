@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 import com.amazonia2.accesodatos.DaoProducto;
+import com.amazonia2.accesodatos.DaoRol;
 import com.amazonia2.accesodatos.DaoUsuario;
 import com.amazonia2.logicanegocio.AdminNegocio;
 import com.amazonia2.logicanegocio.UsuarioNegocio;
@@ -16,6 +17,7 @@ public class FabricaImpl implements Fabrica {
 	private final UsuarioNegocio usuarioNegocio;
 	private final AdminNegocio adminNegocio;
 	private final DaoUsuario daoUsuario;
+	private final DaoRol daoRol;
 
 	public FabricaImpl(String rutaFicheroProperties) {
 		try {
@@ -24,6 +26,8 @@ public class FabricaImpl implements Fabrica {
 			
 			String tipoDaoUsuario = props.getProperty("accesodatos.tipo.usuario");
 			String tipoDaoProducto = props.getProperty("accesodatos.tipo.producto");
+			String tipoDaoRol = props.getProperty("accesodatos.tipo.rol");
+
 			String url = props.getProperty("accesodatos.url");
 			
 			String user = props.getProperty("accesodatos.user");
@@ -34,6 +38,7 @@ public class FabricaImpl implements Fabrica {
 			
 			daoProducto = (DaoProducto)Class.forName(tipoDaoProducto).getDeclaredConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
 			daoUsuario = (DaoUsuario)Class.forName(tipoDaoUsuario).getDeclaredConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
+			daoRol = (DaoRol)Class.forName(tipoDaoRol).getDeclaredConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
 			
 			Class<?> clase = Class.forName(tipoUsuarioNegocio);
 			Constructor<?> constructor = clase.getConstructor();
@@ -65,6 +70,11 @@ public class FabricaImpl implements Fabrica {
 	@Override
 	public DaoUsuario obtenerDaoUsuario() {
 		return daoUsuario;
+	}
+
+	@Override
+	public DaoRol obtenerDaoRol() {
+		return daoRol;
 	}
 
 }
