@@ -13,6 +13,10 @@ public class PresentacionConsola {
 		
 		for(Rol r: Global.AN.obtenerTodosLosRoles()) {
 			System.out.println(r);
+			
+//			for(Usuario u: r.getUsuarios()) {
+//				System.out.println(u);
+//			}
 		}
 	}
 
