@@ -73,6 +73,7 @@ ${errores}
 				<button type="reset" class="btn btn-warning">Restaurar
 					valores originales</button>
 				<a class="btn btn-danger" href="admin/detalle">Vaciar formulario</a>
+				<div class="text-danger">${errores.general}</div>
 			</div>
 		</div>
 	</form>
