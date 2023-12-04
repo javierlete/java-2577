@@ -36,16 +36,16 @@ public class FabricaImpl implements Fabrica {
 			String tipoUsuarioNegocio = props.getProperty("logicanegocio.tipo.usuario");
 			String tipoAdminNegocio = props.getProperty("logicanegocio.tipo.admin");
 			
-			daoProducto = (DaoProducto)Class.forName(tipoDaoProducto).getDeclaredConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
-			daoUsuario = (DaoUsuario)Class.forName(tipoDaoUsuario).getDeclaredConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
-			daoRol = (DaoRol)Class.forName(tipoDaoRol).getDeclaredConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
+			daoProducto = (DaoProducto)Class.forName(tipoDaoProducto).getConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
+			daoUsuario = (DaoUsuario)Class.forName(tipoDaoUsuario).getConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
+			daoRol = (DaoRol)Class.forName(tipoDaoRol).getConstructor(String.class, String.class, String.class).newInstance(url, user, pass);
 			
 			Class<?> clase = Class.forName(tipoUsuarioNegocio);
 			Constructor<?> constructor = clase.getConstructor();
 			Object objeto = constructor.newInstance();
 			usuarioNegocio = (UsuarioNegocio)objeto;
 			
-			adminNegocio = (AdminNegocio)Class.forName(tipoAdminNegocio).getDeclaredConstructor().newInstance();
+			adminNegocio = (AdminNegocio)Class.forName(tipoAdminNegocio).getConstructor().newInstance();
 
 		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException("No se ha podido leer el fichero de configuración: " + rutaFicheroProperties, e);
