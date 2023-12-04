@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.amazonia2.bibliotecas.validaciones.GestionErrores;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.globales.Global;
 
@@ -12,10 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 @WebServlet("/admin/detalle")
 public class AdminDetalleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+	private static final Validator validator = validatorFactory.getValidator();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -40,20 +47,32 @@ public class AdminDetalleServlet extends HttpServlet {
 		String sUnidades = request.getParameter("unidades");
 
 		Long id = sId.trim().length() == 0 ? null : Long.parseLong(sId);
-		BigDecimal precio = new BigDecimal(sPrecio);
+		BigDecimal precio = sPrecio.trim().length() == 0 ? null : new BigDecimal(sPrecio);
 		LocalDate fechaCaducidad = sFechaCaducidad.trim().length() == 0 ? null : LocalDate.parse(sFechaCaducidad);
 		Integer unidades = sUnidades.trim().length() == 0 ? null : Integer.valueOf(sUnidades);
 
-		Producto producto = new Producto(id, codigoBarras, nombre, precio, fechaCaducidad, unidades);
+		Producto producto = Producto.builder().id(id).codigoBarras(codigoBarras).nombre(nombre).precio(precio).fechaCaducidad(fechaCaducidad).unidades(unidades).build();
 		
-		if(producto.getId() != null) {
-			Global.AN.modificarProducto(producto);
+		var validaciones = validator.validate(producto);
+		
+		var conversor = new GestionErrores<Producto>();
+		
+		var errores = conversor.convertirAErrores(validaciones);
+		
+		if(errores.size() == 0) {
+			if(producto.getId() != null) {
+				Global.AN.modificarProducto(producto);
+			} else {
+				Global.AN.insertarProducto(producto);
+			}
+	//		request.getRequestDispatcher("/admin/listado").forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/admin/listado");
 		} else {
-			Global.AN.insertarProducto(producto);
+			request.setAttribute("producto", producto);
+			request.setAttribute("errores", errores);
+			
+			request.getRequestDispatcher("/WEB-INF/vistas/admin/admin-detalle.jsp").forward(request, response);
 		}
 		
-//		request.getRequestDispatcher("/admin/listado").forward(request, response);
-		response.sendRedirect(request.getContextPath() + "/admin/listado");
 	}
-
 }
