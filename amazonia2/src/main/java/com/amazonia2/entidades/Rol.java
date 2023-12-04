@@ -2,6 +2,7 @@ package com.amazonia2.entidades;
 
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +31,7 @@ public class Rol {
 
 	@NotNull
 	@Size(min = 2, max = 20)
+	@Column(unique = true)
 	private String nombre;
 	
 	@ToString.Exclude

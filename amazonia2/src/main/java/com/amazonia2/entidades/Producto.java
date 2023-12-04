@@ -3,6 +3,8 @@ package com.amazonia2.entidades;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.hibernate.validator.constraints.EAN;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,13 +33,15 @@ public class Producto {
 	private Long id;
 	
 	@NotNull
-	@Pattern(regexp = "^\\d{10}$", message = "debe tener 10 dígitos")
-	@Size(min = 10, max = 10, message = "debe ser 10 caracteres exactos")
-	@Column(name = "codigo_barras")
+	@Pattern(regexp = "^\\d{13}$", message = "debe tener 13 dígitos")
+	@Size(min = 13, max = 13, message = "debe ser 13 caracteres exactos")
+	@Column(name = "codigo_barras", columnDefinition = "CHAR(13)", unique = true)
+	@EAN
 	private String codigoBarras;
 	
 	@NotNull
 	@Size(min = 2, max = 50)
+	@Column(unique = true)
 	private String nombre;
 	
 	@NotNull
