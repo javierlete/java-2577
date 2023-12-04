@@ -45,7 +45,7 @@ public class DaoUsuarioJpa extends DaoJpa implements DaoUsuario {
 	@Override
 	public Usuario obtenerPorEmail(String email) {
 		return (Usuario) transaccion(em -> em.createQuery("from Usuario u where u.email = ?1", Usuario.class)
-				.setParameter(1, email).getSingleResult());
+				.setParameter(1, email).getResultStream().findFirst().orElse(null));
 	}
 
 }
