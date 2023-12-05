@@ -22,7 +22,7 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-sm bg-dark sticky-top mb-4"
+	<nav class="navbar navbar-expand-sm bg-dark sticky-top"
 		data-bs-theme="dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Amazonia2</a>
@@ -59,3 +59,11 @@
 			</div>
 		</div>
 	</nav>
+	<c:if test="${alerta != null}">
+		<div class="alert alert-${nivelAlerta} alert-dismissible fade show"
+			role="alert">
+			${alerta}
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
+	</c:if>
