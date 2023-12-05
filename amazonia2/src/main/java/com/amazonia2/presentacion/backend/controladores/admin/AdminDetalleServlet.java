@@ -8,6 +8,8 @@ import java.util.logging.Level;
 import com.amazonia2.bibliotecas.validaciones.GestionErrores;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.globales.Global;
+import com.amazonia2.logicanegocio.ModificacionDeBorradoLogicaNegocioException;
+import com.amazonia2.logicanegocio.ModificacionDeModificadoLogicaNegocioException;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -51,13 +53,17 @@ public class AdminDetalleServlet extends HttpServlet {
 		String sFechaCaducidad = request.getParameter("fecha-caducidad");
 		String sUnidades = request.getParameter("unidades");
 
+		String sVersion = request.getParameter("version");
+
 		Long id = sId.trim().length() == 0 ? null : Long.parseLong(sId);
 		BigDecimal precio = sPrecio.trim().length() == 0 ? null : new BigDecimal(sPrecio);
 		LocalDate fechaCaducidad = sFechaCaducidad.trim().length() == 0 ? null : LocalDate.parse(sFechaCaducidad);
 		Integer unidades = sUnidades.trim().length() == 0 ? null : Integer.valueOf(sUnidades);
+		java.sql.Timestamp version = sVersion.trim().length() == 0 ? null
+				: new java.sql.Timestamp(Long.parseLong(sVersion));
 
 		Producto producto = Producto.builder().id(id).codigoBarras(codigoBarras).nombre(nombre).precio(precio)
-				.fechaCaducidad(fechaCaducidad).unidades(unidades).build();
+				.fechaCaducidad(fechaCaducidad).unidades(unidades).version(version).build();
 
 		var validaciones = validator.validate(producto);
 
@@ -68,7 +74,36 @@ public class AdminDetalleServlet extends HttpServlet {
 		if (errores.size() == 0) {
 			try {
 				if (producto.getId() != null) {
-					Global.AN.modificarProducto(producto);
+					try {
+						Global.AN.modificarProducto(producto);
+					} catch (ModificacionDeModificadoLogicaNegocioException e) {
+						log.log(Level.WARNING, "Error de concurrencia", e);
+
+						Producto productoActual = Global.AN.detalleProducto(id);
+
+						errores.put("general",
+								"El registro a modificar, ha sido cambiado por otro administrador. Por favor, revise la información de nuevo para modificarla de nuevo.");
+						request.setAttribute("producto", productoActual);
+						request.setAttribute("errores", errores);
+
+						request.getRequestDispatcher("/WEB-INF/vistas/admin/admin-detalle.jsp").forward(request,
+								response);
+						return;
+					} catch (ModificacionDeBorradoLogicaNegocioException e) {
+						log.log(Level.WARNING, "Error de concurrencia", e);
+
+						errores.put("general",
+								"El registro a modificar, ha sido borrado por otro administrador. Si quieres insertarlo, guarda los datos, si no, cancela el proceso");
+						
+						producto.setId(null);
+
+						request.setAttribute("producto", producto);
+						request.setAttribute("errores", errores);
+
+						request.getRequestDispatcher("/WEB-INF/vistas/admin/admin-detalle.jsp").forward(request,
+								response);
+						return;
+					}
 				} else {
 					Global.AN.insertarProducto(producto);
 				}
