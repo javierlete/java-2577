@@ -28,7 +28,7 @@ public class AdminFilter extends HttpFilter implements Filter {
 		
 		if(usuario == null || usuario.getRol().getId() != 1) {
 			req.setAttribute("error", "Debes ser administrador para entrar en esa parte de la web");
-			req.getRequestDispatcher("/WEB-INF/vistas/login.jsp").forward(req, res);
+			req.getRequestDispatcher("/login").forward(req, res);
 			
 			return;
 		}
