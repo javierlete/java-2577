@@ -5,6 +5,7 @@ import java.util.function.Function;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.Persistence;
 
 
@@ -30,6 +31,15 @@ abstract class DaoJpa {
 			if (transaction.isActive()) {
 				transaction.rollback();
 			}
+			
+			if(e instanceof OptimisticLockException) {
+				// Excepción de que has modificado algo que ha sido modificado previamente
+				throw new ConcurrenciaAccesoDatosException("Error de concurrencia", e);
+			} else if(e instanceof AccesoDatosException) {
+				throw e;
+			}
+			
+			// Excepción general
 			throw new AccesoDatosException(e.getMessage(), e);
 		} finally {
 			entityManager.close();
