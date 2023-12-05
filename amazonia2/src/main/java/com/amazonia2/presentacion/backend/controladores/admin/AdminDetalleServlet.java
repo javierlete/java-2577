@@ -37,6 +37,8 @@ public class AdminDetalleServlet extends HttpServlet {
 			request.setAttribute("producto", producto);
 		}
 
+		request.setAttribute("noValidar", true);
+
 		request.getRequestDispatcher("/WEB-INF/vistas/admin/admin-detalle.jsp").forward(request, response);
 	}
 
@@ -72,12 +74,12 @@ public class AdminDetalleServlet extends HttpServlet {
 				}
 			} catch (Exception e) {
 				errores.put("general", "Error no esperado");
-				
+
 				log.log(Level.SEVERE, "Error al guardar producto", e);
-						
+
 				request.setAttribute("producto", producto);
 				request.setAttribute("errores", errores);
-				
+
 				request.getRequestDispatcher("/WEB-INF/vistas/admin/admin-detalle.jsp").forward(request, response);
 				return;
 			}

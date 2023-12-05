@@ -4,17 +4,17 @@
 
 <main class="container">
 
-	<pre>
+<%-- 	<pre>
 ${producto}
 
 ${errores}
 	</pre>
-
+ --%>
 	<form action="admin/detalle" method="post">
 		<div class="row mb-3">
 			<label for="id" class="col-sm-2 col-form-label">Id</label>
 			<div class="col-sm">
-				<input type="number" readonly class="form-control  ${errores.id != null ? 'is-invalid' : 'is-valid' }" id="id" name="id"
+				<input type="number" readonly class="form-control  ${errores.id != null ? 'is-invalid' : (noValidar ? '' : 'is-valid') }" id="id" name="id"
 					value="${producto.id}">
 				<div class="invalid-feedback">${errores.id}</div>
 			</div>
@@ -24,7 +24,7 @@ ${errores}
 			<label for="codigo-barras" class="col-sm-2 col-form-label">Código
 				de barras</label>
 			<div class="col-sm">
-				<input type="number" class="form-control  ${errores.codigoBarras != null ? 'is-invalid' : 'is-valid' }" id="codigo-barras"
+				<input type="number" class="form-control  ${errores.codigoBarras != null ? 'is-invalid' : (noValidar ? '' : 'is-valid') }" id="codigo-barras"
 					name="codigo-barras" value="${producto.codigoBarras}">
 				<div class="invalid-feedback">${errores.codigoBarras}</div>
 			</div>
@@ -34,7 +34,7 @@ ${errores}
 			<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
 			<div class="col-sm">
 				<input type="text"
-					class="form-control  ${errores.nombre != null ? 'is-invalid' : 'is-valid' }"
+					class="form-control  ${errores.nombre != null ? 'is-invalid' : (noValidar ? '' : 'is-valid') }"
 					id="nombre" name="nombre" value="${producto.nombre}">
 				<div class="invalid-feedback">${errores.nombre}</div>
 			</div>
@@ -43,7 +43,7 @@ ${errores}
 		<div class="row mb-3">
 			<label for="precio" class="col-sm-2 col-form-label">Precio</label>
 			<div class="col-sm">
-				<input type="number" step=".01" class="form-control  ${errores.precio != null ? 'is-invalid' : 'is-valid' }" id="precio"
+				<input type="number" step=".01" class="form-control  ${errores.precio != null ? 'is-invalid' : (noValidar ? '' : 'is-valid') }" id="precio"
 					name="precio" value="${producto.precio}">
 				<div class="invalid-feedback">${errores.precio}</div>
 			</div>
@@ -53,7 +53,7 @@ ${errores}
 			<label for="fecha-caducidad" class="col-sm-2 col-form-label">Fecha
 				de caducidad</label>
 			<div class="col-sm">
-				<input type="date" class="form-control  ${errores.fechaCaducidad != null ? 'is-invalid' : 'is-valid' }" id="fecha-caducidad"
+				<input type="date" class="form-control  ${errores.fechaCaducidad != null ? 'is-invalid' : (noValidar ? '' : 'is-valid') }" id="fecha-caducidad"
 					name="fecha-caducidad" value="${producto.fechaCaducidad}">
 				<div class="invalid-feedback">${errores.fechaCaducidad}</div>
 			</div>
@@ -61,7 +61,7 @@ ${errores}
 		<div class="row mb-3">
 			<label for="unidades" class="col-sm-2 col-form-label">Unidades</label>
 			<div class="col-sm">
-				<input type="number" class="form-control  ${errores.unidades != null ? 'is-invalid' : 'is-valid' }" id="unidades"
+				<input type="number" class="form-control  ${errores.unidades != null ? 'is-invalid' : (noValidar ? '' : 'is-valid') }" id="unidades"
 					name="unidades" value="${producto.unidades}">
 				<div class="invalid-feedback">${errores.unidades}</div>
 			</div>
