@@ -29,8 +29,9 @@ public class LoginServlet extends HttpServlet {
 		Usuario usuario = Global.UN.loguear(email, password);
 		
 		if(usuario == null) {
-			request.setAttribute("error", "El usuario o contraseña son incorrectos");
-			request.getRequestDispatcher("/WEB-INF/vistas/login.jsp").forward(request, response);
+			request.setAttribute("alerta", "El usuario o contraseña son incorrectos");
+			request.setAttribute("nivelAlerta", "danger");
+			doGet(request, response);
 		} else {
 			request.getSession().setAttribute("usuario", usuario);
 			response.sendRedirect(request.getContextPath() + "/listado");

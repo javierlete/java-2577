@@ -81,10 +81,15 @@ public class AdminDetalleServlet extends HttpServlet {
 
 						Producto productoActual = Global.AN.detalleProducto(id);
 
-						errores.put("general",
-								"El registro a modificar, ha sido cambiado por otro administrador. Por favor, revise la información de nuevo para modificarla de nuevo.");
+//						errores.put("general",
+//								"El registro a modificar, ha sido cambiado por otro administrador. Por favor, revise la información de nuevo para modificarla de nuevo.");
+
 						request.setAttribute("producto", productoActual);
 						request.setAttribute("errores", errores);
+
+						request.setAttribute("alerta",
+								"El registro a modificar ha sido cambiado por otro administrador. Por favor, revise la información de nuevo para modificarla de nuevo.");
+						request.setAttribute("nivelAlerta", "warning");
 
 						request.getRequestDispatcher("/WEB-INF/vistas/admin/admin-detalle.jsp").forward(request,
 								response);
@@ -92,9 +97,12 @@ public class AdminDetalleServlet extends HttpServlet {
 					} catch (ModificacionDeBorradoLogicaNegocioException e) {
 						log.log(Level.WARNING, "Error de concurrencia", e);
 
-						errores.put("general",
+//						errores.put("general",
+//								"El registro a modificar, ha sido borrado por otro administrador. Si quieres insertarlo, guarda los datos, si no, cancela el proceso");
+						request.setAttribute("alerta",
 								"El registro a modificar, ha sido borrado por otro administrador. Si quieres insertarlo, guarda los datos, si no, cancela el proceso");
-						
+						request.setAttribute("nivelAlerta", "warning");
+
 						producto.setId(null);
 
 						request.setAttribute("producto", producto);
@@ -123,6 +131,9 @@ public class AdminDetalleServlet extends HttpServlet {
 		} else {
 			request.setAttribute("producto", producto);
 			request.setAttribute("errores", errores);
+
+			request.setAttribute("alerta", "Revisa la información del formulario. Tienes errores de validación.");
+			request.setAttribute("nivelAlerta", "danger");
 
 			request.getRequestDispatcher("/WEB-INF/vistas/admin/admin-detalle.jsp").forward(request, response);
 		}
