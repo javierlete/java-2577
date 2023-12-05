@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import com.amazonia2.entidades.Producto;
 
 public class DaoProductoJpa extends DaoJpa implements DaoProducto {
-	
+
 	public DaoProductoJpa(String ignorado1, String ignorado2, String ignorado3) {
 		super(ignorado1, ignorado2, ignorado3);
 	}
@@ -31,14 +31,23 @@ public class DaoProductoJpa extends DaoJpa implements DaoProducto {
 
 	@Override
 	public Producto modificar(Producto producto) {
-		return (Producto) transaccion(em -> em.merge(producto));
+		return (Producto) transaccion(em -> {
+			Producto productoExistente = em.find(Producto.class, producto.getId());
+
+			if (productoExistente != null) {
+				return em.merge(producto);
+			} else {
+				throw new ModificarNoExistenteAccesoDatosException("No existe el producto original");
+			}
+		});
 	}
 
 	@Override
 	public void borrar(Long id) {
 		transaccion(em -> {
 			em.remove(em.find(Producto.class, id));
-			// em.createNativeQuery("DELETE FROM productos WHERE id = ?1").setParameter(1, id);
+			// em.createNativeQuery("DELETE FROM productos WHERE id = ?1").setParameter(1,
+			// id);
 			return null;
 		});
 	}
