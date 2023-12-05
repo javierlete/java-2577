@@ -102,6 +102,6 @@ public class DaoProductoSqlite extends DaoSqlite<Producto> implements DaoProduct
 		String sUnidades = rs.getString("unidades");
 		Integer unidades = sUnidades == null || sUnidades.trim().length() == 0 ? null: Integer.valueOf(sUnidades);
 
-		return new Producto(id, codigoBarras, nombre, precio, fechaCaducidad, unidades);
+		return Producto.builder().id(id).codigoBarras(codigoBarras).nombre(nombre).precio(precio).fechaCaducidad(fechaCaducidad).unidades(unidades).build();
 	}
 }

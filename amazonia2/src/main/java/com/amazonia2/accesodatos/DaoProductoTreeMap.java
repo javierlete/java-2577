@@ -10,9 +10,9 @@ public class DaoProductoTreeMap implements DaoProducto {
 	private static final TreeMap<Long, Producto> productos = new TreeMap<>();
 	
 	static {
-		productos.put(1L, new Producto(1L, null, "Portátil", new BigDecimal("1234.12"), null, null));
-		productos.put(2L, new Producto(2L, null, "Monitor", new BigDecimal("123.12"), null, null));
-		productos.put(3L, new Producto(3L, null, "Ratón", new BigDecimal("12.12"), null, null));
+		productos.put(1L, Producto.builder().id(1L).nombre("Portátil").precio(new BigDecimal("1234.12")).build());
+		productos.put(2L, Producto.builder().id(2L).nombre("Monitor").precio(new BigDecimal("123.12")).build());
+		productos.put(3L, Producto.builder().id(3L).nombre("Ratón").precio(new BigDecimal("12.12")).build());
 	}
 
 	public DaoProductoTreeMap(String url, String user, String pass) {}
