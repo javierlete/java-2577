@@ -20,4 +20,8 @@ public interface Dao<T> {
 	default void borrar(Long id) {
 		throw new AccesoDatosException("NO IMPLEMENTADO");
 	}
+	
+	default long cuantosHay() {
+		throw new AccesoDatosException("NO IMPLEMENTADO");
+	}
 }

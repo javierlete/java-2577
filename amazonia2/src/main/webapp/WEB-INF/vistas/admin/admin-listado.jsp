@@ -18,20 +18,32 @@
 		</thead>
 		<tbody>
 
-			<c:forEach items="${productos}" var="p">
-				<tr>
-					<th>${p.id}</th>
-					<td>${p.codigoBarras}</td>
-					<td>${p.nombre}</td>
-					<td>${p.precio}</td>
-					<td>${p.fechaCaducidad}</td>
-					<td>${p.unidades}</td>
-					<td>
-						<a class="btn btn-sm btn-primary" href="admin/detalle?id=${p.id}">Editar</a>
-						<a onclick="return confirm('¿Estás seguro de borrar el producto ${p.nombre}?')" class="btn btn-sm btn-danger" href="admin/borrar?id=${p.id}">Borrar</a>
-					</td>
-				</tr>
-			</c:forEach>
+			<c:choose>
+				<c:when test="${productos.size() > 0}">
+					<c:forEach items="${productos}" var="p">
+						<tr>
+							<th>${p.id}</th>
+							<td>${p.codigoBarras}</td>
+							<td>${p.nombre}</td>
+							<td>${p.precio}</td>
+							<td>${p.fechaCaducidad}</td>
+							<td>${p.unidades}</td>
+							<td><a class="btn btn-sm btn-primary"
+								href="admin/detalle?id=${p.id}">Editar</a> <a
+								onclick="return confirm('¿Estás seguro de borrar el producto ${p.nombre}?')"
+								class="btn btn-sm btn-danger" href="admin/borrar?id=${p.id}">Borrar</a>
+							</td>
+						</tr>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<td colspan="7" class="text-center fw-bold lead">
+							No hay productos
+						</td>
+					</tr>
+				</c:otherwise>
+			</c:choose>
 		</tbody>
 		<tfoot class="table-dark">
 			<tr>
@@ -41,8 +53,7 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td>
-					<a class="btn btn-sm btn-primary" href="admin/detalle">Añadir</a>
+				<td><a class="btn btn-sm btn-primary" href="admin/detalle">Añadir</a>
 				</td>
 			</tr>
 		</tfoot>

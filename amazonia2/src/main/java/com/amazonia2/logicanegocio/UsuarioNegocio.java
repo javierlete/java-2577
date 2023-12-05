@@ -9,4 +9,6 @@ public interface UsuarioNegocio {
 	Producto detalleProducto(Long id);
 	
 	Usuario loguear(String email, String password);
+	
+	long cuantosHay();
 }
