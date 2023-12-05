@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -55,4 +56,8 @@ public class Producto {
 	@NotNull
 	@Min(0)
 	private Integer unidades;
+	
+	@Version
+	// @Builder.Default
+	private java.sql.Timestamp version; // = new java.sql.Timestamp(new java.util.Date().getTime());
 }
