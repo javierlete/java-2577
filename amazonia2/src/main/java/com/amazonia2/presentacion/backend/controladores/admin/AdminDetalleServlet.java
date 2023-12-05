@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
@@ -127,6 +128,12 @@ public class AdminDetalleServlet extends HttpServlet {
 				return;
 			}
 			// request.getRequestDispatcher("/admin/listado").forward(request, response);
+			
+			HttpSession session = request.getSession();
+			
+			session.setAttribute("alerta", "Se ha realizado la operación correctamente");
+			session.setAttribute("nivelAlerta", "success");
+			
 			response.sendRedirect(request.getContextPath() + "/admin/listado");
 		} else {
 			request.setAttribute("producto", producto);

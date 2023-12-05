@@ -67,3 +67,5 @@
 				aria-label="Close"></button>
 		</div>
 	</c:if>
+	
+	<% session.removeAttribute("alerta"); session.removeAttribute("nivelAlerta"); %>
