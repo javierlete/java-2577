@@ -23,18 +23,15 @@
 <link rel="icon" type="image/svg+xml" href="imgs/shop.svg">
 
 <!-- DataTables -->
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script
-	src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script
-	src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
+<script src="js/jquery-3.7.0.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/dataTables.bootstrap5.min.js"></script>
 <script>
 	$(function() {
 		new DataTable('table', {
 			language : {
-				url : '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+				url : 'json/es-ES.json',
 			}
 		})
 	});
