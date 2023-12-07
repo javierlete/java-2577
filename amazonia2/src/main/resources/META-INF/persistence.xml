@@ -12,10 +12,16 @@
 
         <properties>
             <!-- Database connection settings -->
-            <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC" />
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:/sqlite/amazonia2jpa.db" />
-            <property name="jakarta.persistence.jdbc.user" value="" />
-            <property name="jakarta.persistence.jdbc.password" value="" />
+	<!-- <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC" 
+		/> -->
+	<!-- <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:/sqlite/amazonia2jpa.db" 
+		/> -->
+	<!-- <property name="jakarta.persistence.jdbc.user" value="" /> -->
+	<!-- <property name="jakarta.persistence.jdbc.password" value="" /> -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/amazonia2" />
+            <property name="jakarta.persistence.jdbc.user" value="amazonia2" />
+            <property name="jakarta.persistence.jdbc.password" value="contra" />
 
 
             <!-- Automatically export the schema -->
@@ -24,7 +30,8 @@
 			<!-- HIBERNATE -->
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 <!-- 			<property name="hibernate.dialect" value="org.sqlite.hibernate.dialect.SQLiteDialect"/> -->
-			<property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect"/>
+<!-- 			<property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect"/> -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <!-- Echo all executed SQL to console -->
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
