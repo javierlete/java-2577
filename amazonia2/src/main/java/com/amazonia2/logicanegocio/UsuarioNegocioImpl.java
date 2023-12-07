@@ -35,8 +35,13 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 	}
 
 	@Override
-	public long cuantosHay() {
+	public long cuantosUsuariosHay() {
 		return FABRICA.obtenerDaoUsuario().cuantosHay();
+	}
+
+	@Override
+	public long cuantosProductosHay() {
+		return FABRICA.obtenerDaoProducto().cuantosHay();
 	}
 
 }

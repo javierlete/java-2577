@@ -27,15 +27,17 @@
 <script src="js/jquery-3.7.0.js"></script>
 <script src="js/jquery.dataTables.min.js"></script>
 <script src="js/dataTables.bootstrap5.min.js"></script>
-<script>
-	$(function() {
-		new DataTable('table', {
-			language : {
-				url : 'json/es-ES.json',
-			}
-		})
-	});
-</script>
+<c:if test="${hayElementos}">
+	<script>
+		$(function() {
+			new DataTable('table', {
+				language : {
+					url : 'json/es-ES.json',
+				}
+			})
+		});
+	</script>
+</c:if>
 
 </head>
 <body>
@@ -90,3 +92,8 @@
 	session.removeAttribute("alerta");
 	session.removeAttribute("nivelAlerta");
 	%>
+	
+	<script>
+		console.log('carrito.productos.size()', ${carrito.productos.size()});
+		console.log('hayElementos', ${hayElementos});
+	</script>

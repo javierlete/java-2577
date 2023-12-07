@@ -19,7 +19,7 @@
 		<tbody>
 
 			<c:choose>
-				<c:when test="${productos.size() > 0}">
+				<c:when test="${hayElementos}">
 					<c:forEach items="${productos}" var="p">
 						<tr>
 							<th class="text-end">${p.id}</th>

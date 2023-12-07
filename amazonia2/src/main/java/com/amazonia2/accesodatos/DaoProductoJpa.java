@@ -75,4 +75,10 @@ public class DaoProductoJpa extends DaoJpa implements DaoProducto {
 						.setParameter(1, fecha).getResultList());
 	}
 
+	@Override
+	public long cuantosHay() {
+		return (long) transaccion(em -> em.createQuery("select count(p) from Producto p").getSingleResult());
+	}
+
+	
 }

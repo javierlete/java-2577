@@ -13,14 +13,18 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/admin/listado")
 public class AdminListadoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		var productos = Global.AN.listadoProductos();
+		var cuantosHay = Global.AN.cuantosProductosHay();
 		request.setAttribute("productos", productos);
+		request.setAttribute("hayElementos", cuantosHay > 0);
 		request.getRequestDispatcher("/WEB-INF/vistas/admin/admin-listado.jsp").forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

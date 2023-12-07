@@ -18,7 +18,11 @@ public class ListadoServlet extends HttpServlet {
 		// response.getWriter().append(Global.UN.listadoProductos().toString());
 
 		var productos = Global.UN.listadoProductos();
+		var cuantosHay = Global.UN.cuantosProductosHay();
+		
 		request.setAttribute("productos", productos);
+		request.setAttribute("hayElementos", cuantosHay > 0);
+		
 		request.getRequestDispatcher("/WEB-INF/vistas/listado.jsp").forward(request, response);
 	}
 

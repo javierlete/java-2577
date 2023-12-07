@@ -10,5 +10,7 @@ public interface UsuarioNegocio {
 	
 	Usuario loguear(String email, String password);
 	
-	long cuantosHay();
+	long cuantosUsuariosHay();
+	
+	long cuantosProductosHay();
 }
