@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
+<%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime"%>
+<fmt:setLocale value="es-ES" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +21,24 @@
 <script src="js/bootstrap.bundle.min.js"></script>
 
 <link rel="icon" type="image/svg+xml" href="imgs/shop.svg">
+
+<!-- DataTables -->
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script
+	src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script>
+	$(function() {
+		new DataTable('table', {
+			language : {
+				url : '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+			}
+		})
+	});
+</script>
 
 </head>
 <body>
@@ -67,5 +88,8 @@
 				aria-label="Close"></button>
 		</div>
 	</c:if>
-	
-	<% session.removeAttribute("alerta"); session.removeAttribute("nivelAlerta"); %>
+
+	<%
+	session.removeAttribute("alerta");
+	session.removeAttribute("nivelAlerta");
+	%>

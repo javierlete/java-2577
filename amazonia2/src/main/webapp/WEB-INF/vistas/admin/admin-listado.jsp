@@ -7,12 +7,12 @@
 	<table class="table table-bordered table-striped table-hover">
 		<thead class="table-dark">
 			<tr>
-				<th>Id</th>
+				<th class="text-end">Id</th>
 				<th>Código de barras</th>
 				<th>Nombre</th>
-				<th>Precio</th>
+				<th class="text-end">Precio</th>
 				<th>Fecha de caducidad</th>
-				<th>Unidades</th>
+				<th class="text-end">Unidades</th>
 				<th>OPCIONES</th>
 			</tr>
 		</thead>
@@ -22,12 +22,12 @@
 				<c:when test="${productos.size() > 0}">
 					<c:forEach items="${productos}" var="p">
 						<tr>
-							<th>${p.id}</th>
+							<th class="text-end">${p.id}</th>
 							<td>${p.codigoBarras}</td>
 							<td>${p.nombre}</td>
-							<td>${p.precio}</td>
-							<td>${p.fechaCaducidad}</td>
-							<td>${p.unidades}</td>
+							<td class="text-end"><fmt:formatNumber value="${p.precio}" type="currency"/></td>
+							<td>${p.fechaCaducidad == null ? '<i class="bi bi-dash-lg"></i>' : p.fechaCaducidad }</td>
+							<td class="text-end">${p.unidades}</td>
 							<td><a class="btn btn-sm btn-primary"
 								href="admin/detalle?id=${p.id}">Editar</a> <a
 								onclick="return confirm('¿Estás seguro de borrar el producto ${p.nombre}?')"
