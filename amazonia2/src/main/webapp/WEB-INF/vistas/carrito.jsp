@@ -6,14 +6,14 @@
 
 	<h2>Carrito</h2>
 	<form action="carrito" method="post">
-		<table class="table table-borderless table-striped">
+		<table id="carrito" class="table table-borderless table-striped">
 			<thead class="table-secondary">
 				<tr>
 					<th>Nombre</th>
-					<th>Precio</th>
+					<th class="text-end">Precio</th>
 					<th>Fecha de caducidad</th>
-					<th>Unidades</th>
-					<th>OPCIONES</th>
+					<th class="text-center">Unidades</th>
+					<th class="text-center">OPCIONES</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -21,11 +21,12 @@
 				<c:forEach items="${carrito.productos}" var="p">
 					<tr>
 						<td>${p.nombre}</td>
-						<td>${p.precio}</td>
-						<td>${p.fechaCaducidad}</td>
-						<td>
-							<input type="hidden" name="id" value="${p.id}">
-							<div class="input-group" style="width: 10rem">
+						<td class="text-end"><fmt:formatNumber type="currency"
+								value="${p.precio}" /></td>
+						<td><javatime:format value="${p.fechaCaducidad}"
+								pattern="d' de 'MMMM' del 'YYYY" /></td>
+						<td><input type="hidden" name="id" value="${p.id}">
+							<div class="input-group mx-auto" style="width: 10rem">
 								<button class="menos btn btn-secondary" type="button">
 									<i class="bi bi-dash-lg"></i>
 								</button>
@@ -34,9 +35,8 @@
 								<button class="mas btn btn-secondary" type="button">
 									<i class="bi bi-plus-lg"></i>
 								</button>
-							</div>
-						</td>
-						<td><a
+							</div></td>
+						<td class="text-center"><a
 							onclick="return confirm('¿Estás seguro de borrar el producto ${p.nombre}?')"
 							class="btn btn-sm btn-danger" href="carrito?id=${p.id}&borrar">Borrar</a>
 						</td>
@@ -49,7 +49,9 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><button class="btn btn-sm btn-primary">Volver</button></td>
+					<td class="text-center">
+						<button class="btn btn-sm btn-primary">Volver</button>
+					</td>
 				</tr>
 			</tfoot>
 		</table>
