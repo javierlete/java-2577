@@ -61,11 +61,13 @@ public class AdminDetalleServlet extends HttpServlet {
 		BigDecimal precio = sPrecio.trim().length() == 0 ? null : new BigDecimal(sPrecio);
 		LocalDate fechaCaducidad = sFechaCaducidad.trim().length() == 0 ? null : LocalDate.parse(sFechaCaducidad);
 		Integer unidades = sUnidades.trim().length() == 0 ? null : Integer.valueOf(sUnidades);
-		
+
 		java.sql.Timestamp version = sVersion.trim().length() == 0 ? null
 				: new java.sql.Timestamp(Long.parseLong(sVersion));
-		
-		version.setNanos(Integer.parseInt(sNanos));
+
+		if (version != null && sNanos.trim().length() != 0) {
+			version.setNanos(Integer.parseInt(sNanos));
+		}
 
 		Producto producto = Producto.builder().id(id).codigoBarras(codigoBarras).nombre(nombre).precio(precio)
 				.fechaCaducidad(fechaCaducidad).unidades(unidades).version(version).build();
@@ -132,12 +134,12 @@ public class AdminDetalleServlet extends HttpServlet {
 				return;
 			}
 			// request.getRequestDispatcher("/admin/listado").forward(request, response);
-			
+
 			HttpSession session = request.getSession();
-			
+
 			session.setAttribute("alerta", "Se ha realizado la operación correctamente");
 			session.setAttribute("nivelAlerta", "success");
-			
+
 			response.sendRedirect(request.getContextPath() + "/admin/listado");
 		} else {
 			request.setAttribute("producto", producto);
