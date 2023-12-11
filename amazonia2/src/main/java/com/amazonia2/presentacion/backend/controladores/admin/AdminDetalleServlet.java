@@ -55,13 +55,17 @@ public class AdminDetalleServlet extends HttpServlet {
 		String sUnidades = request.getParameter("unidades");
 
 		String sVersion = request.getParameter("version");
+		String sNanos = request.getParameter("versionNanos");
 
 		Long id = sId.trim().length() == 0 ? null : Long.parseLong(sId);
 		BigDecimal precio = sPrecio.trim().length() == 0 ? null : new BigDecimal(sPrecio);
 		LocalDate fechaCaducidad = sFechaCaducidad.trim().length() == 0 ? null : LocalDate.parse(sFechaCaducidad);
 		Integer unidades = sUnidades.trim().length() == 0 ? null : Integer.valueOf(sUnidades);
+		
 		java.sql.Timestamp version = sVersion.trim().length() == 0 ? null
 				: new java.sql.Timestamp(Long.parseLong(sVersion));
+		
+		version.setNanos(Integer.parseInt(sNanos));
 
 		Producto producto = Producto.builder().id(id).codigoBarras(codigoBarras).nombre(nombre).precio(precio)
 				.fechaCaducidad(fechaCaducidad).unidades(unidades).version(version).build();

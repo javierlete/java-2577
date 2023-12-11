@@ -12,6 +12,8 @@ ${errores}
  --%>
 	<form action="admin/detalle" method="post">
 		<input type="hidden" name="version" value="${producto.version.time}">
+		<input type="hidden" name="versionNanos" value="${producto.version.nanos}">
+		
 		<div class="row mb-3">
 			<label for="id" class="col-sm-2 col-form-label">Id</label>
 			<div class="col-sm">
