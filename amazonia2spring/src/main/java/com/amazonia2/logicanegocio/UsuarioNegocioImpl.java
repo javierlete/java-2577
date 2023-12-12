@@ -1,6 +1,7 @@
 package com.amazonia2.logicanegocio;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.amazonia2.accesodatos.DaoProducto;
@@ -8,6 +9,7 @@ import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Usuario;
 
 @Component
+@Primary
 class UsuarioNegocioImpl implements UsuarioNegocio {
 
 	@Autowired
