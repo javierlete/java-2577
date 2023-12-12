@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Amazonia2</title>
+</head>
+
+<body>
+
+	<h1>Amazonia2</h1>
+
+	<pre th:text="${productos}">Visualización de productos</pre>
+
+	<ul th:each="p : ${productos}">
+		<li>
+			<span th:text="${p.nombre}">
+				Portátil
+			</span>
+			<a href="detalle.html" th:href="@{/detalle(id=${p.id})}">Detalle</a>
+		</li>
+	</ul>
+
+</body>
+
+</html>
