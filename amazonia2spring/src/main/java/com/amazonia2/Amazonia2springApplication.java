@@ -29,7 +29,7 @@ public class Amazonia2springApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Producto producto = Producto.builder().nombre("Prueba").codigoBarras("1234567890128").precio(new BigDecimal("1234.12")).unidades(1).build();
 		
-//		dao.insertar(producto);
+		producto = dao.insertar(producto);
 //		negocio.insertarProducto(producto);
 		
 		producto.setNombre("Modificado");
@@ -59,7 +59,7 @@ public class Amazonia2springApplication implements CommandLineRunner {
 		}
 		
 //		System.out.println(dao.obtenerPorId(3L));
-		System.out.println(negocio.detalleProducto(3L));
+		System.out.println(negocio.detalleProducto(13L));
 	}
 
 }
