@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.logicanegocio.AdminNegocio;
+import com.amazonia2.logicanegocio.ClaveDuplicadaException;
 
 import jakarta.validation.Valid;
 
@@ -31,10 +33,15 @@ public class AdminController {
 			return "admin/detalle";
 		}
 		
-		if(producto.getId() == null) {
-			negocio.insertarProducto(producto);
-		} else {
-			negocio.modificarProducto(producto);
+		try {
+			if(producto.getId() == null) {
+				negocio.insertarProducto(producto);
+			} else {
+				negocio.modificarProducto(producto);
+			}
+		} catch (ClaveDuplicadaException e) {
+			bindingResult.addError(new FieldError(e.getObjeto(), e.getCampo(), e.getMessage()));
+			return "admin/detalle";
 		}
 		
 		return "redirect:/admin";

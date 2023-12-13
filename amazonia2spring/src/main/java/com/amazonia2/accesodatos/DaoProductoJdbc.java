@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -13,6 +14,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import com.amazonia2.entidades.Producto;
+import com.amazonia2.logicanegocio.ClaveDuplicadaException;
+import com.amazonia2.logicanegocio.LogicaNegocioException;
 
 @Component
 class DaoProductoJdbc implements DaoProducto {
@@ -51,11 +54,17 @@ class DaoProductoJdbc implements DaoProducto {
 //		jdbc.update(SQL_INSERT, producto.getCodigoBarras(), producto.getNombre(), producto.getPrecio(), producto.getFechaCaducidad(), producto.getUnidades());
 //		return producto;
 		
-		SqlParameterSource parameters = new BeanPropertySqlParameterSource(producto);
-		Number newId = insertProducto.executeAndReturnKey(parameters);
-		producto.setId(newId.longValue());
-		
-		return producto;
+		try {
+			SqlParameterSource parameters = new BeanPropertySqlParameterSource(producto);
+			Number newId = insertProducto.executeAndReturnKey(parameters);
+			producto.setId(newId.longValue());
+			
+			return producto;
+		} catch (DuplicateKeyException e) {
+			throw new ClaveDuplicadaException("el código de barras está duplicado", "producto", "codigoBarras", e);
+		} catch (Exception e) {
+			throw new LogicaNegocioException("Error no esperado al insertar");
+		}
 	}
 
 	@Override
