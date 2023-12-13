@@ -3,12 +3,15 @@ package com.amazonia2.presentacion.controladores.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.logicanegocio.AdminNegocio;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin")
@@ -23,7 +26,11 @@ public class AdminController {
 	}
 
 	@PostMapping
-	public String post(Producto producto) {
+	public String post(@Valid Producto producto, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return "admin/detalle";
+		}
+		
 		if(producto.getId() == null) {
 			negocio.insertarProducto(producto);
 		} else {
