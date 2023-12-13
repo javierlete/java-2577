@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.hibernate.validator.constraints.EAN;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
@@ -36,6 +38,7 @@ public class Producto {
 	@Min(0)
 	private BigDecimal precio;
 	
+	@DateTimeFormat(iso = ISO.DATE)
 	@Future
 	private LocalDate fechaCaducidad;
 	
