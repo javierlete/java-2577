@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Amazonia2</title>
+</head>
+<body>
+
+<h1>Amazonia2</h1>
+
+<form action="index.html" th:action="@{/admin}" th:object="${producto}" method="post">
+	<input th:field="*{id}" placeholder="Id">
+	<input th:field="*{codigoBarras}" placeholder="Código de Barras">
+	<input th:field="*{nombre}" placeholder="Nombre">
+	<input type="number" step=".01" th:field="*{precio}" placeholder="Precio">
+	<input type="date" th:field="*{fechaCaducidad}" placeholder="Fecha de Caducidad">
+	<input type="number" th:field="*{unidades}" placeholder="Unidades">
+	<button>Guardar</button>
+</form>
+
+<a href="index.html" th:href="@{/admin}">Volver</a>
+
+</body>
+</html>

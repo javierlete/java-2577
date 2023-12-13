@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Amazonia2</title>
+</head>
+
+<body>
+
+	<h1>Amazonia2</h1>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Código de Barras</th>
+				<th>Nombre</th>
+				<th>Precio</th>
+				<th>Fecha de caducidad</th>
+				<th>Unidades</th>
+				<th>OPCIONES</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="p : ${productos}">
+				<td th:text="${p.id}">1</td>
+				<td th:text="${p.codigoBarras}">1234567890123</td>
+				<td th:text="${p.nombre}">Producto1</td>
+				<td th:text="${p.precio}">1234,12€</td>
+				<td th:text="${p.fechaCaducidad}">2000-01-02</td>
+				<td th:text="${p.unidades}">5</td>
+				<td>
+					<a href="detalle.html" th:href="@{/admin/detalle(id=${p.id})}">Editar</a>
+					<a href="#" th:href="@{/admin/borrar(id=${p.id})}">Borrar</a>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<a href="detalle.html" th:href="@{/admin/detalle}">Añadir</a>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+
+
+</body>
+
+</html>
