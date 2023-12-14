@@ -7,8 +7,8 @@ import lombok.experimental.StandardException;
 
 @StandardException
 public class ClaveDuplicadaException extends LogicaNegocioException {
-	private @Getter String objeto;
-	private @Getter String campo;
+	@Getter
+	private String objeto, campo;
 	
 	public ClaveDuplicadaException(String mensaje, String objeto, String campo, DuplicateKeyException e) {
 		this(mensaje, e);
