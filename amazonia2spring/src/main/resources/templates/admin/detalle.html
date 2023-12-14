@@ -1,36 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Amazonia2</title>
+	<meta charset="UTF-8">
+	<title>Edición de producto: Amazonia2</title>
 </head>
+
 <body>
 
-<h1>Amazonia2</h1>
+	<main>
+		<form action="index.html" th:action="@{/admin}" th:object="${producto}" method="post">
+			<input th:field="*{id}" placeholder="Id">
+			<div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
 
-<form action="index.html" th:action="@{/admin}" th:object="${producto}" method="post">
-	<input th:field="*{id}" placeholder="Id">
-	<div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+			<input th:field="*{codigoBarras}" placeholder="Código de Barras">
+			<div th:if="${#fields.hasErrors('codigoBarras')}" th:errors="*{codigoBarras}"></div>
 
-	<input th:field="*{codigoBarras}" placeholder="Código de Barras">
-	<div th:if="${#fields.hasErrors('codigoBarras')}" th:errors="*{codigoBarras}"></div>
+			<input th:field="*{nombre}" placeholder="Nombre">
+			<div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
 
-	<input th:field="*{nombre}" placeholder="Nombre">
-	<div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+			<input type="number" step=".01" th:field="*{precio}" placeholder="Precio">
+			<div th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></div>
 
-	<input type="number" step=".01" th:field="*{precio}" placeholder="Precio">
-	<div th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></div>
+			<input type="date" th:field="*{fechaCaducidad}" placeholder="Fecha de Caducidad">
+			<div th:if="${#fields.hasErrors('fechaCaducidad')}" th:errors="*{fechaCaducidad}"></div>
 
-	<input type="date" th:field="*{fechaCaducidad}" placeholder="Fecha de Caducidad">
-	<div th:if="${#fields.hasErrors('fechaCaducidad')}" th:errors="*{fechaCaducidad}"></div>
+			<input type="number" th:field="*{unidades}" placeholder="Unidades">
+			<div th:if="${#fields.hasErrors('unidades')}" th:errors="*{unidades}"></div>
 
-	<input type="number" th:field="*{unidades}" placeholder="Unidades">
-	<div th:if="${#fields.hasErrors('unidades')}" th:errors="*{unidades}"></div>
+			<button>Guardar</button>
+		</form>
 
-	<button>Guardar</button>
-</form>
-
-<a href="index.html" th:href="@{/admin}">Volver</a>
-
+		<a href="index.html" th:href="@{/admin}">Volver</a>
+	</main>
 </body>
+
 </html>
