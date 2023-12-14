@@ -28,40 +28,50 @@ public class AdminController {
 	}
 
 	@PostMapping
-	public String post(@Valid Producto producto, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
+	public String post(Model modelo, @Valid Producto producto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			modelo.addAttribute("alerta", "Revisa los errores en el formulario");
+			modelo.addAttribute("nivel", "danger");
+			
 			return "admin/detalle";
 		}
-		
+
 		try {
-			if(producto.getId() == null) {
+			if (producto.getId() == null) {
 				negocio.insertarProducto(producto);
 			} else {
 				negocio.modificarProducto(producto);
 			}
 		} catch (ClaveDuplicadaException e) {
-			bindingResult.addError(new FieldError(e.getObjeto(), e.getCampo(), e.getMessage()));
+			if (e.getCampo() != null) {
+				modelo.addAttribute("alerta", "Revisa los errores en el formulario");
+				modelo.addAttribute("nivel", "danger");
+				
+				bindingResult.addError(new FieldError(e.getObjeto(), e.getCampo(), e.getMessage()));
+			} else {
+				modelo.addAttribute("alerta", e.getMessage());
+				modelo.addAttribute("nivel", "danger");
+			}
 			return "admin/detalle";
 		}
-		
+
 		return "redirect:/admin";
 	}
 
 	@GetMapping("/borrar")
 	public String borrar(Long id) {
 		negocio.borrarProducto(id);
-		
+
 		return "redirect:/admin";
 	}
-	
-	
+
 	@GetMapping("/detalle")
 	public String detalle(Model modelo, Long id, Producto producto) {
 		if (id != null) {
 			modelo.addAttribute("producto", negocio.detalleProducto(id));
 		}
-		
+
 		return "admin/detalle";
 	}
-	
+
 }
