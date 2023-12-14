@@ -9,8 +9,8 @@
 <body>
 
 	<main>
-		<table>
-			<thead>
+		<table class="table table-hover table-striped table-bordered">
+			<thead class="table-dark">
 				<tr>
 					<th>Id</th>
 					<th>Código de Barras</th>
@@ -30,12 +30,12 @@
 					<td th:text="${p.fechaCaducidad}">2000-01-02</td>
 					<td th:text="${p.unidades}">5</td>
 					<td>
-						<a href="detalle.html" th:href="@{/admin/detalle(id=${p.id})}">Editar</a>
-						<a href="#" th:href="@{/admin/borrar(id=${p.id})}">Borrar</a>
+						<a class="btn btn-sm btn-primary" href="detalle.html" th:href="@{/admin/detalle(id=${p.id})}">Editar</a>
+						<a class="btn btn-sm btn-danger" href="#" th:href="@{/admin/borrar(id=${p.id})}">Borrar</a>
 					</td>
 				</tr>
 			</tbody>
-			<tfoot>
+			<tfoot class="table-dark">
 				<tr>
 					<td></td>
 					<td></td>
@@ -44,7 +44,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<a href="detalle.html" th:href="@{/admin/detalle}">Añadir</a>
+						<a class="btn btn-sm btn-primary" href="detalle.html" th:href="@{/admin/detalle}">Añadir</a>
 					</td>
 				</tr>
 			</tfoot>

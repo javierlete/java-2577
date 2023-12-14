@@ -8,30 +8,66 @@
 
 <body>
 
-	<main>
+	<main class="container">
 		<form action="index.html" th:action="@{/admin}" th:object="${producto}" method="post">
-			<input th:field="*{id}" placeholder="Id">
-			<div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+			<div class="row mb-2">
+				<label class="col-sm-2 col-form-label" for="id">Id</label>
+				<div class="col-sm">
+					<input class="form-control" th:classappend="${#fields.hasErrors('id')} ? 'is-invalid'" th:field="*{id}" placeholder="Id">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+				</div>
+			</div>
 
-			<input th:field="*{codigoBarras}" placeholder="Código de Barras">
-			<div th:if="${#fields.hasErrors('codigoBarras')}" th:errors="*{codigoBarras}"></div>
+			<div class="row mb-2">
+				<label class="col-sm-2 col-form-label" for="codigoBarras">Código de Barras</label>
+				<div class="col-sm">
+					<input class="form-control" th:classappend="${#fields.hasErrors('codigoBarras')} ? 'is-invalid'" th:field="*{codigoBarras}" placeholder="Código de Barras">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('codigoBarras')}" th:errors="*{codigoBarras}"></div>
+				</div>
+			</div>
 
-			<input th:field="*{nombre}" placeholder="Nombre">
-			<div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+			<div class="row mb-2">
+				<label class="col-sm-2 col-form-label" for="nombre">Nombre</label>
+				<div class="col-sm">
+					<input class="form-control" th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'" th:field="*{nombre}" placeholder="Nombre">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+				</div>
+			</div>
 
-			<input type="number" step=".01" th:field="*{precio}" placeholder="Precio">
-			<div th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></div>
+			<div class="row mb-2">
+				<label class="col-sm-2 col-form-label" for="precio">Precio</label>
+				<div class="col-sm">
+					<input class="form-control" type="number" step=".01" th:classappend="${#fields.hasErrors('precio')} ? 'is-invalid'" th:field="*{precio}" placeholder="Precio">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></div>
+				</div>
+			</div>
 
-			<input type="date" th:field="*{fechaCaducidad}" placeholder="Fecha de Caducidad">
-			<div th:if="${#fields.hasErrors('fechaCaducidad')}" th:errors="*{fechaCaducidad}"></div>
+			<div class="row mb-2">
+				<label class="col-sm-2 col-form-label" for="fechaCaducidad">Fecha de Caducidad</label>
+				<div class="col-sm">
+					<input class="form-control" type="date" th:classappend="${#fields.hasErrors('fechaCaducidad')} ? 'is-invalid'" th:field="*{fechaCaducidad}" placeholder="Fecha de Caducidad">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('fechaCaducidad')}" th:errors="*{fechaCaducidad}"></div>
+				</div>
+			</div>
 
-			<input type="number" th:field="*{unidades}" placeholder="Unidades">
-			<div th:if="${#fields.hasErrors('unidades')}" th:errors="*{unidades}"></div>
+			<div class="row mb-2">
+				<label class="col-sm-2 col-form-label" for="unidades">Unidades</label>
+				<div class="col-sm">
+					<input class="form-control" type="number" th:classappend="${#fields.hasErrors('unidades')} ? 'is-invalid'" th:field="*{unidades}" placeholder="Unidades">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('unidades')}" th:errors="*{unidades}"></div>
+				</div>
+			</div>
 
-			<button>Guardar</button>
+			<div class="row mb-2">
+				<div class="offset-sm-2 col-sm">
+					<button class="btn btn-primary">Guardar</button>
+					<a class="btn btn-danger" href="index.html" th:href="@{/admin}">Cancelar</a>
+				</div>
+			</div>
+
 		</form>
 
-		<a href="index.html" th:href="@{/admin}">Volver</a>
+		
 	</main>
 </body>
 
