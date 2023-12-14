@@ -4,18 +4,86 @@
 <head>
 	<meta charset="UTF-8">
 	<title th:replace="${titulo}">Título por defecto</title>
+
+	<base href="/" th:href="@{/}">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap-icons.min.css">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+
+	<link href="css/amazonia2.css" rel="stylesheet">
+
+	<script src="js/bootstrap.bundle.min.js"></script>
+
+	<link rel="icon" type="image/svg+xml" href="imgs/shop.svg">
+
+	<!-- DataTables -->
+	<link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
+	<script src="js/jquery-3.7.0.js"></script>
+	<script src="js/jquery.dataTables.min.js"></script>
+	<script src="js/dataTables.bootstrap5.min.js"></script>
+	<script>
+		$(function () {
+			new DataTable('table', {
+				language: {
+					url: 'json/es-ES.json',
+				}
+			})
+		});
+	</script>
+
 </head>
 
 <body>
-	<header>
-		<h1>Amazonia2</h1>
-	</header>
+
+	<nav class="navbar navbar-expand-sm bg-dark sticky-top" data-bs-theme="dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Amazonia2</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-sm-0">
+					<li class="nav-item"><a class="nav-link" href="/" th:href="@{/}">Principal</a></li>
+				</ul>
+				<ul class="navbar-nav mb-2 mb-sm-0">
+					<li class="nav-item"><a class="nav-link" href="admin/index.html"
+							th:href="@{/admin}">Administración</a></li>
+					<li class="navbar-text">Nombre de usuario</li>
+
+					<li class="nav-item"><a class="nav-link" href="carrito"><i class="bi bi-cart4"></i>5</a></li>
+
+					<li class="nav-item"><a class="nav-link" href="login">Iniciar
+							sesión</a></li>
+					<li class="nav-item"><a class="nav-link" href="logout">Cerrar
+							sesión</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+	<div th:if="${alerta != null}" th:text="${alerta}" th:classappend="${nivel != null} ? 'alert-' + ${nivel}" class="alert alert-dismissible fade show" role="alert">
+		ALERTA GENERICA
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+
 	<main th:replace="${contenido}">
 		<p>Contenido por defecto</p>
 	</main>
-	<footer>
-		&copy;2023 Javier Lete
+
+	<footer class="sticky-bottom w-100 text-bg-dark p-2 mt-4 d-flex justify-content-between">
+		<p>&copy;2023 Javier Lete</p>
+		<ul class="list-unstyled d-flex">
+			<li><a class="text-white p-1" href="#"><i class="bi bi-facebook"></i></a></li>
+			<li><a class="text-white p-1" href="#"><i class="bi bi-twitter-x"></i></a></li>
+			<li><a class="text-white p-1" href="#"><i class="bi bi-instagram"></i></a></li>
+			<li><a class="text-white p-1" href="#"><i class="bi bi-youtube"></i></a></li>
+			<li><a class="text-white p-1" href="#"><i class="bi bi-tiktok"></i></a></li>
+		</ul>
 	</footer>
+
 </body>
 
 </html>
