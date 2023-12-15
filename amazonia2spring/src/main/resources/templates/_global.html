@@ -55,16 +55,20 @@
 
 					<li class="nav-item"><a class="nav-link" href="carrito"><i class="bi bi-cart4"></i>5</a></li>
 
-					<li class="nav-item"><a class="nav-link" href="/login.html" th:href="@{/login}">Iniciar
+					<li class="nav-item"><a class="nav-link" href="/login.html" th:href="@{/login?interactivo}">Iniciar
 							sesión</a></li>
-					<li class="nav-item"><a class="nav-link" href="/logout.html" th:href="@{/logout}">Cerrar
-							sesión</a></li>
+					<li class="nav-item">
+						<form action="/" th:action="@{/logout}" method="post">
+							<button class="nav-link">Cerrar sesión</button>
+						</form>
+					</li>
 				</ul>
 
 			</div>
 		</div>
 	</nav>
-	<div th:if="${alerta != null}" th:text="${alerta}" th:classappend="${nivel != null} ? 'alert-' + ${nivel}" class="alert alert-dismissible fade show" role="alert">
+	<div th:if="${alerta != null}" th:text="${alerta}" th:classappend="${nivel != null} ? 'alert-' + ${nivel}"
+		class="alert alert-dismissible fade show" role="alert">
 		ALERTA GENERICA
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>

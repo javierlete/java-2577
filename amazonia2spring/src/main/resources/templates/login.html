@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Login: Amazonia2</title>
+</head>
+
+<body>
+	<main class="container">
+		<form action="index.html" th:action="@{/login}" method="post">
+			<div class="row mb-2">
+				<label class="col-sm-2 col-form-label" for="nombre">Usuario</label>
+				<div class="col-sm">
+					<input class="form-control" name="username" placeholder="Usuario">
+				</div>
+			</div>
+
+			<div class="row mb-2">
+				<label class="col-sm-2 col-form-label" for="nombre">Contraseña</label>
+				<div class="col-sm">
+					<input type="password" class="form-control" name="password" placeholder="Contraseña">
+				</div>
+			</div>
+
+
+			<div class="row mb-2">
+				<div class="offset-sm-2 col-sm">
+					<button class="btn btn-primary">Iniciar sesión</button>
+					<a class="btn btn-danger" href="index.html" th:href="@{/}">Cancelar</a>
+				</div>
+			</div>
+
+		</form>
+
+	</main>
+</body>
+
+</html>
