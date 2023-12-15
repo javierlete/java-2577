@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Listado de productos: Amazonia2</title>
+</head>
+
+<body>
+	<main>
+		<h2 th:switch="${status}" class="display-1">
+			<th:block th:case="404">No lo he encontrado</th:block>
+			<th:block th:case="*">
+				Error no esperado ni por asomo <span th:text="${status}">Status code</span>
+			</th:block>
+		</h2>
+	</main>
+</body>
+
+</html>
