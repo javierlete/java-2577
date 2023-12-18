@@ -1,10 +1,13 @@
 package com.amazonia2;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class Amazonia2springApplication { //implements CommandLineRunner {
+public class Amazonia2springApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Amazonia2springApplication.class, args);
@@ -16,8 +19,17 @@ public class Amazonia2springApplication { //implements CommandLineRunner {
 //	@Autowired
 //	private AdminNegocio negocio;
 //	
-//	@Override
-//	public void run(String... args) throws Exception {
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Override
+	public void run(String... args) throws Exception {
+		String pass = passwordEncoder.encode("contra");
+		
+		System.out.println(pass);
+		
+		System.out.println(passwordEncoder.matches("contra", pass));
+		
 //		Producto producto = Producto.builder().nombre("Prueba").codigoBarras("1234567890128").precio(new BigDecimal("1234.12")).unidades(1).build();
 //		
 ////		producto = dao.insertar(producto);
@@ -51,6 +63,6 @@ public class Amazonia2springApplication { //implements CommandLineRunner {
 //			System.out.println(p);
 //		}
 //		
-//	}
+	}
 
 }
