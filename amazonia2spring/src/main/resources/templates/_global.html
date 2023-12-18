@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:fragment="plantilla (titulo, contenido)" xmlns:th="http://www.thymeleaf.org">
+<html th:fragment="plantilla (titulo, contenido)" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
 	<meta charset="UTF-8">
@@ -50,14 +50,14 @@
 				</ul>
 				<ul class="navbar-nav mb-2 mb-sm-0">
 					<li class="nav-item"><a class="nav-link" href="admin/index.html"
-							th:href="@{/admin}">Administración</a></li>
-					<li class="navbar-text">Nombre de usuario</li>
+							sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">Administración</a></li>
+					<li class="navbar-text" sec:authorize="isAuthenticated()" sec:authentication="name">Nombre de usuario</span></li>
 
 					<li class="nav-item"><a class="nav-link" href="carrito"><i class="bi bi-cart4"></i>5</a></li>
 
-					<li class="nav-item"><a class="nav-link" href="/login.html" th:href="@{/login?interactivo}">Iniciar
+					<li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" href="/login.html" th:href="@{/login?interactivo}">Iniciar
 							sesión</a></li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="isAuthenticated()">
 						<form action="/" th:action="@{/logout}" method="post">
 							<button class="nav-link">Cerrar sesión</button>
 						</form>
