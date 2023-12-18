@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -21,14 +21,25 @@ public class WebSecurityConfig {
 	// CODIFICACIÓN DE CONTRASEÑAS BCRYPT
 	@Bean
 	PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder(12);
+	    return NoOpPasswordEncoder.getInstance(); //new BCryptPasswordEncoder(12);
 	}
 	
 	// AUTENTICACIÓN
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource)
 	  throws Exception {
-	    auth.jdbcAuthentication().dataSource(dataSource);
+	    auth.jdbcAuthentication().dataSource(dataSource)
+	    	.usersByUsernameQuery("""
+	    			SELECT email,password,1
+	    			FROM usuarios
+	    			WHERE email = ?
+	    			""")  
+	    	.authoritiesByUsernameQuery("""
+	    			SELECT u.email, CONCAT('ROLE_', r.nombre) 
+	    			FROM usuarios u
+	    			JOIN roles r ON u.rol_id = r.id
+	    			WHERE email = ?
+	    			""");
 	}
 	
 //	@Bean
