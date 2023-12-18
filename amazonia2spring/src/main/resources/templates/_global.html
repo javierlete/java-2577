@@ -52,6 +52,8 @@
 					<li class="nav-item"><a class="nav-link" href="admin/index.html"
 							sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">Administración</a></li>
 					<li class="navbar-text" sec:authorize="isAuthenticated()" sec:authentication="name">Nombre de usuario</span></li>
+					<li class="navbar-text ms-2" sec:authorize="isAuthenticated()" sec:authentication="principal.authorities">Roles</span></li>
+					
 
 					<li class="nav-item"><a class="nav-link" href="carrito"><i class="bi bi-cart4"></i>5</a></li>
 
