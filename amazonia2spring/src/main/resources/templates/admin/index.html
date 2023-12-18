@@ -31,7 +31,7 @@
 					<td th:text="${p.unidades}">5</td>
 					<td>
 						<a class="btn btn-sm btn-primary" href="detalle.html" th:href="@{/admin/detalle(id=${p.id})}">Editar</a>
-						<a class="btn btn-sm btn-danger" href="#" th:href="@{/admin/borrar(id=${p.id})}">Borrar</a>
+						<a onclick="return confirm('¿Estás seguro?')" class="btn btn-sm btn-danger" href="#" th:href="@{/admin/borrar(id=${p.id})}">Borrar</a>
 					</td>
 				</tr>
 			</tbody>
