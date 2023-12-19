@@ -6,6 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.amazonia2.entidades.Producto;
+import com.amazonia2.repositorios.ProductoRepository;
+
 @SpringBootApplication
 public class Amazonia2springApplication implements CommandLineRunner {
 
@@ -22,8 +25,22 @@ public class Amazonia2springApplication implements CommandLineRunner {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private ProductoRepository repo;
+	
 	@Override
 	public void run(String... args) throws Exception {
+		Iterable<Producto> productos = repo.findAll();
+		
+		for(Producto p: productos) {
+			System.out.println(p);
+		}
+		
+		System.out.println("Más caro");
+		
+		System.out.println(repo.findFirstByOrderByPrecioDesc());
+		System.out.println(repo.obtenerProductoMasCaro());
+		
 		String pass = passwordEncoder.encode("contra");
 		
 		System.out.println(pass);
