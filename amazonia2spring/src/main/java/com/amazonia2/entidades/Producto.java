@@ -7,6 +7,12 @@ import org.hibernate.validator.constraints.EAN;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -21,13 +27,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
+@Entity
+@Table(name = "productos")
 public class Producto {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotNull
 	@Pattern(regexp = "^\\d{13}$", message = "debe tener 13 dígitos")
 	@Size(min = 13, max = 13, message = "debe ser 13 caracteres exactos")
 	@EAN
+	@Column(columnDefinition = "CHAR(13)")
 	private String codigoBarras;
 	
 	@NotNull
