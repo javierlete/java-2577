@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,6 +14,7 @@ import com.amazonia2.entidades.Producto;
 import com.amazonia2.logicanegocio.AdminNegocio;
 import com.amazonia2.logicanegocio.ClaveDuplicadaException;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Controller
@@ -21,6 +23,11 @@ public class AdminController {
 	@Autowired
 	private AdminNegocio negocio;
 
+	@ModelAttribute("miLocale")
+	public String requestURI(final HttpServletRequest request) {
+	   return request.getLocale().toString();
+	}
+	
 	@GetMapping
 	public String index(Model modelo) {
 		modelo.addAttribute("productos", negocio.listadoProductos());
