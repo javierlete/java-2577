@@ -7,8 +7,9 @@
 </head>
 
 <body>
-
 	<main>
+		<pre th:text="'País: ' + ${#locale.country}">País</pre>
+		<pre th:text="'Lenguaje: ' + ${#locale.language}">Lenguaje</pre>
 		<table class="table table-hover table-striped table-bordered">
 			<thead class="table-dark">
 				<tr>
@@ -26,7 +27,7 @@
 					<td th:text="${p.id}">1</td>
 					<td th:text="${p.codigoBarras}">1234567890123</td>
 					<td th:text="${p.nombre}">Producto1</td>
-					<td th:text="${p.precio}">1234,12€</td>
+					<td th:text="${#numbers.formatCurrency(p.precio)}">1234,12€</td>
 					<td th:text="${p.fechaCaducidad}">2000-01-02</td>
 					<td th:text="${p.unidades}">5</td>
 					<td>

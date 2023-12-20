@@ -14,7 +14,7 @@
 		<ul>
 			<li th:text="${producto.codigoBarras}">1234567890123</li>
 			<li th:text="${producto.nombre}">Portátil</li>
-			<li th:text="${producto.precio}">1234,12€</li>
+			<li th:text="${#numbers.formatCurrency(producto.precio)}">1234,12€</li>
 		</ul>
 
 		<a href="index.html" th:href="@{/}">Volver</a>
