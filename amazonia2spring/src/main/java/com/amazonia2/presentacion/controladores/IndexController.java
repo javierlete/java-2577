@@ -7,6 +7,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.amazonia2.bibliotecas.Alerta;
@@ -32,8 +33,8 @@ public class IndexController implements ErrorController {
 	}
 
 //	@ResponseBody
-	@GetMapping("/detalle")
-	public String detalle(Model modelo, Long id) {
+	@GetMapping("/detalle/{id}")
+	public String detalle(Model modelo, @PathVariable Long id) {
 		modelo.addAttribute("producto", negocio.detalleProducto(id));
 		return "detalle";
 	}

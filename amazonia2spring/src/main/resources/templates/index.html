@@ -18,25 +18,22 @@
 					<div class="card-body">
 						<h5 th:text="${p.nombre}" class="card-title">Producto</h5>
 						<ul class="list-group list-group-flush">
-							<li class="list-group-item">
-								<span class="fw-bold">Fecha de caducidad:</span><br />
-								<span th:text="${#temporals.format(p.fechaCaducidad)}">12 de Diciembre de 2023</span>
-							</li>
-							<li class="list-group-item">
-								<span class="fw-bold">Precio:</span><br />
+							<li class="list-group-item d-flex justify-content-between">
+								<span class="fw-bold">Precio:</span>
 								<span th:text="${#numbers.formatCurrency(p.precio)}">1234,12€</span>
 							</li>
-							<li class="list-group-item">
-								<span class="fw-bold">Unidades:</span><br />
-								<span th:text="${p.unidades}">5</span>
+							<li class="list-group-item d-flex justify-content-between">
+								<span class="fw-bold">Unidades:</span>
+								<span th:text="|${p.unidades} u|">5</span>
 							</li>
 						</ul>
+						
 					</div>
 					<div class="card-footer">
-						<small class="text-body-secondary">
-							EAN:
-							<span th:text="${p.codigoBarras}">123456789012</span>
-						</small>
+						<div class="text-center">
+							<a class="btn btn-primary fs-5" th:href="@{/carrito(id=${p.id})}" href="carrito.html"><i class="bi bi-bag-plus-fill"></i></a>
+							<a class="btn btn-secondary fs-5" th:href="@{/detalle/{id}(id=${p.id})}" href="detalle.html"><i class="bi bi-search"></i></a>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -8,16 +8,46 @@
 
 <body>
 
-	<main>
-		<pre th:text="${producto}">Visualización de producto</pre>
+	<main class="container">
+		<!--/* <pre th:text="${producto}">Visualización de producto</pre> */-->
+		<div class="card mb-3">
+			<div class="row g-0">
+				<div class="col-md-4">
+					<img th:src="|https://picsum.photos/400/300?${producto.id}|" src="..."
+						class="img-fluid rounded-start" alt="...">
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h5 th:text="${producto.nombre}" class="card-title">Producto</h5>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item d-flex justify-content-between">
+								<span class="fw-bold">Fecha de caducidad:</span>
+								<span th:text="${#temporals.format(producto.fechaCaducidad)}">12 de Diciembre de
+									2023</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between">
+								<span class="fw-bold">Precio:</span>
+								<span th:text="${#numbers.formatCurrency(producto.precio)}">1234,12€</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between">
+								<span class="fw-bold">Unidades:</span>
+								<span th:text="|${producto.unidades} u|">5</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between">
+								<span class="fw-bold">EAN:</span>
+								<span th:text="${producto.codigoBarras}">123456789012</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between">
+								<a class="btn btn-primary fs-5" th:href="@{/carrito(id=${producto.id})}"
+								href="carrito.html">Agregar a carrito <i class="bi bi-bag-plus-fill"></i></a>
+							<a class="btn btn-secondary fs-5" th:href="@{/listado}" href="index.html">Volver</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 
-		<ul>
-			<li th:text="${producto.codigoBarras}">1234567890123</li>
-			<li th:text="${producto.nombre}">Portátil</li>
-			<li th:text="${#numbers.formatCurrency(producto.precio)}">1234,12€</li>
-		</ul>
-
-		<a href="index.html" th:href="@{/}">Volver</a>
 	</main>
 </body>
 
