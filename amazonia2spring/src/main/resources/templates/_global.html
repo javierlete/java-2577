@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html th:fragment="plantilla (titulo, contenido)" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html th:fragment="plantilla (titulo, contenido)" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
 	<meta charset="UTF-8">
@@ -51,13 +52,16 @@
 				<ul class="navbar-nav mb-2 mb-sm-0">
 					<li class="nav-item"><a class="nav-link" href="admin/index.html"
 							sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">Administración</a></li>
-					<li class="navbar-text" sec:authorize="isAuthenticated()" sec:authentication="name">Nombre de usuario</span></li>
-					<li class="navbar-text ms-2" sec:authorize="isAuthenticated()" sec:authentication="principal.authorities">Roles</span></li>
-					
+					<li class="navbar-text" sec:authorize="isAuthenticated()" sec:authentication="name">Nombre de
+						usuario</span></li>
+					<li class="navbar-text ms-2" sec:authorize="isAuthenticated()"
+						sec:authentication="principal.authorities">Roles</span></li>
+
 
 					<li class="nav-item"><a class="nav-link" href="carrito"><i class="bi bi-cart4"></i>5</a></li>
 
-					<li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" href="/login.html" th:href="@{/login?interactivo}">Iniciar
+					<li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" href="/login.html"
+							th:href="@{/login?interactivo}">Iniciar
 							sesión</a></li>
 					<li class="nav-item" sec:authorize="isAuthenticated()">
 						<form action="/" th:action="@{/logout}" method="post">
@@ -75,10 +79,12 @@
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
 
-	<main th:replace="${contenido}">
-		<p>Contenido por defecto</p>
-	</main>
-
+	<div class="my-3">
+		<main th:replace="${contenido}">
+			<p>Contenido por defecto</p>
+		</main>
+	</div>
+	
 	<footer class="sticky-bottom w-100 text-bg-dark p-2 mt-4 d-flex justify-content-between">
 		<p>&copy;2023 Javier Lete</p>
 		<ul class="list-unstyled d-flex">
