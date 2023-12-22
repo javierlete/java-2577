@@ -56,4 +56,8 @@ public class Producto {
 	@NotNull
 	@Min(0)
 	private Integer unidades;
+	
+	public BigDecimal getTotal() {
+		return precio.multiply(new BigDecimal(unidades));
+	}
 }
