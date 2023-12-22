@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Carrito: Amazonia2</title>
+</head>
+
+<body>
+	<main>
+		
+		<table class="table">
+			<thead class="table-secondary">
+				<tr>
+					<th>Nombre</th>
+					<th class="text-end">Precio</th>
+					<th class="text-end">Unidades</th>
+					<th class="text-end">Total</th>
+					<th>OPCIONES</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${carrito.productos}">
+					<td th:text="${p.nombre}">Producto1</td>
+					<td class="text-end" th:text="${#numbers.formatCurrency(p.precio)}">1234,12€</td>
+					<td class="text-end" th:text="${p.unidades}">5</td>
+					<td class="text-end" th:text="${#numbers.formatCurrency(p.total)}">65</td>
+					<td>
+						<a onclick="return confirm('¿Estás seguro?')" class="btn btn-sm btn-outline-danger" href="#" th:href="@{/admin/borrar(id=${p.id})}"><i class="bi bi-trash-fill"></i></a>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot class="table-secondary">
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td class="text-end" th:text="${#numbers.formatCurrency(carrito.total)}">1163847</td>
+					<td>
+						<a class="btn btn-sm btn-primary" href="pagar.html" th:href="@{/pagar}">Pagar</a>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<p>
+			<a class="btn btn-sm btn-primary" href="index.html" th:href="@{/}">Seguir comprando</a>
+		</p>
+	</main>
+</body>
+
+</html>
