@@ -1,4 +1,4 @@
-package com.amazonia2.presentacion.controladores;
+package com.amazonia2.presentacion.controladores.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
