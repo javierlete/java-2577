@@ -45,13 +45,15 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	}
 
 	@Override
-	public void agregarProductoACarrito(Long id, Carrito carrito) {
+	public Carrito agregarProductoACarrito(Long id, Carrito carrito) {
 		Producto producto = detalleProducto(id);
 		agregarProductoACarrito(producto, carrito);
+		
+		return carrito;
 	}
 
 	@Override
-	public void agregarProductoACarrito(Producto producto, Carrito carrito) {
+	public Carrito agregarProductoACarrito(Producto producto, Carrito carrito) {
 		Producto existente = carrito.getProducto(producto.getId());
 
 		if (existente == null) {
@@ -62,6 +64,8 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		}
 
 		log.info("Se ha agregado el producto " + producto + " a un carrito");
+		
+		return carrito;
 	}
 
 }

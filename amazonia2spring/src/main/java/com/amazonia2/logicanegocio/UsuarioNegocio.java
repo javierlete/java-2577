@@ -15,6 +15,6 @@ public interface UsuarioNegocio {
 	
 	long cuantosProductosHay();
 	
-	void agregarProductoACarrito(Long id, Carrito carrito);
-	void agregarProductoACarrito(Producto producto, Carrito carrito);
+	Carrito agregarProductoACarrito(Long id, Carrito carrito);
+	Carrito agregarProductoACarrito(Producto producto, Carrito carrito);
 }
