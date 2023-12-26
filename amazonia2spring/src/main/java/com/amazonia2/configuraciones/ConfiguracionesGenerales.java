@@ -11,13 +11,14 @@ import com.amazonia2.entidades.Carrito;
 @ControllerAdvice
 @Configuration
 public class ConfiguracionesGenerales {
+	@Autowired
+	private Carrito carrito;
+
 	@ModelAttribute
 	private void carrito(Model modelo) {
 		modelo.addAttribute(carrito);
 	}
 	
-	@Autowired
-	private Carrito carrito;
 //	@Bean
 //    LocaleResolver localeResolver() {
 //        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
