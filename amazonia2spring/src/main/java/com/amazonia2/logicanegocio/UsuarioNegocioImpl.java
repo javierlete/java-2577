@@ -3,11 +3,12 @@ package com.amazonia2.logicanegocio;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import com.amazonia2.accesodatos.DaoProducto;
 import com.amazonia2.entidades.Carrito;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Usuario;
+import com.amazonia2.repositorios.ProductoRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.java.Log;
 
 @Log
@@ -15,20 +16,20 @@ import lombok.extern.java.Log;
 @Primary
 class UsuarioNegocioImpl implements UsuarioNegocio {
 
-	protected DaoProducto daoProducto;
+	protected ProductoRepository repo;
 	
-	public UsuarioNegocioImpl(DaoProducto daoProducto) {
-		this.daoProducto = daoProducto;
+	public UsuarioNegocioImpl(ProductoRepository repo) {
+		this.repo = repo;
 	}
 
 	@Override
 	public Iterable<Producto> listadoProductos() {
-		return daoProducto.obtenerTodos();
+		return repo.findAll();
 	}
 
 	@Override
 	public Producto detalleProducto(Long id) {
-		return daoProducto.obtenerPorId(id);
+		return repo.findById(id).orElse(null);
 	}
 
 	@Override
@@ -43,12 +44,17 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 
 	@Override
 	public long cuantosProductosHay() {
-		return daoProducto.cuantosHay();
+		return repo.count();
 	}
 
 	@Override
 	public Carrito agregarProductoACarrito(Long id, Carrito carrito) {
 		Producto producto = detalleProducto(id);
+		
+		if(producto == null) {
+			throw new EntityNotFoundException("No se ha encontrado el producto " + id);
+		}
+		
 		agregarProductoACarrito(producto, carrito);
 		
 		return carrito;
