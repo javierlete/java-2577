@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -8,12 +8,8 @@
 
 <body>
 	<main>
-		<!--/* 
-		<pre th:text="'Locale: ' + ${miLocale}">Locale de request</pre>
-		<pre th:text="'País: ' + ${#locale.country}">País</pre>
-		<pre th:text="'Lenguaje: ' + ${#locale.language}">Lenguaje</pre>
-		-->
 		<table class="table table-hover table-striped table-bordered">
+			<caption>Productos</caption>
 			<thead class="table-dark">
 				<tr>
 					<th>Id</th>

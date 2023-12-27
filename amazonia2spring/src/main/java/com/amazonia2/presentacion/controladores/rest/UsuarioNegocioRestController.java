@@ -1,7 +1,6 @@
 package com.amazonia2.presentacion.controladores.rest;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,12 +15,15 @@ import com.amazonia2.logicanegocio.UsuarioNegocio;
 @RestController
 @RequestMapping("/api/v2/negocio/usuario")
 public class UsuarioNegocioRestController {
-	@Autowired
 	private Carrito carrito;
 
-	@Autowired
 	private UsuarioNegocio negocio;
 
+	public UsuarioNegocioRestController(Carrito carrito, UsuarioNegocio negocio) {
+		this.carrito = carrito;
+		this.negocio = negocio;
+	}
+	
 	@GetMapping("/productos")
 	public Iterable<Producto> listadoProductos() {
 		return negocio.listadoProductos();

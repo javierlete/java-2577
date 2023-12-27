@@ -3,15 +3,15 @@ package com.amazonia2.logicanegocio;
 import org.springframework.dao.DuplicateKeyException;
 
 import lombok.Getter;
-import lombok.experimental.StandardException;
 
-@StandardException
 public class ClaveDuplicadaException extends LogicaNegocioException {
 	@Getter
-	private String objeto, campo;
+	private final String objeto;
+	@Getter
+	private final String campo;
 	
 	public ClaveDuplicadaException(String mensaje, String objeto, String campo, DuplicateKeyException e) {
-		this(mensaje, e);
+		super(mensaje, e);
 		
 		this.objeto = objeto;
 		this.campo = campo;

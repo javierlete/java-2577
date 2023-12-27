@@ -1,6 +1,5 @@
 package com.amazonia2.presentacion.controladores.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,8 +19,16 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	@Autowired
+	private static final String NIVEL = "nivel";
+	private static final String DANGER = "danger";
+	private static final String ALERTA = "alerta";
+	private static final String ADMIN_DETALLE = "admin/detalle";
+	
 	private AdminNegocio negocio;
+	
+	public AdminController(AdminNegocio negocio) {
+		this.negocio = negocio;
+	}
 
 	@ModelAttribute("miLocale")
 	public String requestURI(final HttpServletRequest request) {
@@ -37,10 +44,10 @@ public class AdminController {
 	@PostMapping
 	public String post(Model modelo, @Valid Producto producto, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			modelo.addAttribute("alerta", "Revisa los errores en el formulario");
-			modelo.addAttribute("nivel", "danger");
+			modelo.addAttribute(ALERTA, "Revisa los errores en el formulario");
+			modelo.addAttribute(NIVEL, DANGER);
 			
-			return "admin/detalle";
+			return ADMIN_DETALLE;
 		}
 
 		try {
@@ -51,15 +58,15 @@ public class AdminController {
 			}
 		} catch (ClaveDuplicadaException e) {
 			if (e.getCampo() != null) {
-				modelo.addAttribute("alerta", "Revisa los errores en el formulario");
-				modelo.addAttribute("nivel", "danger");
+				modelo.addAttribute(ALERTA, "Revisa los errores en el formulario");
+				modelo.addAttribute(NIVEL, DANGER);
 				
 				bindingResult.addError(new FieldError(e.getObjeto(), e.getCampo(), e.getMessage()));
 			} else {
-				modelo.addAttribute("alerta", e.getMessage());
-				modelo.addAttribute("nivel", "danger");
+				modelo.addAttribute(ALERTA, e.getMessage());
+				modelo.addAttribute(NIVEL, DANGER);
 			}
-			return "admin/detalle";
+			return ADMIN_DETALLE;
 		}
 
 		return "redirect:/admin";
@@ -78,7 +85,7 @@ public class AdminController {
 			modelo.addAttribute("producto", negocio.detalleProducto(id));
 		}
 
-		return "admin/detalle";
+		return ADMIN_DETALLE;
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.amazonia2.configuraciones;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -12,8 +11,11 @@ import jakarta.persistence.metamodel.Type;
 @Configuration
 public class RestConfiguration implements RepositoryRestConfigurer {
 
-    @Autowired
     private EntityManager entityManager;
+    
+    public RestConfiguration(EntityManager entityManager) {
+    	this.entityManager = entityManager;
+    }
 
     @Override
     public void configureRepositoryRestConfiguration(

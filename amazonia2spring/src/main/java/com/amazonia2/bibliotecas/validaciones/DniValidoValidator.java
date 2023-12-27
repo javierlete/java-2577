@@ -36,11 +36,9 @@ public class DniValidoValidator implements ConstraintValidator<DniValido, String
 			digitoExtranjero = dni.charAt(0);
 		}
 
-		// String sNumero = new
-		// StringBuffer().append(digitoExtranjero).append(sNumeroComun).toString();
 		String sNumero = String.valueOf(digitoExtranjero) + sNumeroComun;
 
-		int numero = Integer.parseInt(sNumero); // sNumero.replace('X', '0').replace('Y', '1').replace('Z', '2'));
+		int numero = Integer.parseInt(sNumero);
 		int posicion = numero % 23;
 
 		return letra == LETRAS.charAt(posicion);

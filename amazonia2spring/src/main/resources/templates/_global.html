@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:fragment="plantilla (titulo, contenido)"
+<html lang="es" th:fragment="plantilla (titulo, contenido)"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
@@ -21,12 +21,12 @@
 
 <!-- DataTables -->
 <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
-<script src="js/jquery-3.7.0.js"></script>
+<script src="js/jquery-3.7.1.min.js"></script>
 <script src="js/jquery.dataTables.min.js"></script>
 <script src="js/dataTables.bootstrap5.min.js"></script>
 <script>
 	$(function() {
-		new DataTable('.table-bordered', {
+		DataTable('.table-bordered', {
 			language : {
 				url : 'json/es-ES.json',
 			}

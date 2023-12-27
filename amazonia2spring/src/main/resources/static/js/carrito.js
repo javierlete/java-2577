@@ -14,15 +14,9 @@ window.addEventListener('DOMContentLoaded', function() {
 function clickMas() {
 	const botonMas = this;
 	
-//	console.log(boton);
-	
 	const div = botonMas.parentNode;
 	
-//	console.log(div);
-	
 	const input = div.querySelector('input');
-	
-//	console.log(input);
 	
 	input.value++;
 	

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -21,16 +20,16 @@ class DaoProductoJdbc implements DaoProducto {
 	private static final String SQL_SELECT_CUANTOS = "SELECT COUNT(*) FROM productos";
 	private static final String SQL_SELECT_CADUCADOS = SQL_SELECT + " WHERE fecha_caducidad < ?";
 	private static final String SQL_SELECT_NOMBRE = SQL_SELECT + " WHERE nombre LIKE ?";
-//	private static final String SQL_INSERT = "INSERT INTO productos (codigo_barras, nombre, precio, fecha_caducidad, unidades) VALUES (?,?,?,?,?)";
+
 	private static final String SQL_UPDATE = "UPDATE productos SET codigo_barras=?, nombre=?, precio=?, fecha_caducidad=?, unidades=? WHERE id=?";
 	private static final String SQL_DELETE = "DELETE FROM productos WHERE id=?";
 
-	@Autowired
 	private JdbcTemplate jdbc;
 
 	private SimpleJdbcInsert insertProducto;
 
-	public DaoProductoJdbc(DataSource dataSource) {
+	public DaoProductoJdbc(DataSource dataSource, JdbcTemplate jdbc) {
+		this.jdbc = jdbc;
 		this.insertProducto = new SimpleJdbcInsert(dataSource).withTableName("productos")
 				.usingGeneratedKeyColumns("id");
 	}
@@ -47,9 +46,6 @@ class DaoProductoJdbc implements DaoProducto {
 
 	@Override
 	public Producto insertar(Producto producto) {
-//		jdbc.update(SQL_INSERT, producto.getCodigoBarras(), producto.getNombre(), producto.getPrecio(), producto.getFechaCaducidad(), producto.getUnidades());
-//		return producto;
-
 		SqlParameterSource parameters = new BeanPropertySqlParameterSource(producto);
 		Number newId = insertProducto.executeAndReturnKey(parameters);
 		producto.setId(newId.longValue());
@@ -71,7 +67,8 @@ class DaoProductoJdbc implements DaoProducto {
 
 	@Override
 	public long cuantosHay() {
-		return jdbc.queryForObject(SQL_SELECT_CUANTOS, Long.class);
+		Long cuantos =jdbc.queryForObject(SQL_SELECT_CUANTOS, Long.class);
+		return cuantos != null ? cuantos : -1;
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class Carrito {
 	private Map<Long, Producto> productos = new HashMap<>();
 
 	public Set<Producto> getProductos() {
-		return new HashSet<Producto>(productos.values());
+		return new HashSet<>(productos.values());
 	}
 
 	public void addProducto(Producto producto) {
@@ -60,8 +60,5 @@ public class Carrito {
 		}
 		
 		return total;
-		
-//		return productos.values().stream().map(p -> p.getTotal())
-//				.reduce(BigDecimal.ZERO, (totalAcumulado, totalParcial) -> totalAcumulado.add(totalParcial));
 	}
 }

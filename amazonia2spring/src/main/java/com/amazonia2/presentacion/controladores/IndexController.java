@@ -1,6 +1,5 @@
 package com.amazonia2.presentacion.controladores;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,18 +13,19 @@ import com.amazonia2.logicanegocio.UsuarioNegocio;
 @Controller
 @RequestMapping
 public class IndexController { //implements ErrorController {
-	@Autowired
+	
 	private UsuarioNegocio negocio;
+	
+	public IndexController(UsuarioNegocio negocio) {
+		this.negocio = negocio;
+	}
 
-//	@ResponseBody
 	@GetMapping("/")
 	public String index(Model modelo) {
-//		return negocio.listadoProductos().toString();
 		modelo.addAttribute("productos", negocio.listadoProductos());
 		return "index";
 	}
 
-//	@ResponseBody
 	@GetMapping("/detalle/{id}")
 	public String detalle(Model modelo, @PathVariable Long id) {
 		modelo.addAttribute("producto", negocio.detalleProducto(id));
@@ -43,6 +43,7 @@ public class IndexController { //implements ErrorController {
 		} else if(noautorizado != null) {
 			alerta.danger("Tu nivel de acceso no es suficiente");
 		} else if(interactivo != null) {
+			// No hay que hacer nada en este caso
 		} else {
 			alerta.warning("Tienes que iniciar sesión");
 		}

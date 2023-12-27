@@ -1,6 +1,5 @@
 package com.amazonia2.logicanegocio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +15,11 @@ import lombok.extern.java.Log;
 @Primary
 class UsuarioNegocioImpl implements UsuarioNegocio {
 
-	@Autowired
 	protected DaoProducto daoProducto;
+	
+	public UsuarioNegocioImpl(DaoProducto daoProducto) {
+		this.daoProducto = daoProducto;
+	}
 
 	@Override
 	public Iterable<Producto> listadoProductos() {

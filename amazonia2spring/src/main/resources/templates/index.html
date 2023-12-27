@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -8,8 +8,6 @@
 
 <body>
 	<main class="container-fluid">
-		<!--/* <pre th:text="${productos}">Visualización de productos</pre> */-->
-
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4">
 			<div th:each="p: ${productos}" class="col">
 				<div class="card h-100">
