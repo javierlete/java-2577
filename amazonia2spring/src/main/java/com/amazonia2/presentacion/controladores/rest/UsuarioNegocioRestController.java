@@ -1,8 +1,6 @@
 package com.amazonia2.presentacion.controladores.rest;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amazonia2.dtos.CarritoDTO;
 import com.amazonia2.entidades.Carrito;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.logicanegocio.UsuarioNegocio;
@@ -36,9 +35,9 @@ public class UsuarioNegocioRestController {
 	// Rendimiento
 	// Más ligero
 	@GetMapping("/carrito/{id}/agregar")
-	public Carrito agregarProductoACarrito(@PathVariable Long id) {
+	public CarritoDTO agregarProductoACarrito(@PathVariable Long id) {
 		negocio.agregarProductoACarrito(id, carrito);
-		
+
 		return sesionACarrito();
 	}
 
@@ -48,8 +47,8 @@ public class UsuarioNegocioRestController {
 	// Más limpia
 	// Más pesada
 	@PutMapping("/carrito/{id}/agregar")
-	public Carrito agregarProductoACarrito(@PathVariable Long id, Carrito carrito) {
-		return negocio.agregarProductoACarrito(id, carrito);
+	public CarritoDTO agregarProductoACarrito(@PathVariable Long id, Carrito carrito) {
+		return carritoACarritoDTO(negocio.agregarProductoACarrito(id, carrito));
 	}
 
 	@GetMapping("/carrito")
@@ -57,20 +56,14 @@ public class UsuarioNegocioRestController {
 		return sesionACarrito();
 	}
 
-	private Carrito sesionACarrito() {
-		System.out.println("CARRITO: " + carrito);
-		Map<Long, Producto> mapa = new HashMap<>();
+	private CarritoDTO sesionACarrito() {
+		return carritoACarritoDTO(carrito);
+	}
 
-		for(Producto p: carrito.getProductos()) {
-			mapa.put(p.getId(), p);
-		}
-		
-		System.out.println(mapa);
+	// Mapeador de Carrito a CarritoDTO
+	private ModelMapper mapper = new ModelMapper();
 
-		Carrito carritoADevolver = Carrito.builder().id(carrito.getId()).usuario(carrito.getUsuario()).productos(mapa).build();
-		
-		System.out.println("CARRITO A DEVOLVER: " + carritoADevolver);
-		
-		return carritoADevolver;
+	private CarritoDTO carritoACarritoDTO(Carrito carrito) {
+		return mapper.map(carrito, CarritoDTO.class);
 	}
 }
