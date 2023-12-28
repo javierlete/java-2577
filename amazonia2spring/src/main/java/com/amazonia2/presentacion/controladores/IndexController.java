@@ -1,5 +1,6 @@
 package com.amazonia2.presentacion.controladores;
 
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,13 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.amazonia2.bibliotecas.Alerta;
 import com.amazonia2.logicanegocio.UsuarioNegocio;
 
-//@Log
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.java.Log;
+
+@Log
 @Controller
 @RequestMapping
-public class IndexController { //implements ErrorController {
-	
+public class IndexController implements ErrorController {
+
 	private UsuarioNegocio negocio;
-	
+
 	public IndexController(UsuarioNegocio negocio) {
 		this.negocio = negocio;
 	}
@@ -40,9 +45,9 @@ public class IndexController { //implements ErrorController {
 			alerta.danger("El usuario o la contraseña no son correctos");
 		} else if (logout != null) {
 			alerta.success("Se ha desconectado de la sesión correctamente");
-		} else if(noautorizado != null) {
+		} else if (noautorizado != null) {
 			alerta.danger("Tu nivel de acceso no es suficiente");
-		} else if(interactivo != null) {
+		} else if (interactivo != null) {
 			// No hay que hacer nada en este caso
 		} else {
 			alerta.warning("Tienes que iniciar sesión");
@@ -51,21 +56,16 @@ public class IndexController { //implements ErrorController {
 		return "login";
 	}
 
-//	@GetMapping("/error")
-//	public String error(Model modelo, HttpServletRequest request, Exception exception) {
-//		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-//		log.severe("Status: " + status.toString());
-//
-//		do {
-//			log.severe("Tipo: " + exception.getClass().getSimpleName());
-//			log.severe("Mensaje: " + exception.getMessage());
-//			log.log(Level.SEVERE, "Detalles de la excepción", exception);
-//			
-//			exception = (Exception) exception.getCause();
-//		} while(exception != null);
-//
-//		modelo.addAttribute("status", status);
-//
-//		return "_error";
-//	}
+	@GetMapping("/error")
+	public String error(Model modelo, HttpServletRequest request, Exception exception) {
+		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		log.severe("Status: " + status.toString());
+
+		log.severe("Tipo: " + exception.getClass().getSimpleName());
+		log.severe("Mensaje: " + exception.getMessage());
+
+		modelo.addAttribute("status", status);
+
+		return "_error";
+	}
 }
