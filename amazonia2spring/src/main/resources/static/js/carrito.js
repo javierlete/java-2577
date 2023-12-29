@@ -1,37 +1,47 @@
 'use strict';
 
-window.addEventListener('DOMContentLoaded', function() {
-	const menos = document.querySelectorAll('.menos');
-	const mas = document.querySelectorAll('.mas');
-	
-	for(const boton of menos) {
-		boton.addEventListener('click', clickMenos);
-	}
-	
-	mas.forEach(boton => boton.addEventListener('click', clickMas));
-});
+const URL = '/api/v2/negocio/usuario/carrito';
 
-function clickMas() {
-	const botonMas = this;
-	
-	const div = botonMas.parentNode;
-	
-	const input = div.querySelector('input');
-	
-	input.value++;
-	
-	const botonMenos = div.querySelector('.menos');
-	
-	botonMenos.disabled = false; 
+async function quitarUnidad(id) {
+	cambiarUnidad(id, 'quitar');
 }
 
-function clickMenos() {
-	const boton = this;
-	const input = boton.parentNode.querySelector('input');
-	
-	input.value--;
-	
-	if(input.value == 0) {
-		boton.disabled = true;
+async function agregarUnidad(id) {
+	cambiarUnidad(id, 'agregar');
+}
+
+async function cambiarUnidad(id, accion) {
+	console.log(accion + 'Unidad', id);
+
+	const respuesta = await fetch(`${URL}/${id}/${accion}-unidad`);
+
+	if (respuesta.ok) {
+		const carrito = await respuesta.json();
+
+		const totalGlobal = carrito.total;
+
+		const productos = carrito.productos.filter(p => p.id === id);
+
+		if (!productos.length) {
+			document.querySelector(`#tr-${id}`).remove();
+			return;
+		}
+
+		const total = productos[0].total;
+		const unidades = productos[0].unidades;
+
+		console.log(carrito);
+
+		const moneda = new Intl.NumberFormat('es-ES', {
+			style: 'currency',
+			currency: 'EUR',
+			useGrouping: true
+		});
+
+		document.querySelector('#input-' + id).value = unidades;
+		document.querySelector('#total-' + id).innerText = moneda.format(total);
+		document.querySelector('#total-global').innerText = moneda.format(totalGlobal);
+	} else {
+		alert(`No se ha podido ${accion} la unidad`);
 	}
 }
