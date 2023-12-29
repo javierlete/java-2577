@@ -20,4 +20,8 @@ public interface UsuarioNegocio {
 
 	Carrito quitarProductoDeCarrito(Long id, Carrito carrito);
 	Carrito quitarProductoDeCarrito(Producto producto, Carrito carrito);
+
+	Carrito quitarUnidadDeProductoDeCarrito(Long id, Carrito carrito);
+
+	Carrito agregarUnidadDeProductoDeCarrito(Long id, Carrito carrito);
 }

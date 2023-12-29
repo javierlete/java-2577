@@ -1,5 +1,7 @@
 package com.amazonia2.logicanegocio;
 
+import java.util.Optional;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ import lombok.extern.java.Log;
 class UsuarioNegocioImpl implements UsuarioNegocio {
 
 	protected ProductoRepository repo;
-	
+
 	public UsuarioNegocioImpl(ProductoRepository repo) {
 		this.repo = repo;
 	}
@@ -50,13 +52,13 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	@Override
 	public Carrito agregarProductoACarrito(Long id, Carrito carrito) {
 		Producto producto = detalleProducto(id);
-		
-		if(producto == null) {
+
+		if (producto == null) {
 			throw new EntityNotFoundException("No se ha encontrado el producto " + id);
 		}
-		
+
 		agregarProductoACarrito(producto, carrito);
-		
+
 		return carrito;
 	}
 
@@ -72,22 +74,22 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		}
 
 		log.info("Se ha agregado el producto " + producto + " a un carrito");
-		
+
 		return carrito;
 	}
 
 	@Override
 	public Carrito quitarProductoDeCarrito(Long id, Carrito carrito) {
 		Producto producto = carrito.getProducto(id);
-		
+
 		if (producto == null) {
 			throw new LogicaNegocioException("No existe el producto a eliminar");
 		} else {
 			carrito.removeProducto(id);
 		}
-		
+
 		log.info("Se ha quitado el producto " + producto + " de un carrito");
-		
+
 		return carrito;
 	}
 
@@ -96,4 +98,37 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		return quitarProductoDeCarrito(producto.getId(), carrito);
 	}
 
+	@Override
+	public Carrito quitarUnidadDeProductoDeCarrito(Long id, Carrito carrito) {
+		Integer unidades = carrito.getProducto(id).getUnidades();
+
+		Optional<Producto> productoAlmacen = repo.findById(id);
+
+		if (productoAlmacen.isEmpty() || unidades == 1) {
+			quitarProductoDeCarrito(id, carrito);
+			return carrito;
+		}
+		
+		carrito.updateUnidades(id, unidades - 1);
+
+		return carrito;
+	}
+
+	@Override
+	public Carrito agregarUnidadDeProductoDeCarrito(Long id, Carrito carrito) {
+		Integer unidades = carrito.getProducto(id).getUnidades();
+
+		Optional<Producto> productoAlmacen = repo.findById(id);
+
+		if (productoAlmacen.isEmpty()) {
+			quitarProductoDeCarrito(id, carrito);
+			return carrito;
+		}
+
+		if (unidades + 1 <= productoAlmacen.get().getUnidades()) {
+			carrito.updateUnidades(id, unidades + 1);
+		}
+		
+		return carrito;
+	}
 }
