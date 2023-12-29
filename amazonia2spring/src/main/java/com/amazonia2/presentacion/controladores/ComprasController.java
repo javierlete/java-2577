@@ -25,4 +25,10 @@ public class ComprasController {
 		
 		return "carrito";
 	}
+	
+	@GetMapping("/carrito/borrar")
+	public String borrarCarrito(Long id) {
+		negocio.quitarProductoDeCarrito(id, carrito);
+		return "redirect:/carrito";
+	}
 }

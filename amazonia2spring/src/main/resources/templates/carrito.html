@@ -27,7 +27,7 @@
 					<td class="text-end" th:text="${p.unidades}">5</td>
 					<td class="text-end" th:text="${#numbers.formatCurrency(p.total)}">65</td>
 					<td>
-						<a onclick="return confirm('¿Estás seguro?')" class="btn btn-sm btn-outline-danger" href="#" th:href="@{/admin/borrar(id=${p.id})}"><i class="bi bi-trash-fill"></i></a>
+						<a onclick="return confirm('¿Estás seguro?')" class="btn btn-sm btn-outline-danger" href="#" th:href="@{/carrito/borrar(id=${p.id})}"><i class="bi bi-trash-fill"></i></a>
 					</td>
 				</tr>
 			</tbody>

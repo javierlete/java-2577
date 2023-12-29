@@ -76,4 +76,24 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		return carrito;
 	}
 
+	@Override
+	public Carrito quitarProductoDeCarrito(Long id, Carrito carrito) {
+		Producto producto = carrito.getProducto(id);
+		
+		if (producto == null) {
+			throw new LogicaNegocioException("No existe el producto a eliminar");
+		} else {
+			carrito.removeProducto(id);
+		}
+		
+		log.info("Se ha quitado el producto " + producto + " de un carrito");
+		
+		return carrito;
+	}
+
+	@Override
+	public Carrito quitarProductoDeCarrito(Producto producto, Carrito carrito) {
+		return quitarProductoDeCarrito(producto.getId(), carrito);
+	}
+
 }

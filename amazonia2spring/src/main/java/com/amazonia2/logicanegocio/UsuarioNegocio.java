@@ -17,4 +17,7 @@ public interface UsuarioNegocio {
 	
 	Carrito agregarProductoACarrito(Long id, Carrito carrito);
 	Carrito agregarProductoACarrito(Producto producto, Carrito carrito);
+
+	Carrito quitarProductoDeCarrito(Long id, Carrito carrito);
+	Carrito quitarProductoDeCarrito(Producto producto, Carrito carrito);
 }
