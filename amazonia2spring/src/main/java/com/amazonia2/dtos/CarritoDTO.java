@@ -1,5 +1,6 @@
 package com.amazonia2.dtos;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import com.amazonia2.entidades.Producto;
@@ -12,4 +13,5 @@ public class CarritoDTO {
 	private Long id;
 	private Usuario usuario;
 	private Set<Producto> productos;
+	private BigDecimal total;
 }

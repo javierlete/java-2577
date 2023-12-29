@@ -58,6 +58,16 @@ public class UsuarioNegocioRestController {
 	public Object obtenerCarrito() {
 		return sesionACarritoDTO();
 	}
+	
+	@GetMapping("/carrito/{id}/quitar-unidad")
+	public CarritoDTO quitarUnidad(@PathVariable Long id) {
+		return carritoACarritoDTO(negocio.quitarUnidadDeProductoDeCarrito(id, carrito));
+	}
+
+	@GetMapping("/carrito/{id}/agregar-unidad")
+	public CarritoDTO agregarUnidad(@PathVariable Long id) {
+		return carritoACarritoDTO(negocio.agregarUnidadDeProductoDeCarrito(id, carrito));
+	}
 
 	private CarritoDTO sesionACarritoDTO() {
 		return carritoACarritoDTO(carrito);
