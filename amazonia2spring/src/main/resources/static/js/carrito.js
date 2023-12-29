@@ -2,6 +2,12 @@
 
 const URL = '/api/v2/negocio/usuario/carrito';
 
+const moneda = new Intl.NumberFormat('es-ES', {
+	style: 'currency',
+	currency: 'EUR',
+	useGrouping: true
+});
+
 async function quitarUnidad(id) {
 	cambiarUnidad(id, 'quitar');
 }
@@ -18,9 +24,15 @@ async function cambiarUnidad(id, accion) {
 	if (respuesta.ok) {
 		const carrito = await respuesta.json();
 
+		const numeroProductosEnCarrito = carrito.productos.length;
+
+		document.querySelector('#numero-productos-carrito').innerText = numeroProductosEnCarrito;
+
 		const totalGlobal = carrito.total;
 
 		const productos = carrito.productos.filter(p => p.id === id);
+
+		document.querySelector('#total-global').innerText = moneda.format(totalGlobal);
 
 		if (!productos.length) {
 			document.querySelector(`#tr-${id}`).remove();
@@ -32,15 +44,8 @@ async function cambiarUnidad(id, accion) {
 
 		console.log(carrito);
 
-		const moneda = new Intl.NumberFormat('es-ES', {
-			style: 'currency',
-			currency: 'EUR',
-			useGrouping: true
-		});
-
 		document.querySelector('#input-' + id).value = unidades;
 		document.querySelector('#total-' + id).innerText = moneda.format(total);
-		document.querySelector('#total-global').innerText = moneda.format(totalGlobal);
 	} else {
 		alert(`No se ha podido ${accion} la unidad`);
 	}
