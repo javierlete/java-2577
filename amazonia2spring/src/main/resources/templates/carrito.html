@@ -1,51 +1,71 @@
 <!DOCTYPE html>
-<html lang="es" th:replace="~{_global :: plantilla(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+	th:replace="~{_global :: plantilla(~{::title}, ~{::main})}"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Carrito: Amazonia2</title>
+<meta charset="UTF-8">
+<title>Carrito: Amazonia2</title>
 </head>
 
 <body>
 	<main>
-		
-		<table class="table">
-			<caption>Carrito</caption>
-			<thead class="table-secondary">
-				<tr>
-					<th>Nombre</th>
-					<th class="text-end">Precio</th>
-					<th class="text-end">Unidades</th>
-					<th class="text-end">Total</th>
-					<th>OPCIONES</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="p : ${carrito.productos}">
-					<td th:text="${p.nombre}">Producto1</td>
-					<td class="text-end" th:text="${#numbers.formatCurrency(p.precio)}">1234,12€</td>
-					<td class="text-end" th:text="${p.unidades}">5</td>
-					<td class="text-end" th:text="${#numbers.formatCurrency(p.total)}">65</td>
-					<td>
-						<a onclick="return confirm('¿Estás seguro?')" class="btn btn-sm btn-outline-danger" href="#" th:href="@{/carrito/borrar(id=${p.id})}"><i class="bi bi-trash-fill"></i></a>
-					</td>
-				</tr>
-			</tbody>
-			<tfoot class="table-secondary">
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td class="text-end" th:text="${#numbers.formatCurrency(carrito.total)}">1163847</td>
-					<td>
-						<a class="btn btn-sm btn-primary" href="pagar.html" th:href="@{/pagar}">Pagar</a>
-					</td>
-				</tr>
-			</tfoot>
-		</table>
 
+		<div class="table-responsive">
+			<table class="table">
+				<caption>Carrito</caption>
+				<thead class="table-secondary">
+					<tr>
+						<th>Nombre</th>
+						<th class="text-end">Precio</th>
+						<th class="text-center">Unidades</th>
+						<th class="text-end">Total</th>
+						<th>OPCIONES</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:id="|tr-${p.id}|" th:each="p : ${carrito.productos}">
+						<td th:text="${p.nombre}">Producto1</td>
+						<td class="text-end"
+							th:text="${#numbers.formatCurrency(p.precio)}">1234,12€</td>
+						<td class="d-flex justify-content-center">
+							<div class="input-group mb-3" style="min-width: 11rem; max-width: 11rem">
+								<button class="btn btn-outline-secondary" type="button"
+									th:onclick="|quitarUnidad(${p.id})|">
+									<i class="bi bi-dash-lg"></i>
+								</button>
+								<input th:id="|input-${p.id}|" type="text" class="form-control text-end" placeholder=""
+									aria-label="Example text with button addon"
+									aria-describedby="button-addon1" th:value="${p.unidades}">
+								<button class="btn btn-outline-secondary" type="button"
+									th:onclick="|agregarUnidad(${p.id})|">
+									<i class="bi bi-plus-lg"></i>
+								</button>
+							</div>
+						</td>
+						<td th:id="|total-${p.id}|" class="text-end" th:text="${#numbers.formatCurrency(p.total)}">65</td>
+						<td><a onclick="return confirm('¿Estás seguro?')"
+							class="btn btn-sm btn-outline-danger" href="#"
+							th:href="@{/carrito/borrar(id=${p.id})}"><i
+								class="bi bi-trash-fill"></i></a></td>
+					</tr>
+				</tbody>
+				<tfoot class="table-secondary">
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td id="total-global" class="text-end"
+							th:text="${#numbers.formatCurrency(carrito.total)}">1163847</td>
+						<td><a class="btn btn-sm btn-primary" href="pagar.html"
+							th:href="@{/pagar}">Pagar</a></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
 		<p>
-			<a class="btn btn-sm btn-primary" href="index.html" th:href="@{/}">Seguir comprando</a>
+			<a class="btn btn-sm btn-primary" href="index.html" th:href="@{/}">Seguir
+				comprando</a>
 		</p>
 	</main>
 </body>
