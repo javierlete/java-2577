@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es"
+	th:replace="~{_global :: plantilla(~{::title}, ~{::main})}"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Factura: Amazonia2</title>
+</head>
+
+<body>
+	<main>
+
+		<div>
+			<p th:text="${factura.cliente.nombre}">Nombre</p>
+			<p th:text="${factura.cliente.dni}">NIF</p>
+			<p th:text="${factura.fecha}">Fecha de factura</p>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table">
+				<caption class="caption-top">Factura</caption>
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th class="text-end">Precio</th>
+						<th class="text-end">Unidades</th>
+						<th class="text-end">Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:id="|tr-${p.id}|" th:each="p : ${factura.productos}">
+						<td th:text="${p.nombre}">Producto1</td>
+						<td class="text-end"
+							th:text="${#numbers.formatCurrency(p.precio)}">1234,12€</td>
+						<td th:text="${p.unidades}" class="text-end"></td>
+						<td th:id="|total-${p.id}|" class="text-end" th:text="${#numbers.formatCurrency(p.total)}">65</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td id="total-global" class="text-end"
+							th:text="${#numbers.formatCurrency(factura.total)}">1163847</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</main>
+</body>
+
+</html>

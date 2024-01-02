@@ -1,17 +1,21 @@
 package com.amazonia2.logicanegocio;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Rol;
+import com.amazonia2.repositorios.ClienteRepository;
+import com.amazonia2.repositorios.FacturaRepository;
 import com.amazonia2.repositorios.ProductoRepository;
 
 @Component
 class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
 
-	public AdminNegocioImpl(ProductoRepository repo) {
-		super(repo);
+	public AdminNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente,
+			ProductoRepository repoProducto, ModelMapper mapper) {
+		super(repoFactura, repoCliente, repoProducto, mapper);
 	}
 
 	private static final String PRODUCTO = "producto";
@@ -22,7 +26,7 @@ class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
 			if (producto.getCodigoBarras().equals(producto.getNombre())) {
 				throw new LogicaNegocioException("No se admiten nombres iguales que un código de barras");
 			}
-			return repo.save(producto);
+			return repoProducto.save(producto);
 		} catch (DuplicateKeyException e) {
 			String dato = e.getMessage().split("'")[1];
 
@@ -42,12 +46,12 @@ class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
 
 	@Override
 	public Producto modificarProducto(Producto producto) {
-		return repo.save(producto);
+		return repoProducto.save(producto);
 	}
 
 	@Override
 	public void borrarProducto(Long id) {
-		repo.deleteById(id);
+		repoProducto.deleteById(id);
 	}
 
 	@Override

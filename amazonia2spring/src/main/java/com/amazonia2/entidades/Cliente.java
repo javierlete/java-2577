@@ -2,6 +2,8 @@ package com.amazonia2.entidades;
 
 import com.amazonia2.bibliotecas.validaciones.DniValido;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,9 +17,11 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
+@Entity
 public class Cliente extends Usuario {
 	@NotNull
 	@NotBlank
 	@DniValido
+	@Column(columnDefinition = "CHAR(9)")
 	private String dni;
 }

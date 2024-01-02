@@ -20,9 +20,12 @@ public class UsuarioNegocioRestController {
 
 	private UsuarioNegocio negocio;
 
-	public UsuarioNegocioRestController(Carrito carrito, UsuarioNegocio negocio) {
+	private ModelMapper mapper;
+	
+	public UsuarioNegocioRestController(Carrito carrito, UsuarioNegocio negocio, ModelMapper mapper) {
 		this.carrito = carrito;
 		this.negocio = negocio;
+		this.mapper = mapper;
 	}
 
 	@GetMapping("/productos")
@@ -72,9 +75,6 @@ public class UsuarioNegocioRestController {
 	private CarritoDTO sesionACarritoDTO() {
 		return carritoACarritoDTO(carrito);
 	}
-
-	// Mapeador de Carrito a CarritoDTO
-	private ModelMapper mapper = new ModelMapper();
 
 	private CarritoDTO carritoACarritoDTO(Carrito carrito) {
 		return mapper.map(carrito, CarritoDTO.class);

@@ -1,13 +1,20 @@
 package com.amazonia2.logicanegocio;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonia2.entidades.Carrito;
+import com.amazonia2.entidades.Cliente;
+import com.amazonia2.entidades.Factura;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Usuario;
+import com.amazonia2.repositorios.ClienteRepository;
+import com.amazonia2.repositorios.FacturaRepository;
 import com.amazonia2.repositorios.ProductoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -17,21 +24,27 @@ import lombok.extern.java.Log;
 @Component
 @Primary
 class UsuarioNegocioImpl implements UsuarioNegocio {
+	private ModelMapper mapper;
 
-	protected ProductoRepository repo;
+	protected ProductoRepository repoProducto;
+	private ClienteRepository repoCliente;
+	private FacturaRepository repoFactura;
 
-	public UsuarioNegocioImpl(ProductoRepository repo) {
-		this.repo = repo;
+	public UsuarioNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente, ProductoRepository repoProducto, ModelMapper mapper) {
+		this.repoCliente = repoCliente;
+		this.repoProducto = repoProducto;
+		this.repoFactura = repoFactura;
+		this.mapper = mapper;
 	}
 
 	@Override
 	public Iterable<Producto> listadoProductos() {
-		return repo.findAll();
+		return repoProducto.findAll();
 	}
 
 	@Override
 	public Producto detalleProducto(Long id) {
-		return repo.findById(id).orElse(null);
+		return repoProducto.findById(id).orElse(null);
 	}
 
 	@Override
@@ -46,7 +59,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 
 	@Override
 	public long cuantosProductosHay() {
-		return repo.count();
+		return repoProducto.count();
 	}
 
 	@Override
@@ -102,13 +115,13 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	public Carrito quitarUnidadDeProductoDeCarrito(Long id, Carrito carrito) {
 		Integer unidades = carrito.getProducto(id).getUnidades();
 
-		Optional<Producto> productoAlmacen = repo.findById(id);
+		Optional<Producto> productoAlmacen = repoProducto.findById(id);
 
 		if (productoAlmacen.isEmpty() || unidades == 1) {
 			quitarProductoDeCarrito(id, carrito);
 			return carrito;
 		}
-		
+
 		carrito.updateUnidades(id, unidades - 1);
 
 		return carrito;
@@ -118,7 +131,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	public Carrito agregarUnidadDeProductoDeCarrito(Long id, Carrito carrito) {
 		Integer unidades = carrito.getProducto(id).getUnidades();
 
-		Optional<Producto> productoAlmacen = repo.findById(id);
+		Optional<Producto> productoAlmacen = repoProducto.findById(id);
 
 		if (productoAlmacen.isEmpty()) {
 			quitarProductoDeCarrito(id, carrito);
@@ -128,7 +141,45 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		if (unidades + 1 <= productoAlmacen.get().getUnidades()) {
 			carrito.updateUnidades(id, unidades + 1);
 		}
-		
+
 		return carrito;
+	}
+
+	@Override
+	public String nuevoNumeroFactura(final String anno) {
+		final String numeroFacturaObtenida = repoFactura.ultimoNumeroFactura(anno);
+		
+		if(numeroFacturaObtenida == null) {
+			return anno + "0001";
+		}
+		
+		String numero = numeroFacturaObtenida.substring(4);
+
+		return anno + String.format("%04d", Integer.parseInt(numero) + 1);
+	}
+
+	@Override
+	public Factura crearFacturaProForma(String email, Carrito carrito) {
+		String anno = String.valueOf(LocalDate.now().getYear());
+		String numero = nuevoNumeroFactura(anno);
+		Cliente cliente = repoCliente.findByEmail(email);
+
+		Factura factura = mapper.map(carrito, Factura.class);
+
+		factura.setNumero(numero);
+		factura.setFecha(LocalDate.now());
+		factura.setCliente(cliente);
+		
+		return factura;
+	}
+
+	@Override
+	@Transactional
+	public synchronized Factura facturar(Factura factura) {
+		factura.setNumero(nuevoNumeroFactura(String.valueOf(LocalDate.now().getYear())));
+		
+		repoFactura.save(factura);
+		
+		return factura;
 	}
 }

@@ -1,6 +1,7 @@
 package com.amazonia2.logicanegocio;
 
 import com.amazonia2.entidades.Carrito;
+import com.amazonia2.entidades.Factura;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Usuario;
 
@@ -24,4 +25,10 @@ public interface UsuarioNegocio {
 	Carrito quitarUnidadDeProductoDeCarrito(Long id, Carrito carrito);
 
 	Carrito agregarUnidadDeProductoDeCarrito(Long id, Carrito carrito);
+	
+	String nuevoNumeroFactura(String anno);
+
+	Factura crearFacturaProForma(String name, Carrito carrito);
+	
+	Factura facturar(Factura factura);
 }
