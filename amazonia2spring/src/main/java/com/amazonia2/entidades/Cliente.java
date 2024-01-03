@@ -10,18 +10,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Data
 @SuperBuilder
 @Entity
 public class Cliente extends Usuario {
 	@NotNull
 	@NotBlank
-	@DniValido
+	@DniValido(groups = RegistroGrupoValidacion.class)
 	@Column(columnDefinition = "CHAR(9)")
 	private String dni;
 }

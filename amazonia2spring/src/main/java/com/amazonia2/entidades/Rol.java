@@ -24,6 +24,9 @@ import lombok.ToString;
 @Entity
 @Table(name = "roles")
 public class Rol {
+	public static final Rol CLIENTE = Rol.builder().id(2L).build();
+	public static final Rol USUARIO = Rol.builder().id(3L).build();
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
