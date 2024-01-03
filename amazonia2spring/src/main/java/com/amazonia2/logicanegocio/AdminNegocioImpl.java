@@ -9,13 +9,15 @@ import com.amazonia2.entidades.Rol;
 import com.amazonia2.repositorios.ClienteRepository;
 import com.amazonia2.repositorios.FacturaRepository;
 import com.amazonia2.repositorios.ProductoRepository;
+import com.amazonia2.repositorios.UsuarioRepository;
 
 @Component
 class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
 
-	public AdminNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente,
+	public AdminNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente, UsuarioRepository repoUsuario,
 			ProductoRepository repoProducto, ModelMapper mapper) {
-		super(repoFactura, repoCliente, repoProducto, mapper);
+		super(repoFactura, repoCliente, repoUsuario, repoProducto, mapper);
+		// TODO Auto-generated constructor stub
 	}
 
 	private static final String PRODUCTO = "producto";

@@ -5,17 +5,19 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonia2.entidades.Carrito;
 import com.amazonia2.entidades.Cliente;
 import com.amazonia2.entidades.Factura;
 import com.amazonia2.entidades.Producto;
+import com.amazonia2.entidades.Rol;
 import com.amazonia2.entidades.Usuario;
 import com.amazonia2.repositorios.ClienteRepository;
 import com.amazonia2.repositorios.FacturaRepository;
 import com.amazonia2.repositorios.ProductoRepository;
+import com.amazonia2.repositorios.UsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.java.Log;
@@ -24,14 +26,20 @@ import lombok.extern.java.Log;
 @Component
 @Primary
 class UsuarioNegocioImpl implements UsuarioNegocio {
+	private static final String CLIENTE = "cliente";
+
 	private ModelMapper mapper;
 
 	protected ProductoRepository repoProducto;
 	private ClienteRepository repoCliente;
 	private FacturaRepository repoFactura;
 
-	public UsuarioNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente, ProductoRepository repoProducto, ModelMapper mapper) {
+	private UsuarioRepository repoUsuario;
+
+	public UsuarioNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente,
+			UsuarioRepository repoUsuario, ProductoRepository repoProducto, ModelMapper mapper) {
 		this.repoCliente = repoCliente;
+		this.repoUsuario = repoUsuario;
 		this.repoProducto = repoProducto;
 		this.repoFactura = repoFactura;
 		this.mapper = mapper;
@@ -148,11 +156,11 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	@Override
 	public String nuevoNumeroFactura(final String anno) {
 		final String numeroFacturaObtenida = repoFactura.ultimoNumeroFactura(anno);
-		
-		if(numeroFacturaObtenida == null) {
+
+		if (numeroFacturaObtenida == null) {
 			return anno + "0001";
 		}
-		
+
 		String numero = numeroFacturaObtenida.substring(4);
 
 		return anno + String.format("%04d", Integer.parseInt(numero) + 1);
@@ -169,17 +177,52 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		factura.setNumero(numero);
 		factura.setFecha(LocalDate.now());
 		factura.setCliente(cliente);
-		
+
 		return factura;
 	}
 
 	@Override
-	@Transactional
 	public synchronized Factura facturar(Factura factura) {
 		factura.setNumero(nuevoNumeroFactura(String.valueOf(LocalDate.now().getYear())));
-		
+
 		repoFactura.save(factura);
-		
+
 		return factura;
+	}
+
+	@Override
+	public Usuario registrarUsuario(Usuario usuario) {
+		try {
+			usuario.setRol(Rol.USUARIO);
+
+			if (usuario instanceof Cliente cliente) {
+				if (cliente.getDni() == null || cliente.getDni().isBlank()) {
+					System.out.println("Usuario sin mapear: " + usuario);
+					Usuario u = new Usuario();
+					mapper.map(cliente, u);
+					System.out.println("Usuario mapeado: " + u);
+					repoUsuario.save(u);
+				} else {
+					usuario.setRol(Rol.CLIENTE);
+					repoCliente.save(cliente);
+				}
+			} else {
+				repoUsuario.save(usuario);
+			}
+
+			return usuario;
+		} catch (DuplicateKeyException e) {
+			String dato = e.getMessage().split("'")[1];
+
+			if (dato.equals(usuario.getEmail())) {
+				throw new ClaveDuplicadaException("el email ya está registrado", CLIENTE, "email", e);
+			} else if (usuario instanceof Cliente cliente && dato.equals(cliente.getDni())) {
+				throw new ClaveDuplicadaException("ese dni ya está registrado", CLIENTE, "dni", e);
+			} else {
+				throw new ClaveDuplicadaException("hay un campo duplicado", CLIENTE, null, e);
+			}
+		} catch(Exception e) {
+			throw e;
+		}
 	}
 }

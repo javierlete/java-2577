@@ -3,11 +3,18 @@ package com.amazonia2.presentacion.controladores;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.amazonia2.bibliotecas.Alerta;
+import com.amazonia2.entidades.Cliente;
+import com.amazonia2.entidades.RegistroGrupoValidacion;
+import com.amazonia2.logicanegocio.ClaveDuplicadaException;
 import com.amazonia2.logicanegocio.UsuarioNegocio;
 
 import jakarta.servlet.RequestDispatcher;
@@ -38,7 +45,8 @@ public class IndexController implements ErrorController {
 	}
 
 	@GetMapping("/login")
-	public String login(String error, String logout, String noautorizado, String interactivo, Model modelo) {
+	public String login(Cliente cliente, String error, String logout, String noautorizado, String interactivo,
+			Model modelo) {
 		Alerta alerta = new Alerta(modelo);
 
 		if (error != null) {
@@ -53,6 +61,25 @@ public class IndexController implements ErrorController {
 			alerta.warning("Tienes que iniciar sesión");
 		}
 
+		return "login";
+	}
+
+	@PostMapping("/registro")
+	public String registro(@Validated(RegistroGrupoValidacion.class) Cliente cliente, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			System.out.println(bindingResult);
+			return "login";
+		}
+
+		try {
+			negocio.registrarUsuario(cliente);
+		} catch (ClaveDuplicadaException e) {
+			if (e.getCampo() != null) {
+				bindingResult.addError(new FieldError(e.getObjeto(), e.getCampo(), e.getMessage()));
+			} else {
+				throw e;
+			}
+		}
 		return "login";
 	}
 

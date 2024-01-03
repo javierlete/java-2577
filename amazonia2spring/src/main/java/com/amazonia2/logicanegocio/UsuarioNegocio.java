@@ -31,4 +31,6 @@ public interface UsuarioNegocio {
 	Factura crearFacturaProForma(String name, Carrito carrito);
 	
 	Factura facturar(Factura factura);
+
+	Usuario registrarUsuario(Usuario usuario);
 }
