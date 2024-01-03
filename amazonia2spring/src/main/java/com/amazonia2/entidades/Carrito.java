@@ -46,6 +46,12 @@ public class Carrito {
 	public Set<Producto> getProductos() {
 		return new HashSet<>(productos.values());
 	}
+	
+	public void setProductos(Set<Producto> productos) {
+		this.productos.clear();
+		
+		productos.stream().forEach(p -> this.productos.put(p.getId(), p));
+	}
 
 	public void addProducto(Producto producto) {
 		productos.put(producto.getId(), producto);
