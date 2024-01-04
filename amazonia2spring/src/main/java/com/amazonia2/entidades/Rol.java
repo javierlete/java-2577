@@ -24,9 +24,10 @@ import lombok.ToString;
 @Entity
 @Table(name = "roles")
 public class Rol {
+	public static final Rol ADMIN = Rol.builder().id(1L).build();
 	public static final Rol CLIENTE = Rol.builder().id(2L).build();
 	public static final Rol USUARIO = Rol.builder().id(3L).build();
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -34,7 +35,7 @@ public class Rol {
 	@NotNull
 	@Size(min = 2, max = 20)
 	private String nombre;
-	
+
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "rol")
