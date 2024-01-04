@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
+import com.amazonia2.configuraciones.WebSecurityConfig;
 import com.amazonia2.entidades.Carrito;
 import com.amazonia2.entidades.Cliente;
 import com.amazonia2.entidades.Factura;
@@ -28,6 +29,7 @@ import lombok.extern.java.Log;
 class UsuarioNegocioImpl implements UsuarioNegocio {
 	private static final String CLIENTE = "cliente";
 
+	private WebSecurityConfig security;
 	private ModelMapper mapper;
 
 	protected ProductoRepository repoProducto;
@@ -36,13 +38,14 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 
 	private UsuarioRepository repoUsuario;
 
-	public UsuarioNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente,
+	public UsuarioNegocioImpl(WebSecurityConfig security, FacturaRepository repoFactura, ClienteRepository repoCliente,
 			UsuarioRepository repoUsuario, ProductoRepository repoProducto, ModelMapper mapper) {
 		this.repoCliente = repoCliente;
 		this.repoUsuario = repoUsuario;
 		this.repoProducto = repoProducto;
 		this.repoFactura = repoFactura;
 		this.mapper = mapper;
+		this.security = security;
 	}
 
 	@Override
@@ -193,6 +196,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	@Override
 	public Usuario registrarUsuario(Usuario usuario) {
 		try {
+			usuario.setPassword(security.passwordEncoder().encode(usuario.getPassword()));
 			usuario.setRol(Rol.USUARIO);
 
 			if (usuario instanceof Cliente cliente) {

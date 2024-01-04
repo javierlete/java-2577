@@ -20,7 +20,7 @@ public class WebSecurityConfig {
 	// https://bcrypt-generator.com/
 	
 	// CODIFICACIÓN DE CONTRASEÑAS BCRYPT
-	PasswordEncoder passwordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder(12); // NoOpPasswordEncoder tiene getInstance
 	}
 	

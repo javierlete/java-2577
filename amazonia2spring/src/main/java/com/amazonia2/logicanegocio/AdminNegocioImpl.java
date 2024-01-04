@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
+import com.amazonia2.configuraciones.WebSecurityConfig;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Rol;
 import com.amazonia2.repositorios.ClienteRepository;
@@ -14,9 +15,9 @@ import com.amazonia2.repositorios.UsuarioRepository;
 @Component
 class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
 
-	public AdminNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente, UsuarioRepository repoUsuario,
-			ProductoRepository repoProducto, ModelMapper mapper) {
-		super(repoFactura, repoCliente, repoUsuario, repoProducto, mapper);
+	public AdminNegocioImpl(WebSecurityConfig security, FacturaRepository repoFactura, ClienteRepository repoCliente,
+			UsuarioRepository repoUsuario, ProductoRepository repoProducto, ModelMapper mapper) {
+		super(security, repoFactura, repoCliente, repoUsuario, repoProducto, mapper);
 	}
 
 	private static final String PRODUCTO = "producto";
