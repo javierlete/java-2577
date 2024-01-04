@@ -197,10 +197,8 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 
 			if (usuario instanceof Cliente cliente) {
 				if (cliente.getDni() == null || cliente.getDni().isBlank()) {
-					System.out.println("Usuario sin mapear: " + usuario);
 					Usuario u = new Usuario();
 					mapper.map(cliente, u);
-					System.out.println("Usuario mapeado: " + u);
 					repoUsuario.save(u);
 				} else {
 					usuario.setRol(Rol.CLIENTE);

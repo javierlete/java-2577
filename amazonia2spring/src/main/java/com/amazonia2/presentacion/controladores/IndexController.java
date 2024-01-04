@@ -26,6 +26,7 @@ import lombok.extern.java.Log;
 @RequestMapping
 public class IndexController implements ErrorController {
 
+	private static final String LOGIN = "login";
 	private UsuarioNegocio negocio;
 
 	public IndexController(UsuarioNegocio negocio) {
@@ -61,32 +62,29 @@ public class IndexController implements ErrorController {
 			alerta.warning("Tienes que iniciar sesión");
 		}
 
-		return "login";
+		return LOGIN;
 	}
 
 	@PostMapping("/registro")
 	public String registro(@Validated(RegistroGrupoValidacion.class) Cliente cliente, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			System.out.println(bindingResult);
-			return "login";
-		}
-
-		try {
-			negocio.registrarUsuario(cliente);
-		} catch (ClaveDuplicadaException e) {
-			if (e.getCampo() != null) {
-				bindingResult.addError(new FieldError(e.getObjeto(), e.getCampo(), e.getMessage()));
-			} else {
-				throw e;
+		if (!bindingResult.hasErrors()) {
+			try {
+				negocio.registrarUsuario(cliente);
+			} catch (ClaveDuplicadaException e) {
+				if (e.getCampo() != null) {
+					bindingResult.addError(new FieldError(e.getObjeto(), e.getCampo(), e.getMessage()));
+				} else {
+					throw e;
+				}
 			}
 		}
-		return "login";
+		return LOGIN;
 	}
-	
+
 	@GetMapping("/error")
 	public String error(Model modelo, HttpServletRequest request) {
 		System.out.println("ERROR-------------------------");
-		
+
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		log.severe("Status: " + status.toString());
 
