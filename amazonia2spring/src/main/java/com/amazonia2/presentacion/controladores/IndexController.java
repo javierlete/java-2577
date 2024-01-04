@@ -82,14 +82,13 @@ public class IndexController implements ErrorController {
 		}
 		return "login";
 	}
-
+	
 	@GetMapping("/error")
-	public String error(Model modelo, HttpServletRequest request, Exception exception) {
+	public String error(Model modelo, HttpServletRequest request) {
+		System.out.println("ERROR-------------------------");
+		
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		log.severe("Status: " + status.toString());
-
-		log.severe("Tipo: " + exception.getClass().getSimpleName());
-		log.severe("Mensaje: " + exception.getMessage());
 
 		modelo.addAttribute("status", status);
 
