@@ -6,6 +6,11 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.amazonia2.configuraciones.WebSecurityConfig;
@@ -37,8 +42,9 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	private FacturaRepository repoFactura;
 
 	private UsuarioRepository repoUsuario;
+	private AuthenticationManager auth;
 
-	public UsuarioNegocioImpl(WebSecurityConfig security, FacturaRepository repoFactura, ClienteRepository repoCliente,
+	public UsuarioNegocioImpl(AuthenticationConfiguration authConfig, WebSecurityConfig security, FacturaRepository repoFactura, ClienteRepository repoCliente,
 			UsuarioRepository repoUsuario, ProductoRepository repoProducto, ModelMapper mapper) {
 		this.repoCliente = repoCliente;
 		this.repoUsuario = repoUsuario;
@@ -46,6 +52,12 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		this.repoFactura = repoFactura;
 		this.mapper = mapper;
 		this.security = security;
+		try {
+			this.auth = authConfig.getAuthenticationManager();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -196,6 +208,9 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	@Override
 	public Usuario registrarUsuario(Usuario usuario) {
 		try {
+			String nombreUsuario = usuario.getEmail();
+			String password = usuario.getPassword();
+
 			usuario.setPassword(security.passwordEncoder().encode(usuario.getPassword()));
 			usuario.setRol(Rol.USUARIO);
 
@@ -212,6 +227,16 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 				repoUsuario.save(usuario);
 			}
 
+			Authentication token = new UsernamePasswordAuthenticationToken(nombreUsuario, password);
+
+			Authentication authentication = auth.authenticate(token);
+
+			if (authentication.isAuthenticated()) {
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			} else {
+				throw new LogicaNegocioException("No se ha autenticado correctamente el usuario registrado");
+			}
+
 			return usuario;
 		} catch (DataIntegrityViolationException e) {
 			String dato = e.getMessage().split("'")[1];
@@ -223,7 +248,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 			} else {
 				throw new ClaveDuplicadaException("hay un campo duplicado", CLIENTE, null, e);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw e;
 		}
 	}

@@ -2,6 +2,7 @@ package com.amazonia2.logicanegocio;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.stereotype.Component;
 
 import com.amazonia2.configuraciones.WebSecurityConfig;
@@ -15,9 +16,11 @@ import com.amazonia2.repositorios.UsuarioRepository;
 @Component
 class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
 
-	public AdminNegocioImpl(WebSecurityConfig security, FacturaRepository repoFactura, ClienteRepository repoCliente,
-			UsuarioRepository repoUsuario, ProductoRepository repoProducto, ModelMapper mapper) {
-		super(security, repoFactura, repoCliente, repoUsuario, repoProducto, mapper);
+	public AdminNegocioImpl(AuthenticationConfiguration authConfig, WebSecurityConfig security,
+			FacturaRepository repoFactura, ClienteRepository repoCliente, UsuarioRepository repoUsuario,
+			ProductoRepository repoProducto, ModelMapper mapper) {
+		super(authConfig, security, repoFactura, repoCliente, repoUsuario, repoProducto, mapper);
+		// TODO Auto-generated constructor stub
 	}
 
 	private static final String PRODUCTO = "producto";
