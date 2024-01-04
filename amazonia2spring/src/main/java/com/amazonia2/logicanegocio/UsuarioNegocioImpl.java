@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import com.amazonia2.entidades.Carrito;
@@ -211,7 +211,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 			}
 
 			return usuario;
-		} catch (DuplicateKeyException e) {
+		} catch (DataIntegrityViolationException e) {
 			String dato = e.getMessage().split("'")[1];
 
 			if (dato.equals(usuario.getEmail())) {

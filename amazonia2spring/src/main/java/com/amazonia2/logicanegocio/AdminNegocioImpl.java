@@ -1,7 +1,7 @@
 package com.amazonia2.logicanegocio;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import com.amazonia2.entidades.Producto;
@@ -17,7 +17,6 @@ class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
 	public AdminNegocioImpl(FacturaRepository repoFactura, ClienteRepository repoCliente, UsuarioRepository repoUsuario,
 			ProductoRepository repoProducto, ModelMapper mapper) {
 		super(repoFactura, repoCliente, repoUsuario, repoProducto, mapper);
-		// TODO Auto-generated constructor stub
 	}
 
 	private static final String PRODUCTO = "producto";
@@ -29,7 +28,7 @@ class AdminNegocioImpl extends UsuarioNegocioImpl implements AdminNegocio {
 				throw new LogicaNegocioException("No se admiten nombres iguales que un código de barras");
 			}
 			return repoProducto.save(producto);
-		} catch (DuplicateKeyException e) {
+		} catch (DataIntegrityViolationException e) {
 			String dato = e.getMessage().split("'")[1];
 
 			if (dato.equals(producto.getCodigoBarras())) {
