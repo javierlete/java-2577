@@ -47,7 +47,7 @@ public class WebSecurityConfig {
         	.csrf(t -> t.ignoringRequestMatchers("/api/**"))
 	        .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/pagar").hasRole("CLIENTE")
+                .requestMatchers("/pagar").hasAnyRole("CLIENTE", "ADMIN")
                 .anyRequest().permitAll()
 //				.requestMatchers("/", "/home").permitAll()
 //				.anyRequest().authenticated()
