@@ -10,7 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.amazonia2.configuraciones.WebSecurityConfig;
 import com.amazonia2.dtos.Mapeador;
@@ -29,7 +29,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.java.Log;
 
 @Log
-@Component
+@Service
 @Primary
 class UsuarioNegocioImpl implements UsuarioNegocio {
 	private static final String CLIENTE = "cliente";

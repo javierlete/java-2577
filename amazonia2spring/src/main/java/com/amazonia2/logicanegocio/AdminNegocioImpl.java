@@ -1,13 +1,13 @@
 package com.amazonia2.logicanegocio;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Rol;
 import com.amazonia2.repositorios.ProductoRepository;
 
-@Component
+@Service
 class AdminNegocioImpl // extends UsuarioNegocioImpl
 		implements AdminNegocio {
 
