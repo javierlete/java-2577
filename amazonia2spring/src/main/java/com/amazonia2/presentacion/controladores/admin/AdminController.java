@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.logicanegocio.AdminNegocio;
 import com.amazonia2.logicanegocio.ClaveDuplicadaException;
+import com.amazonia2.logicanegocio.UsuarioNegocio;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -24,10 +25,12 @@ public class AdminController {
 	private static final String ALERTA = "alerta";
 	private static final String ADMIN_DETALLE = "admin/detalle";
 	
-	private AdminNegocio negocio;
+	private AdminNegocio negocioAdmin;
+	private UsuarioNegocio negocioUsuario;
 	
-	public AdminController(AdminNegocio negocio) {
-		this.negocio = negocio;
+	public AdminController(AdminNegocio negocioAdmin, UsuarioNegocio negocioUsuario) {
+		this.negocioAdmin = negocioAdmin;
+		this.negocioUsuario = negocioUsuario;
 	}
 
 	@ModelAttribute("miLocale")
@@ -37,7 +40,7 @@ public class AdminController {
 	
 	@GetMapping
 	public String index(Model modelo) {
-		modelo.addAttribute("productos", negocio.listadoProductos());
+		modelo.addAttribute("productos", negocioUsuario.listadoProductos());
 		return "admin/index";
 	}
 
@@ -52,9 +55,9 @@ public class AdminController {
 
 		try {
 			if (producto.getId() == null) {
-				negocio.insertarProducto(producto);
+				negocioAdmin.insertarProducto(producto);
 			} else {
-				negocio.modificarProducto(producto);
+				negocioAdmin.modificarProducto(producto);
 			}
 		} catch (ClaveDuplicadaException e) {
 			if (e.getCampo() != null) {
@@ -74,7 +77,7 @@ public class AdminController {
 
 	@GetMapping("/borrar")
 	public String borrar(Long id) {
-		negocio.borrarProducto(id);
+		negocioAdmin.borrarProducto(id);
 
 		return "redirect:/admin";
 	}
@@ -82,7 +85,7 @@ public class AdminController {
 	@GetMapping("/detalle")
 	public String detalle(Model modelo, Long id, Producto producto) {
 		if (id != null) {
-			modelo.addAttribute("producto", negocio.detalleProducto(id));
+			modelo.addAttribute("producto", negocioUsuario.detalleProducto(id));
 		}
 
 		return ADMIN_DETALLE;

@@ -55,8 +55,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		try {
 			this.auth = authConfig.getAuthenticationManager();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new LogicaNegocioException("No se ha podido obtener el autenticador");
 		}
 	}
 

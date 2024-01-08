@@ -11,45 +11,48 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.logicanegocio.AdminNegocio;
+import com.amazonia2.logicanegocio.UsuarioNegocio;
 
 @RestController
 @RequestMapping("/api/v2/negocio/admin")
 public class AdminNegocioRestController {
 	
-	private AdminNegocio negocio;
+	private UsuarioNegocio negocioUsuario;
+	private AdminNegocio negocioAdmin;
 	
-	public AdminNegocioRestController(AdminNegocio negocio) {
-		this.negocio = negocio;
+	public AdminNegocioRestController(AdminNegocio negocioAdmin, UsuarioNegocio negocioUsuario) {
+		this.negocioAdmin = negocioAdmin;
+		this.negocioUsuario = negocioUsuario;
 	}
 	
 	@GetMapping("/productos")
 	public Iterable<Producto> getTodos() {
-		return negocio.listadoProductos();
+		return negocioUsuario.listadoProductos();
 	}
 	
 	@GetMapping("/productos/{id}")
 	public Producto getId(@PathVariable Long id) {
-		return negocio.detalleProducto(id);
+		return negocioUsuario.detalleProducto(id);
 	}
 	
 	@PostMapping("/productos")
 	public Producto post(@RequestBody Producto producto) {
-		return negocio.insertarProducto(producto);
+		return negocioAdmin.insertarProducto(producto);
 	}
 	
 	@PutMapping("/productos/{id}")
 	public Producto put(@PathVariable Long id, @RequestBody Producto producto) {
-		return negocio.modificarProducto(producto);
+		return negocioAdmin.modificarProducto(producto);
 	}
 
 	@DeleteMapping("/productos/{id}")
 	public void delete(@PathVariable Long id) {
-		negocio.borrarProducto(id);
+		negocioAdmin.borrarProducto(id);
 	}
 	
 	@GetMapping("/productos/buscar/cuantos")
 	public long buscarCuantos() {
-		return negocio.cuantosProductosHay();
+		return negocioUsuario.cuantosProductosHay();
 	}
 	
 }
