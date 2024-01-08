@@ -1,6 +1,5 @@
 package com.amazonia2.presentacion.controladores.rest;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amazonia2.dtos.CarritoDTO;
+import com.amazonia2.dtos.Mapeador;
 import com.amazonia2.entidades.Carrito;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.logicanegocio.UsuarioNegocio;
@@ -20,12 +20,12 @@ public class UsuarioNegocioRestController {
 
 	private UsuarioNegocio negocio;
 
-	private ModelMapper mapper;
+	private Mapeador mapeador;
 	
-	public UsuarioNegocioRestController(Carrito carrito, UsuarioNegocio negocio, ModelMapper mapper) {
+	public UsuarioNegocioRestController(Carrito carrito, UsuarioNegocio negocio, Mapeador mapeador) {
 		this.carrito = carrito;
 		this.negocio = negocio;
-		this.mapper = mapper;
+		this.mapeador= mapeador;
 	}
 
 	@GetMapping("/productos")
@@ -54,7 +54,7 @@ public class UsuarioNegocioRestController {
 	// Más pesada
 	@PutMapping("/carrito/{id}/agregar")
 	public CarritoDTO agregarProductoACarrito(@PathVariable Long id, @RequestBody CarritoDTO carritoDTO) {
-		return carritoACarritoDTO(negocio.agregarProductoACarrito(id, carritoDTOACarrito(carritoDTO)));
+		return mapeador.carrito2CarritoDTO(negocio.agregarProductoACarrito(id, mapeador.carritoDTO2Carrito(carritoDTO)));
 	}
 
 	@GetMapping("/carrito")
@@ -64,27 +64,15 @@ public class UsuarioNegocioRestController {
 	
 	@GetMapping("/carrito/{id}/quitar-unidad")
 	public CarritoDTO quitarUnidad(@PathVariable Long id) {
-		return carritoACarritoDTO(negocio.quitarUnidadDeProductoDeCarrito(id, carrito));
+		return mapeador.carrito2CarritoDTO(negocio.quitarUnidadDeProductoDeCarrito(id, carrito));
 	}
 
 	@GetMapping("/carrito/{id}/agregar-unidad")
 	public CarritoDTO agregarUnidad(@PathVariable Long id) {
-		return carritoACarritoDTO(negocio.agregarUnidadDeProductoDeCarrito(id, carrito));
+		return mapeador.carrito2CarritoDTO(negocio.agregarUnidadDeProductoDeCarrito(id, carrito));
 	}
 
 	private CarritoDTO sesionACarritoDTO() {
-		return carritoACarritoDTO(carrito);
-	}
-
-	private CarritoDTO carritoACarritoDTO(Carrito carrito) {
-		return mapper.map(carrito, CarritoDTO.class);
-	}
-
-	private Carrito carritoDTOACarrito(CarritoDTO carritoDTO) {
-		Carrito carritoLocal = mapper.map(carritoDTO, Carrito.class);
-		
-		carritoDTO.getProductos().stream().forEach(carritoLocal::addProducto);
-		
-		return carritoLocal;
+		return mapeador.carrito2CarritoDTO(carrito);
 	}
 }

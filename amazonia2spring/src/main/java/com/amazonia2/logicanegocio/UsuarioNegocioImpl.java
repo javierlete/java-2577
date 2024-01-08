@@ -3,7 +3,6 @@ package com.amazonia2.logicanegocio;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.amazonia2.configuraciones.WebSecurityConfig;
+import com.amazonia2.dtos.Mapeador;
 import com.amazonia2.entidades.Carrito;
 import com.amazonia2.entidades.Cliente;
 import com.amazonia2.entidades.Factura;
@@ -35,7 +35,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	private static final String CLIENTE = "cliente";
 
 	private WebSecurityConfig security;
-	private ModelMapper mapper;
+	private Mapeador mapeador;
 
 	protected ProductoRepository repoProducto;
 	private ClienteRepository repoCliente;
@@ -45,12 +45,12 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	private AuthenticationManager auth;
 
 	public UsuarioNegocioImpl(AuthenticationConfiguration authConfig, WebSecurityConfig security, FacturaRepository repoFactura, ClienteRepository repoCliente,
-			UsuarioRepository repoUsuario, ProductoRepository repoProducto, ModelMapper mapper) {
+			UsuarioRepository repoUsuario, ProductoRepository repoProducto, Mapeador mapeador) {
 		this.repoCliente = repoCliente;
 		this.repoUsuario = repoUsuario;
 		this.repoProducto = repoProducto;
 		this.repoFactura = repoFactura;
-		this.mapper = mapper;
+		this.mapeador = mapeador;
 		this.security = security;
 		try {
 			this.auth = authConfig.getAuthenticationManager();
@@ -186,7 +186,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		String numero = nuevoNumeroFactura(anno);
 		Cliente cliente = repoCliente.findByEmail(email);
 
-		Factura factura = mapper.map(carrito, Factura.class);
+		Factura factura = mapeador.carrito2Factura(carrito);
 
 		factura.setNumero(numero);
 		factura.setFecha(LocalDate.now());
@@ -215,9 +215,7 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 
 			if (usuario instanceof Cliente cliente) {
 				if (cliente.getDni() == null || cliente.getDni().isBlank()) {
-					Usuario u = new Usuario();
-					mapper.map(cliente, u);
-					repoUsuario.save(u);
+					repoUsuario.save(mapeador.cliente2Usuario(cliente));
 				} else {
 					usuario.setRol(Rol.CLIENTE);
 					repoCliente.save(cliente);
