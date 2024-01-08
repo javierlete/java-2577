@@ -42,7 +42,7 @@ public class ConfiguracionesGenerales {
 
 	@ExceptionHandler(Exception.class)
 	public String handleApplicationException(Model modelo, Exception exception, HttpServletRequest request) {
-		System.out.println("EXCEPTION----------------------------------");
+		log.severe("EXCEPTION");
 
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		

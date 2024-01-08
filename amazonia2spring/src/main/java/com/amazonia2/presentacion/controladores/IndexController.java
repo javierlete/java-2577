@@ -83,7 +83,7 @@ public class IndexController implements ErrorController {
 
 	@GetMapping("/error")
 	public String error(Model modelo, HttpServletRequest request) {
-		System.out.println("ERROR-------------------------");
+		log.severe("ERROR");
 
 		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		log.severe("Status: " + status.toString());
