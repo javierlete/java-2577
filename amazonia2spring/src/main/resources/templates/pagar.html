@@ -30,7 +30,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:id="|tr-${p.id}|" th:each="p : ${factura.productos}">
+					<tr th:id="|tr-${p.id}|" th:each="p : ${factura.pedidos}">
 						<td th:text="${p.nombre}">Producto1</td>
 						<td class="text-end"
 							th:text="${#numbers.formatCurrency(p.precio)}">1234,12€</td>
@@ -48,6 +48,8 @@
 					</tr>
 				</tfoot>
 			</table>
+			
+			<div th:if="${nivel != 'success'}" class="text-center"><a href="confirmar" class="btn btn-primary">Confirmar</a></div>
 		</div>
 	</main>
 </body>

@@ -17,11 +17,13 @@ import com.amazonia2.dtos.Mapeador;
 import com.amazonia2.entidades.Carrito;
 import com.amazonia2.entidades.Cliente;
 import com.amazonia2.entidades.Factura;
+import com.amazonia2.entidades.Pedido;
 import com.amazonia2.entidades.Producto;
 import com.amazonia2.entidades.Rol;
 import com.amazonia2.entidades.Usuario;
 import com.amazonia2.repositorios.ClienteRepository;
 import com.amazonia2.repositorios.FacturaRepository;
+import com.amazonia2.repositorios.PedidoRepository;
 import com.amazonia2.repositorios.ProductoRepository;
 import com.amazonia2.repositorios.UsuarioRepository;
 
@@ -44,10 +46,13 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 	private UsuarioRepository repoUsuario;
 	private AuthenticationManager auth;
 
-	public UsuarioNegocioImpl(AuthenticationConfiguration authConfig, WebSecurityConfig security, FacturaRepository repoFactura, ClienteRepository repoCliente,
+	private PedidoRepository repoPedido;
+
+	public UsuarioNegocioImpl(PedidoRepository repoPedido, AuthenticationConfiguration authConfig, WebSecurityConfig security, FacturaRepository repoFactura, ClienteRepository repoCliente,
 			UsuarioRepository repoUsuario, ProductoRepository repoProducto, Mapeador mapeador) {
 		this.repoCliente = repoCliente;
 		this.repoUsuario = repoUsuario;
+		this.repoPedido = repoPedido;
 		this.repoProducto = repoProducto;
 		this.repoFactura = repoFactura;
 		this.mapeador = mapeador;
@@ -186,12 +191,14 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		String numero = nuevoNumeroFactura(anno);
 		Cliente cliente = repoCliente.findByEmail(email);
 
-		Factura factura = mapeador.carrito2Factura(carrito);
+		Factura factura = new Factura();
 
 		factura.setNumero(numero);
 		factura.setFecha(LocalDate.now());
 		factura.setCliente(cliente);
 
+		factura.setPedidos(mapeador.productos2Pedidos(carrito.getProductos()));
+		
 		return factura;
 	}
 
@@ -200,7 +207,12 @@ class UsuarioNegocioImpl implements UsuarioNegocio {
 		factura.setNumero(nuevoNumeroFactura(String.valueOf(LocalDate.now().getYear())));
 
 		repoFactura.save(factura);
-
+		
+		for(Pedido pedido: factura.getPedidos()) {
+			pedido.setFactura(factura);
+			repoPedido.save(pedido);
+		}
+		
 		return factura;
 	}
 

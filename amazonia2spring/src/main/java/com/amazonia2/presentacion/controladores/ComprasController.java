@@ -42,4 +42,18 @@ public class ComprasController {
 		modelo.addAttribute("factura", factura);
 		return "pagar";
 	}
+	
+	@GetMapping("/confirmar")
+	public String confirmar(Model modelo, Authentication auth) {
+		pagar(modelo, auth);
+		
+		negocio.facturar((Factura)modelo.getAttribute("factura"));
+		
+		carrito.vaciarCarrito();
+		
+		modelo.addAttribute("alerta", "La factura se ha registrado correctamente");
+		modelo.addAttribute("nivel", "success");
+		
+		return "pagar";
+	}
 }
