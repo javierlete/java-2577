@@ -4,6 +4,9 @@ const URL_PRODUCTOS = URL_USUARIO + '/productos';
 
 $(function() {
     $('#alerta').hide();
+
+    mostrar('index');
+
     cargarProductos();
 });
 
@@ -41,6 +44,28 @@ function cargarProductos() {
     });
     
 }
+function verDetalle(id) {
+    $.getJSON(URL_PRODUCTOS + '/' + id, function(producto) {
+        mostrar('detalle');
+        console.log(producto);
+
+        $('#detalle-nombre').html(producto.nombre);
+        $('#detalle-fecha-caducidad').html(producto.fechaCaducidad);
+        $('#detalle-precio').html(producto.precio);
+        $('#detalle-unidades').html(producto.unidades);
+        $('#detalle-codigo-barras').html(producto.codigoBarras);
+
+    });
+}
+
+function mostrar(capa) {
+    ocultarTodo();
+    $('#' + capa).show();
+}
+
+function ocultarTodo() {
+    $('main > section').hide();
+}
 
 function activarDatatables() {
     DataTable('.table-bordered', {
@@ -48,8 +73,4 @@ function activarDatatables() {
             url : 'json/es-ES.json',
         }
     });
-}
-
-function verDetalle(id) {
-    
 }
