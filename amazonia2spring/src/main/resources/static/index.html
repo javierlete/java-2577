@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" th:fragment="plantilla (titulo, contenido)"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+<meta charset="UTF-8">
+<title th:replace="${titulo}">Título por defecto</title>
+
+<base href="/" th:href="@{/}">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/bootstrap-icons.min.css">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<link href="css/amazonia2.css" rel="stylesheet">
+
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<link rel="icon" type="image/svg+xml" href="imgs/shop.svg">
+
+<!-- DataTables -->
+<link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
+<script src="js/jquery-3.7.1.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/dataTables.bootstrap5.min.js"></script>
+
+<script src="js/amazonia2spring.js"></script>
+<script src="js/carrito.js"></script>
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-sm bg-dark sticky-top"
+		data-bs-theme="dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Amazonia2</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-sm-0">
+					<li class="nav-item"><a class="nav-link" href="/"
+						th:href="@{/}">Principal</a></li>
+				</ul>
+				<ul class="navbar-nav mb-2 mb-sm-0">
+					<li class="nav-item"><a class="nav-link"
+						href="admin/index.html" sec:authorize="hasRole('ROLE_ADMIN')"
+						th:href="@{/admin}">Administración</a></li>
+					<li class="navbar-text" sec:authorize="isAuthenticated()"
+						sec:authentication="name">Nombre de usuario</li>
+					<li class="navbar-text ms-2" sec:authorize="isAuthenticated()"
+						sec:authentication="principal.authorities">Roles</li>
+
+
+					<li class="nav-item"><a class="nav-link" href="carrito"><i
+							class="bi bi-cart4"></i><span id="numero-productos-carrito" th:text="${carrito?.numeroProductos}">NUM</span></a></li>
+
+					<li class="nav-item" sec:authorize="!isAuthenticated()"><a
+						class="nav-link" href="/login.html"
+						th:href="@{/login?interactivo}">Iniciar sesión</a></li>
+					<li class="nav-item" sec:authorize="isAuthenticated()">
+						<form action="/" th:action="@{/logout}" method="post">
+							<button class="nav-link">Cerrar sesión</button>
+						</form>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+	<div id="alerta" th:if="${alerta != null}" th:text="${alerta}"
+		th:classappend="${nivel != null} ? 'alert-' + ${nivel}"
+		class="alert alert-dismissible fade show" role="alert">
+		ALERTA GENERICA
+		<button type="button" class="btn-close" data-bs-dismiss="alert"
+			aria-label="Close"></button>
+	</div>
+
+	<div class="my-3">
+		<main class="container">
+			<section id="index">
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4">
+					
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<footer
+		class="sticky-bottom w-100 text-bg-dark p-2 mt-4 d-flex justify-content-between">
+		<p>&copy;2023 Javier Lete</p>
+		<ul class="list-unstyled d-flex">
+			<li><a class="text-white p-1" href="#"><i
+					class="bi bi-facebook"></i></a></li>
+			<li><a class="text-white p-1" href="#"><i
+					class="bi bi-twitter-x"></i></a></li>
+			<li><a class="text-white p-1" href="#"><i
+					class="bi bi-instagram"></i></a></li>
+			<li><a class="text-white p-1" href="#"><i
+					class="bi bi-youtube"></i></a></li>
+			<li><a class="text-white p-1" href="#"><i
+					class="bi bi-tiktok"></i></a></li>
+		</ul>
+	</footer>
+
+</body>
+
+</html>
