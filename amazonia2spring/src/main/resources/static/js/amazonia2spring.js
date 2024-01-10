@@ -5,13 +5,13 @@ const URL_PRODUCTOS = URL_USUARIO + '/productos';
 $(function() {
     $('#alerta').hide();
 
-    mostrar('index');
-
-    cargarProductos();
+    cargarIndex();
 });
 
 function cargarProductos() {
     $.getJSON(URL_PRODUCTOS, function(productos) {
+        $('#index > div').empty();
+        
         $.each(productos, function(clave, p) {
             $('#index > div').append(`
                 <div class="col">
@@ -54,8 +54,12 @@ function verDetalle(id) {
         $('#detalle-precio').html(producto.precio);
         $('#detalle-unidades').html(producto.unidades);
         $('#detalle-codigo-barras').html(producto.codigoBarras);
-
     });
+}
+
+function cargarIndex() {
+    mostrar('index');
+    cargarProductos();
 }
 
 function mostrar(capa) {
