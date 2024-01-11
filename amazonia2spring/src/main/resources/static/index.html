@@ -31,7 +31,7 @@
 
 <body>
 
-	<nav class="navbar navbar-expand-sm bg-dark sticky-top" data-bs-theme="dark">
+	<nav class="navbar navbar-expand-sm bg-primary sticky-top" data-bs-theme="dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Amazonia2</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -41,19 +41,19 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-sm-0">
-					<li class="nav-item"><a class="nav-link" href="/" th:href="@{/}">Principal</a></li>
+					<li class="nav-item"><a class="nav-link" href="javascript:cargarIndex()">Principal</a></li>
 				</ul>
 				<ul class="navbar-nav mb-2 mb-sm-0">
-					<li class="nav-item"><a class="nav-link" href="admin/index.html"
-							sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">Administración</a></li>
+					<li class="nav-item"><a class="nav-link" 
+							sec:authorize="hasRole('ROLE_ADMIN')" href="javascript:cargarAdmin()">Administración</a></li>
 					<li class="navbar-text" sec:authorize="isAuthenticated()" sec:authentication="name">Nombre de
 						usuario</li>
 					<li class="navbar-text ms-2" sec:authorize="isAuthenticated()"
 						sec:authentication="principal.authorities">Roles</li>
 
 
-					<li class="nav-item"><a class="nav-link" href="carrito"><i class="bi bi-cart4"></i><span
-								id="numero-productos-carrito" th:text="${carrito?.numeroProductos}">NUM</span></a></li>
+					<li class="nav-item"><a class="nav-link" href="javascript:cargarCarrito()"><i class="bi bi-cart4"></i><span
+								id="numero-productos-carrito">NUM</span></a></li>
 
 					<li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" href="/login.html"
 							th:href="@{/login?interactivo}">Iniciar sesión</a></li>
@@ -153,10 +153,103 @@
 						comprando</a>
 				</p>
 			</section>
+
+			<section id="admin">
+				<table class="table table-hover table-striped table-bordered">
+					<caption>Productos</caption>
+					<thead class="table-primary">
+						<tr>
+							<th class="text-end">Id</th>
+							<th class="text-center">Código de Barras</th>
+							<th>Nombre</th>
+							<th class="text-end">Precio</th>
+							<th class="text-center">Fecha de caducidad</th>
+							<th class="text-end">Unidades</th>
+							<th>OPCIONES</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+					<tfoot class="table-primary">
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>
+								<a class="btn btn-sm btn-primary" href="javascript:cargarDetalle()">Añadir</a>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</section>
+
+			<section id="form">
+				<form>
+					<div class="row mb-2">
+						<label class="col-sm-2 col-form-label" for="id">Id</label>
+						<div class="col-sm">
+							<input class="form-control" id="id" placeholder="Id">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+						</div>
+					</div>
+		
+					<div class="row mb-2">
+						<label class="col-sm-2 col-form-label" for="codigoBarras">Código de Barras</label>
+						<div class="col-sm">
+							<input class="form-control" id="codigo-barras" placeholder="Código de Barras">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('codigoBarras')}" th:errors="*{codigoBarras}"></div>
+						</div>
+					</div>
+		
+					<div class="row mb-2">
+						<label class="col-sm-2 col-form-label" for="nombre">Nombre</label>
+						<div class="col-sm">
+							<input class="form-control" id="nombre" placeholder="Nombre">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+						</div>
+					</div>
+		
+					<div class="row mb-2">
+						<label class="col-sm-2 col-form-label" for="precio">Precio</label>
+						<div class="col-sm">
+							<input class="form-control" type="number" step=".01" id="precio" placeholder="Precio">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></div>
+						</div>
+					</div>
+		
+					<div class="row mb-2">
+						<label class="col-sm-2 col-form-label" for="fechaCaducidad">Fecha de Caducidad</label>
+						<div class="col-sm">
+							<input class="form-control" type="date" id="fecha-caducidad" placeholder="Fecha de Caducidad">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('fechaCaducidad')}" th:errors="*{fechaCaducidad}"></div>
+						</div>
+					</div>
+		
+					<div class="row mb-2">
+						<label class="col-sm-2 col-form-label" for="unidades">Unidades</label>
+						<div class="col-sm">
+							<input class="form-control" type="number" id="unidades" placeholder="Unidades">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('unidades')}" th:errors="*{unidades}"></div>
+						</div>
+					</div>
+		
+					<div class="row mb-2">
+						<div class="offset-sm-2 col-sm">
+							<a class="btn btn-primary" href="javascript:guardar()">Guardar</a>
+							<a class="btn btn-danger" href="javascript:cancelar()">Cancelar</a>
+						</div>
+					</div>
+		
+				</form>
+			</section>
 		</main>
 	</div>
 
-	<footer class="sticky-bottom w-100 text-bg-dark p-2 mt-4 d-flex justify-content-between">
+	<footer class="sticky-bottom w-100 text-bg-primary p-2 mt-4 d-flex justify-content-between">
 		<p>&copy;2023 Javier Lete</p>
 		<ul class="list-unstyled d-flex">
 			<li><a class="text-white p-1" href="#"><i class="bi bi-facebook"></i></a></li>

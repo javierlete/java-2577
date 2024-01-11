@@ -1,6 +1,7 @@
 const URL_REST = 'http://localhost:8080/api/v2';
 const URL_USUARIO = URL_REST + '/negocio/usuario';
 const URL_PRODUCTOS = URL_USUARIO + '/productos';
+const URL_ADMIN = URL_REST + '/negocio/admin/productos';
 
 let carrito = JSON.parse(sessionStorage.getItem('carrito'));
 
@@ -10,7 +11,7 @@ if(!carrito) {
 }
 
 $(function () {
-
+    $('#numero-productos-carrito').html('(' + carrito.length + ')');
     $('#alerta').hide();
 
     cargarIndex();
@@ -127,12 +128,17 @@ function cargarCarrito() {
                 </td>
                 <td th:id="|total-${p.id}|" class="text-end">${moneda.format(total)}</td>
                 <td><a onclick="return confirm('¿Estás seguro?')" class="btn btn-sm btn-outline-danger"
-                        href="#" th:href="@{/carrito/borrar(id=${p.id})}"><i
+                        href="javascript:carritoBorrar(${p.id})"><i
                             class="bi bi-trash-fill"></i></a></td>
             </tr>`);
     });
 
     $('#total-global').html(moneda.format(totalGlobal));
+}
+
+function carritoBorrar(id) {
+    carrito = carrito.filter(p => p.id !== id);
+    cargarCarrito();
 }
 
 function cargarIndex() {
@@ -158,5 +164,95 @@ function activarDatatables() {
 }
 
 function guardarCarrito() {
+    $('#numero-productos-carrito').html('(' + carrito.length + ')');
     sessionStorage.setItem('carrito', JSON.stringify(carrito));
+}
+
+function cargarAdmin() {
+    mostrar('admin');
+
+    $.getJSON(URL_ADMIN, function (productos) {
+        $('#admin tbody').empty();
+        $.each(productos, function (clave, p) {
+            $('#admin tbody').append(`
+                <tr>
+                    <td class="text-end">${p.id}</td>
+                    <td class="text-center">${p.codigoBarras}</td>
+                    <td>${p.nombre}</td>
+                    <td class="text-end">${moneda.format(p.precio)}</td>
+                    <td class="text-center">${p.fechaCaducidad ? p.fechaCaducidad: ''}</td>
+                    <td class="text-end">${p.unidades}</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="javascript:cargarDetalle(${p.id})">Editar</a>
+                        <a onclick="return confirm('¿Estás seguro?')" class="btn btn-sm btn-danger" href="javascript:borrar(${p.id})">Borrar</a>
+                    </td>
+                </tr>`);
+        });
+    });
+}
+
+function borrar(id) {
+    $.ajax({
+        url: URL_ADMIN + '/' + id,
+        type: 'DELETE',
+        success: function (result) {
+            cargarAdmin();
+        },
+        error: function (xhr, status, error) {
+            console.log('Error:', error);
+        }
+    });
+}
+
+function cargarDetalle(id) {
+    if(id) {
+        $.getJSON(URL_ADMIN + '/' + id, function (p) {
+            $('#id').val(p.id);
+            $('#nombre').val(p.nombre);
+            $('#fecha-caducidad').val(p.fechaCaducidad);
+            $('#precio').val(p.precio);
+            $('#unidades').val(p.unidades);
+            $('#codigo-barras').val(p.codigoBarras);
+        });
+    } else {
+        $('#id').val('');
+        $('#nombre').val('');
+        $('#fecha-caducidad').val('');
+        $('#precio').val('');
+        $('#unidades').val('');
+        $('#codigo-barras').val('');
+    }
+
+    mostrar('form');
+}
+
+function cancelar() {
+    cargarAdmin();
+}
+
+function guardar() {
+    const producto = {
+        id: $('#id').val(),
+        nombre: $('#nombre').val(),
+        fechaCaducidad: $('#fecha-caducidad').val(),
+        precio: $('#precio').val(),
+        unidades: $('#unidades').val(),
+        codigoBarras: $('#codigo-barras').val()
+    };
+
+    const tipo = producto.id ? 'PUT' : 'POST';
+    const url = URL_ADMIN + (tipo === 'PUT' ? '/' + producto.id : '');
+
+    $.ajax({
+        url: url,
+        type: tipo,
+        data: JSON.stringify(producto),
+        contentType: 'application/json',
+        success: function (result) {
+            cargarAdmin();
+        },
+        error: function (xhr, status, error) {
+            console.log('Error:', error);
+        }
+    })
 }

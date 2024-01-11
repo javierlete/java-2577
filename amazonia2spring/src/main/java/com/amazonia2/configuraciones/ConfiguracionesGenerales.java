@@ -31,6 +31,7 @@ public class ConfiguracionesGenerales {
 		modelo.addAttribute(carrito);
 	}
 
+	// TODO: Asegurarse de que en /api/v2 se hace el proceso por defecto
 	@ExceptionHandler(Exception.class)
 	public String handleApplicationException(Model modelo, Exception exception, HttpServletRequest request) {
 		log.severe("EXCEPTION");
