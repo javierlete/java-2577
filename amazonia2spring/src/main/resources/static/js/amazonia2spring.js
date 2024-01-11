@@ -14,8 +14,10 @@ $(function () {
     $('#numero-productos-carrito').html('(' + carrito.length + ')');
     $('#alerta').hide();
 
+    $('#login form:first-of-type').on('submit', login);
+
     // cargarIndex();
-    cargarPagar();
+    cargarLogin();
 });
 
 function cargarProductos() {
@@ -278,4 +280,19 @@ function cargarPagar() {
     });
 
     $('#pagar-total-global').html(moneda.format(totalGlobal));
+}
+
+function cargarLogin() {
+    mostrar('login');
+}
+
+function login(e) {
+    e.preventDefault();
+    
+    const usuario = {
+        username: $('#username').val(),
+        password: $('#password').val()
+    };
+
+    console.log(usuario);
 }
