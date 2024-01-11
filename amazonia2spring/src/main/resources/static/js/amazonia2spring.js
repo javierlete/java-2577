@@ -1,4 +1,5 @@
-const URL_REST = 'http://localhost:8080/api/v2';
+const URL_BASE = location.href.replace('/index.html','');
+const URL_REST = URL_BASE + '/api/v2';
 const URL_USUARIO = URL_REST + '/negocio/usuario';
 const URL_PRODUCTOS = URL_USUARIO + '/productos';
 const URL_ADMIN = URL_REST + '/negocio/admin/productos';

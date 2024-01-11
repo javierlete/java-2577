@@ -1,6 +1,6 @@
 'use strict';
 
-const URL = '/api/v2/negocio/usuario/carrito';
+const URL = 'api/v2/negocio/usuario/carrito';
 
 const moneda = new Intl.NumberFormat('es-ES', {
 	style: 'currency',
