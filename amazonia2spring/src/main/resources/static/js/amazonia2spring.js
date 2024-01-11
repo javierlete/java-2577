@@ -5,7 +5,7 @@ const URL_ADMIN = URL_REST + '/negocio/admin/productos';
 
 let carrito = JSON.parse(sessionStorage.getItem('carrito'));
 
-if(!carrito) {
+if (!carrito) {
     carrito = [];
     guardarCarrito();
 }
@@ -14,7 +14,8 @@ $(function () {
     $('#numero-productos-carrito').html('(' + carrito.length + ')');
     $('#alerta').hide();
 
-    cargarIndex();
+    // cargarIndex();
+    cargarPagar();
 });
 
 function cargarProductos() {
@@ -83,14 +84,14 @@ function agregarACarrito(idOProducto) {
 
 function agregarProductoACarrito(producto) {
     const productoEnCarrito = carrito.filter(p => p.id === producto.id)[0];
-    
+
     if (productoEnCarrito) {
         productoEnCarrito.unidades++;
     } else {
         producto.unidades = 1;
         carrito.push(producto);
     }
-    
+
     cargarCarrito();
 }
 
@@ -180,7 +181,7 @@ function cargarAdmin() {
                     <td class="text-center">${p.codigoBarras}</td>
                     <td>${p.nombre}</td>
                     <td class="text-end">${moneda.format(p.precio)}</td>
-                    <td class="text-center">${p.fechaCaducidad ? p.fechaCaducidad: ''}</td>
+                    <td class="text-center">${p.fechaCaducidad ? p.fechaCaducidad : ''}</td>
                     <td class="text-end">${p.unidades}</td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="javascript:cargarDetalle(${p.id})">Editar</a>
@@ -205,7 +206,7 @@ function borrar(id) {
 }
 
 function cargarDetalle(id) {
-    if(id) {
+    if (id) {
         $.getJSON(URL_ADMIN + '/' + id, function (p) {
             $('#id').val(p.id);
             $('#nombre').val(p.nombre);
@@ -255,4 +256,26 @@ function guardar() {
             console.log('Error:', error);
         }
     })
+}
+
+function cargarPagar() {
+    mostrar('pagar');
+
+    let totalGlobal = 0;
+
+    $.each(carrito, function (clave, p) {
+        const total = p.precio * p.unidades;
+        totalGlobal += total;
+
+        $('#pagar tbody').append(`
+        <tr>
+            <td>${p.nombre}</td>
+            <td class="text-end">${moneda.format(p.precio)}</td>
+            <td class="text-end">${p.unidades}</td>
+            <td class="text-end">${moneda.format(total)}</td>
+        </tr>
+        `);
+    });
+
+    $('#pagar-total-global').html(moneda.format(totalGlobal));
 }

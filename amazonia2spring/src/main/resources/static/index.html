@@ -142,7 +142,7 @@
 								<td></td>
 								<td></td>
 								<td id="total-global" class="text-end">TOTAL SIN PROCESAR</td>
-								<td><a class="btn btn-sm btn-primary" href="pagar.html" th:href="@{/pagar}">Pagar</a>
+								<td><a class="btn btn-sm btn-primary" href="javascript:cargarPagar()">Pagar</a>
 								</td>
 							</tr>
 						</tfoot>
@@ -245,6 +245,42 @@
 					</div>
 		
 				</form>
+			</section>
+
+			<section id="pagar">
+				<div class="text-end">
+					<p class="lead" th:text="${factura.numero}">1234</p>
+					<p th:text="${factura.cliente.dni}">NIF</p>
+					<p th:text="${factura.cliente.nombre}">Nombre</p>
+					<p th:text="${factura.fecha}">Fecha de factura</p>
+				</div>
+		
+				<div class="table-responsive">
+					<table class="table">
+						<caption class="caption-top">Factura</caption>
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th class="text-end">Precio</th>
+								<th class="text-end">Unidades</th>
+								<th class="text-end">Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+						<tfoot>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td id="pagar-total-global" class="text-end fw-bold">1163847</td>
+							</tr>
+						</tfoot>
+					</table>
+					
+					<div th:if="${nivel != 'success'}" class="text-center"><a href="confirmar" class="btn btn-primary">Confirmar</a></div>
+				</div>
 			</section>
 		</main>
 	</div>
